@@ -17,7 +17,7 @@
             overflow: hidden;
         }
 
-        /* Контейнер ленты с жесткой фиксацией на экране */
+        /* Основной контейнер ленты */
         .feed-container {
             height: 100vh;
             overflow-y: scroll;
@@ -35,12 +35,12 @@
             flex-direction: column;
             position: relative;
             box-sizing: border-box;
-            padding-bottom: env(safe-area-inset-bottom);
+            background: #000;
         }
 
-        /* Область фото: теперь занимает строго 55-60% экрана, чтобы хватило места остальному */
+        /* Фото секция */
         .photo-section {
-            height: 55vh;
+            height: 65vh;
             position: relative;
             background: #111;
         }
@@ -66,14 +66,14 @@
             object-fit: cover;
         }
 
-        /* Область контента: занимает оставшиеся 40-45% экрана */
-        .content-section {
-            flex-grow: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: #000;
+        /* Панель управления под фото (ТЗ: слева текст, справа кнопка) */
+        .action-bar {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(to bottom, #0a0a0a, #000);
         }
 
         .whatsapp-btn {
@@ -81,44 +81,50 @@
             color: #000;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: -0.02em;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ccc;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
+            padding: 12px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: fit-content;
         }
 
         .dots-overlay {
             position: absolute;
-            bottom: 15px;
+            bottom: 12px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: center;
-            gap: 5px;
+            gap: 4px;
             z-index: 20;
         }
         .dot {
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s;
         }
         .dot.active {
             background: #ff0000;
-            width: 12px;
-            border-radius: 4px;
+            width: 10px;
+            border-radius: 2px;
+        }
+
+        .description-area {
+            padding: 0 16px 16px 16px;
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
     <div class="feed-container" id="feed">
-        <!-- Товары будут добавлены через JS -->
+        <!-- Товары -->
     </div>
 
     <script>
@@ -127,38 +133,35 @@
             {
                 name: "Silver Button",
                 price: "4 500 ₽",
-                desc: "100к подписок. Металл, оригинал.",
+                desc: "Оригинальный размер, тяжелый металл. Идеально для оформления студии. Поставляется в защитном кейсе.",
                 images: [
                     "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
-                    "https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800",
-                    "https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=800"
+                    "https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800"
                 ]
             },
             {
                 name: "Gold Button",
                 price: "7 900 ₽",
-                desc: "1 млн подписок. Золотое напыление.",
+                desc: "Зеркальное золотое напыление. Выглядит идентично оригиналу. Гравировка любого названия канала.",
                 images: [
                     "https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?q=80&w=800",
-                    "https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800",
-                    "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=800"
+                    "https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800"
                 ]
             },
             {
                 name: "Diamond Award",
                 price: "15 000 ₽",
-                desc: "10 млн подписок. Кристалл, кейс.",
+                desc: "Премиальный кристалл. Тяжелая основа. Лучший подарок для крупного блогера.",
                 images: [
                     "https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=800",
-                    "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800",
-                    "https://images.unsplash.com/photo-1622737133809-d95047b9e673?q=80&w=800"
+                    "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800"
                 ]
             }
         ];
 
         const feedContainer = document.getElementById('feed');
 
-        // Создаем 9 товаров
+        // Генерируем 9 товаров на основе списка
         const allItems = [];
         for(let i=0; i<9; i++) {
             allItems.push({...products[i % 3], id: i});
@@ -168,11 +171,11 @@
             const post = document.createElement('div');
             post.className = 'product-post';
             
-            const waMsg = encodeURIComponent(`Привет! Хочу купить: ${product.name} за ${product.price}`);
+            const waMsg = encodeURIComponent(`Привет! Хочу заказать: ${product.name} за ${product.price}`);
             const waLink = `https://wa.me/${phoneNumber}?text=${waMsg}`;
 
             post.innerHTML = `
-                <!-- Фото секция -->
+                <!-- Секция с фотографиями -->
                 <div class="photo-section">
                     <div class="horizontal-gallery" onscroll="updateDots(this, ${pIdx})">
                         ${product.images.map(img => `
@@ -186,34 +189,27 @@
                     </div>
                 </div>
 
-                <!-- Контент секция (текст + кнопки) -->
-                <div class="content-section">
+                <!-- Основная панель (ТЗ: Название/Цена слева, Кнопка справа) -->
+                <div class="action-bar">
                     <div>
-                        <div class="flex justify-between items-start">
-                            <h2 class="text-3xl font-black uppercase tracking-tighter leading-none">${product.name}</h2>
-                            <span class="text-red-600 font-black text-xl">${product.price}</span>
-                        </div>
-                        <p class="text-gray-400 mt-2 text-sm">${product.desc}</p>
+                        <h2 class="text-2xl font-black uppercase leading-none tracking-tight">${product.name}</h2>
+                        <div class="text-red-600 font-bold text-lg mt-1">${product.price}</div>
                     </div>
+                    <a href="${waLink}" target="_blank" class="whatsapp-btn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
+                        Заказать
+                    </a>
+                </div>
 
-                    <div class="flex flex-col gap-2">
-                        <a href="${waLink}" target="_blank" class="whatsapp-btn w-full py-4 rounded-xl flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
-                            Заказать
-                        </a>
-                        <button onclick="scrollToTop()" class="back-btn w-full py-3 rounded-xl">
-                            В начало
-                        </button>
-                    </div>
+                <!-- Описание под панелью управления -->
+                <div class="description-area">
+                    ${product.desc}
                 </div>
             `;
             feedContainer.appendChild(post);
         });
 
-        function scrollToTop() {
-            feedContainer.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
+        // Функция обновления индикатора слайдов
         function updateDots(el, postIdx) {
             const scrollPos = el.scrollLeft;
             const width = el.offsetWidth;
