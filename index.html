@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YT Awards | Лента наград</title>
+    <title>YT Awards | Магазин наград</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
@@ -14,10 +14,10 @@
             background-color: #000;
             color: #fff;
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Отключаем обычный скролл */
+            overflow: hidden;
         }
 
-        /* Контейнер ленты с эффектом прилипания (Snap Scroll) */
+        /* Контейнер ленты с жесткой фиксацией на экране */
         .feed-container {
             height: 100vh;
             overflow-y: scroll;
@@ -31,19 +31,26 @@
             width: 100%;
             scroll-snap-align: start;
             scroll-snap-stop: always;
-            position: relative;
             display: flex;
             flex-direction: column;
-            border-bottom: 1px solid #1a1a1a;
+            position: relative;
+            box-sizing: border-box;
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Горизонтальная галерея внутри поста */
+        /* Область фото: теперь занимает строго 55-60% экрана, чтобы хватило места остальному */
+        .photo-section {
+            height: 55vh;
+            position: relative;
+            background: #111;
+        }
+
         .horizontal-gallery {
-            flex-grow: 1;
+            height: 100%;
             display: flex;
             overflow-x: scroll;
             scroll-snap-type: x mandatory;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
         .horizontal-gallery::-webkit-scrollbar { display: none; }
 
@@ -51,7 +58,6 @@
             min-width: 100%;
             height: 100%;
             scroll-snap-align: center;
-            position: relative;
         }
 
         .slide img {
@@ -60,85 +66,68 @@
             object-fit: cover;
         }
 
-        /* Градиент снизу для читаемости текста */
-        .info-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 40px 20px 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
-            z-index: 10;
+        /* Область контента: занимает оставшиеся 40-45% экрана */
+        .content-section {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #000;
         }
 
         .whatsapp-btn {
             background-color: #25d366;
             color: #000;
             font-weight: 800;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
         }
 
-        .price-tag {
+        .back-btn {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-weight: 900;
+            color: #ccc;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
         }
 
-        /* Индикатор страниц (точки) */
         .dots-overlay {
             position: absolute;
-            top: 20px;
+            bottom: 15px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
             z-index: 20;
         }
         .dot {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.4);
         }
         .dot.active {
             background: #ff0000;
-            width: 15px;
+            width: 12px;
             border-radius: 4px;
-        }
-
-        .brand-header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 15px;
-            text-align: center;
-            z-index: 100;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
-            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="brand-header">
-        <h1 class="text-xl font-black tracking-tighter uppercase italic">YT <span class="text-red-600">Awards</span> Store</h1>
-    </div>
-
     <div class="feed-container" id="feed">
-        <!-- Посты генерируются JS -->
+        <!-- Товары будут добавлены через JS -->
     </div>
 
     <script>
         const phoneNumber = "79779662521";
         const products = [
             {
-                name: "Silver Play Button",
+                name: "Silver Button",
                 price: "4 500 ₽",
-                desc: "Оригинальный масштаб, металлическая отделка. Зеркальный логотип.",
+                desc: "100к подписок. Металл, оригинал.",
                 images: [
                     "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
                     "https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800",
@@ -146,9 +135,9 @@
                 ]
             },
             {
-                name: "Gold Play Button",
+                name: "Gold Button",
                 price: "7 900 ₽",
-                desc: "Тяжелая награда с золотым напылением. Идеально для оформления студии.",
+                desc: "1 млн подписок. Золотое напыление.",
                 images: [
                     "https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?q=80&w=800",
                     "https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800",
@@ -156,9 +145,9 @@
                 ]
             },
             {
-                name: "Diamond Creator Award",
+                name: "Diamond Award",
                 price: "15 000 ₽",
-                desc: "Лимитированная серия. Огромный кристалл и премиальный кейс.",
+                desc: "10 млн подписок. Кристалл, кейс.",
                 images: [
                     "https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=800",
                     "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800",
@@ -167,61 +156,71 @@
             }
         ];
 
-        // Генерируем ленту из 9 товаров
         const feedContainer = document.getElementById('feed');
-        const allItems = [...products];
-        for(let i=0; i<6; i++) allItems.push({...products[i%3], name: products[i%3].name + " v" + (i+2)});
+
+        // Создаем 9 товаров
+        const allItems = [];
+        for(let i=0; i<9; i++) {
+            allItems.push({...products[i % 3], id: i});
+        }
 
         allItems.forEach((product, pIdx) => {
             const post = document.createElement('div');
             post.className = 'product-post';
             
-            // Сообщение для WhatsApp
-            const waMsg = encodeURIComponent(`Привет! Заказываю из ленты: ${product.name} за ${product.price}`);
+            const waMsg = encodeURIComponent(`Привет! Хочу купить: ${product.name} за ${product.price}`);
             const waLink = `https://wa.me/${phoneNumber}?text=${waMsg}`;
 
             post.innerHTML = `
-                <div class="dots-overlay" id="dots-${pIdx}">
-                    ${product.images.map((_, i) => `<div class="dot ${i===0?'active':''}"></div>`).join('')}
-                </div>
-                
-                <div class="horizontal-gallery" onscroll="updateDots(this, ${pIdx})">
-                    ${product.images.map(img => `
-                        <div class="slide">
-                            <img src="${img}" alt="${product.name}">
-                        </div>
-                    `).join('')}
+                <!-- Фото секция -->
+                <div class="photo-section">
+                    <div class="horizontal-gallery" onscroll="updateDots(this, ${pIdx})">
+                        ${product.images.map(img => `
+                            <div class="slide">
+                                <img src="${img}" alt="${product.name}">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="dots-overlay" id="dots-${pIdx}">
+                        ${product.images.map((_, i) => `<div class="dot ${i===0?'active':''}"></div>`).join('')}
+                    </div>
                 </div>
 
-                <div class="info-overlay">
-                    <div class="flex justify-between items-end mb-4">
-                        <div>
-                            <h2 class="text-2xl font-black uppercase tracking-tight">${product.name}</h2>
-                            <p class="text-gray-300 text-sm max-w-[250px] leading-tight mt-1">${product.desc}</p>
+                <!-- Контент секция (текст + кнопки) -->
+                <div class="content-section">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h2 class="text-3xl font-black uppercase tracking-tighter leading-none">${product.name}</h2>
+                            <span class="text-red-600 font-black text-xl">${product.price}</span>
                         </div>
-                        <div class="price-tag text-red-500 text-lg italic">
-                            ${product.price}
-                        </div>
+                        <p class="text-gray-400 mt-2 text-sm">${product.desc}</p>
                     </div>
-                    <a href="${waLink}" target="_blank" class="whatsapp-btn w-full py-4 rounded-xl flex items-center justify-center gap-2 text-sm uppercase tracking-widest">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
-                        Написать в WhatsApp
-                    </a>
+
+                    <div class="flex flex-col gap-2">
+                        <a href="${waLink}" target="_blank" class="whatsapp-btn w-full py-4 rounded-xl flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
+                            Заказать
+                        </a>
+                        <button onclick="scrollToTop()" class="back-btn w-full py-3 rounded-xl">
+                            В начало
+                        </button>
+                    </div>
                 </div>
             `;
             feedContainer.appendChild(post);
         });
 
-        // Функция обновления точек при горизонтальном скролле
+        function scrollToTop() {
+            feedContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function updateDots(el, postIdx) {
             const scrollPos = el.scrollLeft;
             const width = el.offsetWidth;
             const activeIdx = Math.round(scrollPos / width);
-            
             const dots = document.querySelectorAll(`#dots-${postIdx} .dot`);
             dots.forEach((dot, i) => {
-                if(i === activeIdx) dot.classList.add('active');
-                else dot.classList.remove('active');
+                dot.classList.toggle('active', i === activeIdx);
             });
         }
     </script>
