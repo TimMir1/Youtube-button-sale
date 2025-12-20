@@ -3,276 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YouTube Awards Shop | Купить кнопку Ютуб</title>
+    <title>YT Awards | Лента наград</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
-        body {
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #000;
+            color: #fff;
             font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f;
-            color: #ffffff;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; /* Отключаем обычный скролл */
         }
-        .gradient-text {
-            background: linear-gradient(90deg, #ff0000, #ff4d4d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        /* Контейнер ленты с эффектом прилипания (Snap Scroll) */
+        .feed-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
-        .card-blur {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @media (hover: hover) {
-            .card-blur:hover {
-                transform: translateY(-8px);
-                border-color: rgba(255, 0, 0, 0.5);
-                box-shadow: 0 20px 40px -15px rgba(255, 0, 0, 0.3);
-            }
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            background: #0f0f0f;
-        }
-        @media (min-width: 768px) {
-            .modal {
-                background: rgba(0, 0, 0, 0.9);
-                backdrop-filter: blur(15px);
-            }
-        }
-        .modal.active {
+
+        .product-post {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
             display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #1a1a1a;
         }
+
+        /* Горизонтальная галерея внутри поста */
+        .horizontal-gallery {
+            flex-grow: 1;
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+        }
+        .horizontal-gallery::-webkit-scrollbar { display: none; }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            scroll-snap-align: center;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Градиент снизу для читаемости текста */
+        .info-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 20px 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            z-index: 10;
+        }
+
         .whatsapp-btn {
             background-color: #25d366;
-            color: black;
+            color: #000;
             font-weight: 800;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
         }
-        .nav-btn {
+
+        .price-tag {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-weight: 900;
         }
-        .gallery-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 99px;
+
+        /* Индикатор страниц (точки) */
+        .dots-overlay {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            z-index: 20;
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
             background: rgba(255,255,255,0.3);
             transition: all 0.3s;
         }
-        .gallery-dot.active {
-            background-color: #ff0000;
-            width: 20px;
+        .dot.active {
+            background: #ff0000;
+            width: 15px;
+            border-radius: 4px;
         }
-        /* Скрытие скроллбара */
-        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        .brand-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="pt-12 pb-6 px-6 text-center">
-        <div class="inline-block mb-3">
-            <svg class="w-12 h-12 mx-auto text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-            </svg>
-        </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold mb-2 tracking-tighter uppercase">YT <span class="gradient-text">Awards</span></h1>
-        <p class="text-gray-400 max-w-md mx-auto text-sm md:text-base">Премиальные награды YouTube. Качество оригинала.</p>
-    </header>
-
-    <!-- Catalog Section -->
-    <main class="max-w-7xl mx-auto px-4 pb-24">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8" id="catalog">
-            <!-- Кнопки генерируются JS -->
-        </div>
-    </main>
-
-    <!-- Modal Product Details -->
-    <div id="productModal" class="modal items-center justify-center">
-        <div class="w-full h-full md:h-auto md:max-w-5xl md:rounded-[2.5rem] bg-[#161616] overflow-y-auto md:overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
-            
-            <!-- Close Button (Mobile optimized) -->
-            <button onclick="closeModal()" class="absolute top-4 right-4 z-[110] nav-btn p-3 rounded-full text-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></button>
-
-            <!-- Left: Gallery -->
-            <div class="w-full md:w-3/5 bg-black relative flex items-center justify-center min-h-[40vh] md:min-h-[500px]">
-                <img id="modalImg" src="" alt="Product" class="w-full h-full object-contain transition-opacity duration-300">
-                
-                <!-- Nav Arrows -->
-                <button onclick="prevPhoto()" class="absolute left-2 nav-btn p-3 rounded-full text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                </button>
-                <button onclick="nextPhoto()" class="absolute right-2 nav-btn p-3 rounded-full text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                </button>
-
-                <!-- Dots -->
-                <div id="dotsContainer" class="absolute bottom-4 flex gap-2"></div>
-            </div>
-
-            <!-- Right: Info -->
-            <div class="w-full md:w-2/5 p-6 md:p-10 flex flex-col">
-                <h2 id="modalTitle" class="text-2xl md:text-3xl font-extrabold mb-3"></h2>
-                <p id="modalDesc" class="text-gray-400 text-sm md:text-base mb-6 leading-relaxed"></p>
-                
-                <div class="mt-auto">
-                    <div class="flex items-center justify-between mb-6 bg-white/5 p-4 rounded-2xl">
-                        <span class="text-xs text-gray-500 uppercase tracking-widest">Стоимость</span>
-                        <span id="modalPrice" class="text-3xl font-black"></span>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 gap-3">
-                        <a id="modalWALink" href="#" target="_blank" class="whatsapp-btn py-4 rounded-2xl flex items-center justify-center gap-3 uppercase tracking-tighter text-lg">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
-                            Купить сейчас
-                        </a>
-                        <button onclick="closeModal()" class="text-gray-500 py-4 text-sm font-bold uppercase tracking-widest">Вернуться в каталог</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="brand-header">
+        <h1 class="text-xl font-black tracking-tighter uppercase italic">YT <span class="text-red-600">Awards</span> Store</h1>
     </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/5 py-12 text-center text-gray-500 px-6">
-        <p class="text-white font-bold mb-1 italic">YouTube Awards Premium Shop</p>
-        <p class="text-xs mb-6 uppercase tracking-widest">Доставка по всей России и СНГ</p>
-        <p class="text-sm">WhatsApp: +7 (977) 966-25-21</p>
-    </footer>
+    <div class="feed-container" id="feed">
+        <!-- Посты генерируются JS -->
+    </div>
 
     <script>
         const phoneNumber = "79779662521";
         const products = [
             {
-                id: 0,
-                name: "Серебряная кнопка (Classic)",
+                name: "Silver Play Button",
                 price: "4 500 ₽",
-                desc: "Награда за 100.000 подписчиков. Шлифованный алюминий, зеркальный логотип. Точная копия оригинала 2024 года.",
+                desc: "Оригинальный масштаб, металлическая отделка. Зеркальный логотип.",
                 images: [
-                    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800",
-                    "https://images.unsplash.com/photo-1626131713506-c87ca5254122?auto=format&fit=crop&q=80&w=800",
-                    "https://images.unsplash.com/photo-1544006659-f0b21884cb1d?auto=format&fit=crop&q=80&w=800"
+                    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
+                    "https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800",
+                    "https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=800"
                 ]
             },
             {
-                id: 1,
-                name: "Золотая кнопка (Classic)",
+                name: "Gold Play Button",
                 price: "7 900 ₽",
-                desc: "Награда за 1.000.000 подписчиков. Роскошное золотое покрытие 24K. Массивная конструкция, солидный вес.",
+                desc: "Тяжелая награда с золотым напылением. Идеально для оформления студии.",
                 images: [
-                    "https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?auto=format&fit=crop&q=80&w=800",
-                    "https://images.unsplash.com/photo-1579338559194-a162d19bf842?auto=format&fit=crop&q=80&w=800",
-                    "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80&w=800"
+                    "https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?q=80&w=800",
+                    "https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800",
+                    "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=800"
                 ]
             },
             {
-                id: 2,
-                name: "Бриллиантовая кнопка",
+                name: "Diamond Creator Award",
                 price: "15 000 ₽",
-                desc: "10 миллионов подписчиков. Центральный элемент — крупный искусственный кристалл с лазерной огранкой.",
+                desc: "Лимитированная серия. Огромный кристалл и премиальный кейс.",
                 images: [
-                    "https://images.unsplash.com/photo-1585241936939-be4099591252?auto=format&fit=crop&q=80&w=800",
-                    "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?auto=format&fit=crop&q=80&w=800",
-                    "https://images.unsplash.com/photo-1622737133809-d95047b9e673?auto=format&fit=crop&q=80&w=800"
+                    "https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=800",
+                    "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800",
+                    "https://images.unsplash.com/photo-1622737133809-d95047b9e673?q=80&w=800"
                 ]
             }
         ];
 
-        // Генерируем еще 6 товаров для каталога (итого 9)
-        const allProducts = [...products];
-        const variations = ["Pro Edition", "Shorts Style", "Custom Elite"];
-        for(let i=0; i<6; i++) {
-            const base = products[i % 3];
-            allProducts.push({
-                ...base,
-                id: i + 3,
-                name: `${base.name.split(' ')[0]} ${variations[i % 3]}`,
-                price: (parseInt(base.price.replace(' ', '')) + 1000).toLocaleString('ru-RU') + " ₽"
-            });
-        }
-        
-        const container = document.getElementById('catalog');
-        const modal = document.getElementById('productModal');
-        let currentProduct = null;
-        let currentPhotoIdx = 0;
+        // Генерируем ленту из 9 товаров
+        const feedContainer = document.getElementById('feed');
+        const allItems = [...products];
+        for(let i=0; i<6; i++) allItems.push({...products[i%3], name: products[i%3].name + " v" + (i+2)});
 
-        function renderCatalog() {
-            allProducts.forEach(p => {
-                const card = `
-                    <div onclick="openModal(${p.id})" class="card-blur rounded-[2rem] overflow-hidden group active:scale-95 transition-transform">
-                        <div class="aspect-square bg-zinc-900 overflow-hidden">
-                            <img src="${p.images[0]}" class="w-full h-full object-cover" alt="${p.name}">
+        allItems.forEach((product, pIdx) => {
+            const post = document.createElement('div');
+            post.className = 'product-post';
+            
+            // Сообщение для WhatsApp
+            const waMsg = encodeURIComponent(`Привет! Заказываю из ленты: ${product.name} за ${product.price}`);
+            const waLink = `https://wa.me/${phoneNumber}?text=${waMsg}`;
+
+            post.innerHTML = `
+                <div class="dots-overlay" id="dots-${pIdx}">
+                    ${product.images.map((_, i) => `<div class="dot ${i===0?'active':''}"></div>`).join('')}
+                </div>
+                
+                <div class="horizontal-gallery" onscroll="updateDots(this, ${pIdx})">
+                    ${product.images.map(img => `
+                        <div class="slide">
+                            <img src="${img}" alt="${product.name}">
                         </div>
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold mb-1">${p.name}</h3>
-                            <div class="flex justify-between items-center">
-                                <span class="text-red-500 font-black text-xl">${p.price}</span>
-                                <span class="bg-white/10 px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest text-gray-400">Смотреть</span>
-                            </div>
+                    `).join('')}
+                </div>
+
+                <div class="info-overlay">
+                    <div class="flex justify-between items-end mb-4">
+                        <div>
+                            <h2 class="text-2xl font-black uppercase tracking-tight">${product.name}</h2>
+                            <p class="text-gray-300 text-sm max-w-[250px] leading-tight mt-1">${product.desc}</p>
+                        </div>
+                        <div class="price-tag text-red-500 text-lg italic">
+                            ${product.price}
                         </div>
                     </div>
-                `;
-                container.innerHTML += card;
-            });
-        }
+                    <a href="${waLink}" target="_blank" class="whatsapp-btn w-full py-4 rounded-xl flex items-center justify-center gap-2 text-sm uppercase tracking-widest">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
+                        Написать в WhatsApp
+                    </a>
+                </div>
+            `;
+            feedContainer.appendChild(post);
+        });
 
-        function openModal(id) {
-            currentProduct = allProducts.find(p => p.id === id);
-            currentPhotoIdx = 0;
-            updateModalContent();
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function updateModalContent() {
-            const img = document.getElementById('modalImg');
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = currentProduct.images[currentPhotoIdx];
-                img.style.opacity = '1';
-            }, 100);
-
-            document.getElementById('modalTitle').innerText = currentProduct.name;
-            document.getElementById('modalDesc').innerText = currentProduct.desc;
-            document.getElementById('modalPrice').innerText = currentProduct.price;
+        // Функция обновления точек при горизонтальном скролле
+        function updateDots(el, postIdx) {
+            const scrollPos = el.scrollLeft;
+            const width = el.offsetWidth;
+            const activeIdx = Math.round(scrollPos / width);
             
-            const message = encodeURIComponent(`Привет! Хочу купить: ${currentProduct.name} за ${currentProduct.price}.`);
-            document.getElementById('modalWALink').href = `https://wa.me/${phoneNumber}?text=${message}`;
-            updateDots();
-        }
-
-        function updateDots() {
-            const dotsContainer = document.getElementById('dotsContainer');
-            dotsContainer.innerHTML = '';
-            currentProduct.images.forEach((_, i) => {
-                const dot = document.createElement('div');
-                dot.className = `gallery-dot ${i === currentPhotoIdx ? 'active' : ''}`;
-                dotsContainer.appendChild(dot);
+            const dots = document.querySelectorAll(`#dots-${postIdx} .dot`);
+            dots.forEach((dot, i) => {
+                if(i === activeIdx) dot.classList.add('active');
+                else dot.classList.remove('active');
             });
         }
-
-        function nextPhoto() {
-            currentPhotoIdx = (currentPhotoIdx + 1) % currentProduct.images.length;
-            updateModalContent();
-        }
-
-        function prevPhoto() {
-            currentPhotoIdx = (currentPhotoIdx - 1 + currentProduct.images.length) % currentProduct.images.length;
-            updateModalContent();
-        }
-
-        window.onload = renderCatalog;
     </script>
 </body>
 </html>
