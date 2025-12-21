@@ -3,222 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YT Awards | Магазин наград</title>
+    <title>YT Awards - Магазин наград</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+        :root {
+            --yt-red: #ff0000;
+            --wa-green: #25d366;
+        }
+        
+        body {
             background-color: #000;
             color: #fff;
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            margin: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Основной контейнер ленты */
-        .feed-container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+        /* --- DESKTOP STYLES (Grid) --- */
+        @media (min-width: 1024px) {
+            .main-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 40px 20px;
+            }
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+            }
+            .mobile-feed {
+                display: none;
+            }
+            .desktop-card {
+                background: #111;
+                border-radius: 20px;
+                overflow: hidden;
+                transition: transform 0.3s ease;
+                border: 1px solid #222;
+            }
+            .desktop-card:hover {
+                transform: translateY(-10px);
+                border-color: var(--yt-red);
+            }
+            .desktop-img {
+                height: 250px;
+                width: 100%;
+                object-fit: cover;
+            }
+            .desktop-content {
+                padding: 20px;
+            }
         }
 
-        .product-post {
-            height: 100vh;
-            width: 100%;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            box-sizing: border-box;
-            background: #000;
+        /* --- MOBILE STYLES (Full Screen Feed) --- */
+        @media (max-width: 1023px) {
+            .desktop-layout {
+                display: none;
+            }
+            .mobile-feed {
+                height: 100vh;
+                overflow-y: scroll;
+                scroll-snap-type: y mandatory;
+                scrollbar-width: none;
+            }
+            .mobile-feed::-webkit-scrollbar { display: none; }
+            
+            .product-post {
+                height: 100vh;
+                scroll-snap-align: start;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+            .photo-box {
+                flex: 1;
+                background: #000;
+                position: relative;
+            }
+            .photo-box img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .info-overlay {
+                background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
+                padding: 20px;
+                padding-bottom: 40px;
+            }
         }
 
-        /* Фото секция */
-        .photo-section {
-            height: 65vh;
-            position: relative;
-            background: #111;
-        }
-
-        .horizontal-gallery {
-            height: 100%;
-            display: flex;
-            overflow-x: scroll;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-        }
-        .horizontal-gallery::-webkit-scrollbar { display: none; }
-
-        .slide {
-            min-width: 100%;
-            height: 100%;
-            scroll-snap-align: center;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Панель управления под фото (ТЗ: слева текст, справа кнопка) */
-        .action-bar {
-            padding: 16px;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(to bottom, #0a0a0a, #000);
-        }
-
-        .whatsapp-btn {
-            background-color: #25d366;
+        .wa-button {
+            background-color: var(--wa-green);
             color: #000;
             font-weight: 800;
-            text-transform: uppercase;
             padding: 12px 24px;
             border-radius: 12px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            height: fit-content;
+            transition: opacity 0.2s;
         }
-
-        .dots-overlay {
-            position: absolute;
-            bottom: 12px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            z-index: 20;
-        }
-        .dot {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transition: all 0.3s;
-        }
-        .dot.active {
-            background: #ff0000;
-            width: 10px;
-            border-radius: 2px;
-        }
-
-        .description-area {
-            padding: 0 16px 16px 16px;
-            color: #999;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
+        .wa-button:active { opacity: 0.8; }
     </style>
 </head>
 <body>
 
-    <div class="feed-container" id="feed">
-        <!-- Товары -->
+    <!-- DESKTOP LAYOUT -->
+    <div class="desktop-layout main-container">
+        <header class="mb-12 text-center">
+            <h1 class="text-5xl font-black mb-4 uppercase italic tracking-tighter">YouTube <span class="text-red-600">Awards</span></h1>
+            <p class="text-gray-400">Лучшие награды для лучших авторов. Работаем через Авито по всей РФ.</p>
+        </header>
+        
+        <div class="product-grid" id="desktop-grid">
+            <!-- JS Inject -->
+        </div>
+    </div>
+
+    <!-- MOBILE LAYOUT -->
+    <div class="mobile-feed" id="mobile-feed">
+        <!-- JS Inject -->
     </div>
 
     <script>
         const phoneNumber = "79779662521";
         const products = [
-            {
-                name: "Silver Button",
-                price: "4 500 ₽",
-                desc: "Оригинальный размер, тяжелый металл. Идеально для оформления студии. Поставляется в защитном кейсе.",
-                images: [
-                    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
-                    "https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800"
-                ]
-            },
-            {
-                name: "Gold Button",
-                price: "7 900 ₽",
-                desc: "Зеркальное золотое напыление. Выглядит идентично оригиналу. Гравировка любого названия канала.",
-                images: [
-                    "https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?q=80&w=800",
-                    "https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800"
-                ]
-            },
-            {
-                name: "Diamond Award",
-                price: "15 000 ₽",
-                desc: "Премиальный кристалл. Тяжелая основа. Лучший подарок для крупного блогера.",
-                images: [
-                    "https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=800",
-                    "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800"
-                ]
-            }
+            { id: 1, name: "Silver Button", price: "4 500 ₽", desc: "Серебряная кнопка YouTube (100k). Металл, зеркальный блеск.", img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800" },
+            { id: 2, name: "Gold Button", price: "7 900 ₽", desc: "Золотая кнопка YouTube (1M). Идеальное напыление, тяжелая.", img: "https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?q=80&w=800" },
+            { id: 3, name: "Diamond Award", price: "15 000 ₽", desc: "Бриллиантовая кнопка (10M). Главный трофей в люкс кейсе.", img: "https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=800" },
+            { id: 4, name: "Custom Red", price: "5 500 ₽", desc: "Красная кнопка. Уникальный дизайн для авторов Shorts.", img: "https://images.unsplash.com/photo-1622737133809-d95047b9e673?q=80&w=800" },
+            { id: 5, name: "Silver New Gen", price: "4 900 ₽", desc: "Новый дизайн 2024 года. Тонкие грани, матовый металл.", img: "https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800" },
+            { id: 6, name: "Gold New Gen", price: "8 500 ₽", desc: "Новый дизайн 1М. Современный стиль, люкс качество.", img: "https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800" },
+            { id: 7, name: "Mini Key", price: "1 500 ₽", desc: "Миниатюрная копия. Отличный аксессуар или сувенир.", img: "https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=800" },
+            { id: 8, name: "Set 3 Buttons", price: "22 000 ₽", desc: "Полный сет наград. Скидка при покупке коллекции.", img: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=800" },
+            { id: 9, name: "Logo Lightbox", price: "3 500 ₽", desc: "Светящийся логотип YouTube для фона в видео.", img: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800" }
         ];
 
-        const feedContainer = document.getElementById('feed');
+        const desktopGrid = document.getElementById('desktop-grid');
+        const mobileFeed = document.getElementById('mobile-feed');
 
-        // Генерируем 9 товаров на основе списка
-        const allItems = [];
-        for(let i=0; i<9; i++) {
-            allItems.push({...products[i % 3], id: i});
-        }
-
-        allItems.forEach((product, pIdx) => {
-            const post = document.createElement('div');
-            post.className = 'product-post';
-            
-            const waMsg = encodeURIComponent(`Привет! Хочу заказать: ${product.name} за ${product.price}`);
+        products.forEach(p => {
+            const waMsg = encodeURIComponent(`Заказ: ${p.name} - ${p.price}`);
             const waLink = `https://wa.me/${phoneNumber}?text=${waMsg}`;
 
-            post.innerHTML = `
-                <!-- Секция с фотографиями -->
-                <div class="photo-section">
-                    <div class="horizontal-gallery" onscroll="updateDots(this, ${pIdx})">
-                        ${product.images.map(img => `
-                            <div class="slide">
-                                <img src="${img}" alt="${product.name}">
+            // Desktop Card
+            desktopGrid.innerHTML += `
+                <div class="desktop-card">
+                    <img src="${p.img}" class="desktop-img" alt="${p.name}">
+                    <div class="desktop-content">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">${p.name}</h3>
+                                <p class="text-red-600 font-black text-xl">${p.price}</p>
                             </div>
-                        `).join('')}
+                            <a href="${waLink}" target="_blank" class="wa-button">ЗАКАЗАТЬ</a>
+                        </div>
+                        <p class="text-gray-400 text-sm">${p.desc}</p>
                     </div>
-                    <div class="dots-overlay" id="dots-${pIdx}">
-                        ${product.images.map((_, i) => `<div class="dot ${i===0?'active':''}"></div>`).join('')}
-                    </div>
-                </div>
-
-                <!-- Основная панель (ТЗ: Название/Цена слева, Кнопка справа) -->
-                <div class="action-bar">
-                    <div>
-                        <h2 class="text-2xl font-black uppercase leading-none tracking-tight">${product.name}</h2>
-                        <div class="text-red-600 font-bold text-lg mt-1">${product.price}</div>
-                    </div>
-                    <a href="${waLink}" target="_blank" class="whatsapp-btn">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
-                        Заказать
-                    </a>
-                </div>
-
-                <!-- Описание под панелью управления -->
-                <div class="description-area">
-                    ${product.desc}
                 </div>
             `;
-            feedContainer.appendChild(post);
-        });
 
-        // Функция обновления индикатора слайдов
-        function updateDots(el, postIdx) {
-            const scrollPos = el.scrollLeft;
-            const width = el.offsetWidth;
-            const activeIdx = Math.round(scrollPos / width);
-            const dots = document.querySelectorAll(`#dots-${postIdx} .dot`);
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === activeIdx);
-            });
-        }
+            // Mobile Post
+            mobileFeed.innerHTML += `
+                <div class="product-post">
+                    <div class="photo-box">
+                        <img src="${p.img}" alt="${p.name}">
+                    </div>
+                    <div class="info-overlay">
+                        <div class="flex justify-between items-end mb-4">
+                            <div class="flex-1 mr-4">
+                                <h2 class="text-3xl font-black uppercase italic leading-none mb-1">${p.name}</h2>
+                                <p class="text-red-600 text-2xl font-black">${p.price}</p>
+                            </div>
+                            <a href="${waLink}" target="_blank" class="wa-button scale-110">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
+                                ЗАКАЗАТЬ
+                            </a>
+                        </div>
+                        <p class="text-gray-400 text-sm leading-tight">${p.desc}</p>
+                    </div>
+                </div>
+            `;
+        });
     </script>
 </body>
 </html>
