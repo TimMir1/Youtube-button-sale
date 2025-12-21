@@ -3,73 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>КНОПКИ ЮТУБА НА ЗАКАЗ - Магазин наград</title>
+    
+    <!-- SEO БЛОК -->
+    <title>Купить кнопку YouTube | Золотая, Серебряная, Бриллиантовая награда на заказ</title>
+    <meta name="description" content="Магазин оригинальных наград YouTube. Серебряные, золотые и бриллиантовые кнопки для блогеров. Высокое качество, доставка по всей России через Авито.">
+    <meta name="keywords" content="кнопка youtube купить, награда ютуб, серебряная кнопка, золотая кнопка, бриллиантовая кнопка, сувениры для блогеров">
+    <meta property="og:title" content="Магазин наград YouTube — Стань обладателем заветной кнопки!">
+    <meta property="og:description" content="Лучшее качество на рынке. Металлические кнопки с зеркальным блеском.">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --yt-red: #ff0000;
             --wa-green: #25d366;
+            --bg-light: #fafafa;
+            --text-main: #334155; /* Красивый серо-графитовый для текста */
+            --text-header: #1e293b; /* Глубокий серый для заголовков */
         }
         
         body {
-            background-color: #000;
-            color: #fff;
+            background-color: var(--bg-light);
+            color: var(--text-main);
             font-family: 'Inter', sans-serif;
             margin: 0;
             -webkit-tap-highlight-color: transparent;
+            letter-spacing: -0.01em;
         }
 
-        /* --- СТИЛИ ДЛЯ ПК (Сетка) --- */
+        /* --- СТИЛИ ДЛЯ ПК --- */
         @media (min-width: 1024px) {
             .main-container {
                 max-width: 1200px;
                 margin: 0 auto;
-                padding: 40px 20px;
+                padding: 60px 20px;
             }
             .product-grid {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 30px;
+                gap: 40px;
             }
             .mobile-feed {
                 display: none;
             }
             .desktop-card {
-                background: #111;
-                border-radius: 24px;
+                background: #ffffff;
+                border-radius: 32px;
                 overflow: hidden;
-                transition: transform 0.3s ease, border-color 0.3s ease;
-                border: 1px solid #222;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                border: 1px solid rgba(0,0,0,0.03);
                 display: flex;
                 flex-direction: column;
                 height: 100%;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.02);
             }
             .desktop-card:hover {
-                transform: translateY(-8px);
-                border-color: var(--yt-red);
+                transform: translateY(-12px);
+                border-color: rgba(255, 0, 0, 0.1);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
             }
             .desktop-img {
-                height: 240px;
+                height: 280px;
                 width: 100%;
                 object-fit: cover;
+                transition: transform 0.6s ease;
+            }
+            .desktop-card:hover .desktop-img {
+                transform: scale(1.05);
             }
             .desktop-content {
-                padding: 24px;
+                padding: 30px;
                 flex-grow: 1;
                 display: flex;
                 flex-direction: column;
             }
-            .desktop-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                gap: 12px;
-                margin-bottom: 16px;
+            .desktop-title {
+                color: var(--text-header);
+                font-weight: 800;
+                letter-spacing: -0.02em;
             }
         }
 
-        /* --- МОБИЛЬНЫЕ СТИЛИ (Лента как в Reels/TikTok) --- */
+        /* --- МОБИЛЬНЫЕ СТИЛИ (Лента) --- */
         @media (max-width: 1023px) {
             .desktop-layout {
                 display: none;
@@ -79,6 +95,7 @@
                 overflow-y: scroll;
                 scroll-snap-type: y mandatory;
                 scrollbar-width: none;
+                background: #fff;
             }
             .mobile-feed::-webkit-scrollbar { display: none; }
             
@@ -100,123 +117,189 @@
                 height: 100%;
                 object-fit: cover;
             }
-            /* Поднял блок выше, чтобы на мобилках было видно всё */
             .info-overlay {
                 position: absolute;
-                bottom: 90px; 
+                bottom: 110px; 
                 left: 0;
                 right: 0;
                 z-index: 10;
-                background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0) 100%);
-                padding: 30px 20px;
-                backdrop-filter: blur(2px);
+                background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 70%, rgba(255,255,255,0) 100%);
+                padding: 40px 24px 30px;
+            }
+            .mobile-title {
+                color: var(--text-header);
+                letter-spacing: -0.04em;
             }
             .desc-pill {
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 12px;
-                padding: 10px;
-                margin-top: 10px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
+                background: rgba(0, 0, 0, 0.04);
+                border-radius: 16px;
+                padding: 14px;
+                margin-top: 12px;
+                border: 1px solid rgba(0, 0, 0, 0.02);
+                color: var(--text-main);
+                font-weight: 400;
             }
         }
 
         .wa-button {
             background-color: var(--wa-green);
-            color: #000;
-            font-weight: 800;
-            padding: 12px 20px;
-            border-radius: 14px;
+            color: #fff;
+            font-weight: 700;
+            padding: 14px 28px;
+            border-radius: 18px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
             text-transform: uppercase;
             font-size: 0.85rem;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
         }
-        .wa-button:active { transform: scale(0.92); }
+        .wa-button:hover {
+            box-shadow: 0 12px 25px rgba(37, 211, 102, 0.35);
+            transform: translateY(-2px);
+        }
+        .wa-button:active { transform: translateY(0); }
+        
+        .price-tag {
+            color: var(--yt-red);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .header-gradient {
+            background: linear-gradient(135deg, var(--text-header) 0%, #64748b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body>
 
-    <!-- ВЕРСТКА ДЛЯ КОМПЬЮТЕРА -->
+    <!-- ПК ИНТЕРФЕЙС -->
     <div class="desktop-layout main-container">
-        <header class="mb-16 text-center">
-            <h1 class="text-6xl font-black mb-4 uppercase italic tracking-tighter">YouTube <span class="text-red-600">Awards</span></h1>
-            <p class="text-gray-400 text-lg">Профессиональные награды для вашего канала. Доставка по всей России.</p>
+        <header class="mb-20 text-center">
+            <h1 class="text-7xl font-black mb-6 uppercase italic tracking-tighter header-gradient">
+                YouTube <span class="text-red-600">Awards</span>
+            </h1>
+            <p class="text-slate-500 text-xl font-light max-w-2xl mx-auto">
+                Коллекционные награды премиального качества. <br>Символ вашего успеха в каждой детали.
+            </p>
         </header>
         
-        <div class="product-grid" id="desktop-grid">
-            <!-- Сюда вставится код через JS -->
-        </div>
+        <main class="product-grid" id="desktop-grid">
+            <!-- JS Inject -->
+        </main>
+        
+        <footer class="mt-32 py-12 border-t border-slate-100 text-center text-slate-400 text-sm font-light">
+            <p>Спроектировано для лучших авторов. Доставка через Авито по всей России.</p>
+        </footer>
     </div>
 
-    <!-- ВЕРСТКА ДЛЯ ТЕЛЕФОНА -->
+    <!-- МОБИЛЬНЫЙ ИНТЕРФЕЙС -->
     <div class="mobile-feed" id="mobile-feed">
-        <!-- Сюда вставится код через JS -->
+        <!-- JS Inject -->
     </div>
 
     <script>
         const phoneNumber = "79779662521";
+
+        /* МАССИВ ТОВАРОВ (9 позиций вернул) */
         const products = [
-            { id: 1, name: "Silver Button", price: "4 500 ₽", desc: "Серебряная награда (100.000 подп.). Полированная сталь, зеркальный эффект. Оригинальный вес.", img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800" },
-            { id: 2, name: "Gold Button", price: "7 900 ₽", desc: "Золотая награда (1.000.000 подп.). Зеркальное напыление 24K Gold Style. Тяжелая и массивная.", img: "https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?q=80&w=800" },
-            { id: 3, name: "Diamond Award", price: "15 000 ₽", desc: "Бриллиантовая награда (10.000.000 подп.). Кристаллическая вставка, люкс-кейс в комплекте.", img: "https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=800" },
-            { id: 4, name: "Custom Red", price: "5 500 ₽", desc: "Красная кнопка. Лимитированный дизайн для Shorts-мейкеров и ярких стримеров.", img: "https://images.unsplash.com/photo-1622737133809-d95047b9e673?q=80&w=800" },
-            { id: 5, name: "Silver 2024", price: "4 900 ₽", desc: "Новый дизайн Silver Play Button. Матовый финиш, обновленные логотипы и шрифты.", img: "https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800" },
-            { id: 6, name: "Gold 2024", price: "8 500 ₽", desc: "Обновленная золотая кнопка. Увеличенный логотип, премиум материалы 2024 года.", img: "https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800" },
-            { id: 7, name: "Mini Trophy", price: "1 500 ₽", desc: "Коллекционная мини-копия. Идеально для рабочего стола или полки.", img: "https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=800" },
-            { id: 8, name: "Collection Set", price: "22 000 ₽", desc: "Полный набор из 3 кнопок. Выгодное предложение для тех, кто ценит эстетику.", img: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=800" },
-            { id: 9, name: "Studio Light", price: "3 500 ₽", desc: "Неоновый декор YouTube. Подсветка для вашей студии, создает атмосферу.", img: "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800" }
+            { 
+                id: 1, name: "Silver Button", price: "4 500 ₽", 
+                desc: "Серебряная награда (100k). Зеркальная полированная сталь, тяжелый металлический сплав. 1:1 оригинал.", 
+                images: ["https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 2, name: "Gold Button", price: "7 900 ₽", 
+                desc: "Золотая награда (1M). Роскошное зеркальное золото, массивный корпус, идеальная гравировка.", 
+                images: ["https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 3, name: "Diamond Award", price: "15 000 ₽", 
+                desc: "Бриллиантовая награда (10M). Массивный кристалл, премиальный кейс, статусная гравировка.", 
+                images: ["https://images.unsplash.com/photo-1585241936939-be4099591252?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 4, name: "Custom Red", price: "5 500 ₽", 
+                desc: "Красная лимитированная кнопка. Эксклюзивный дизайн для Shorts и топовых стримеров.", 
+                images: ["https://images.unsplash.com/photo-1622737133809-d95047b9e673?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 5, name: "Silver 2024", price: "4 900 ₽", 
+                desc: "Новый дизайн Silver Play Button. Тонкие грани, шлифованный матовый металл нового поколения.", 
+                images: ["https://images.unsplash.com/photo-1626131713506-c87ca5254122?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 6, name: "Gold 2024", price: "8 500 ₽", 
+                desc: "Обновленная золотая кнопка 2024. Увеличенный логотип, улучшенное покрытие, премиум вес.", 
+                images: ["https://images.unsplash.com/photo-1579338559194-a162d19bf842?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 7, name: "Mini Key", price: "1 500 ₽", 
+                desc: "Металлическая миниатюра. Карманный сувенир или стильное дополнение к вашему сетапу.", 
+                images: ["https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 8, name: "Full Set", price: "22 000 ₽", 
+                desc: "Коллекционный сет из 3 кнопок. Полная история успеха вашего канала в одном наборе.", 
+                images: ["https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=800", "url2", "url3"]
+            },
+            { 
+                id: 9, name: "Logo Light", price: "3 500 ₽", 
+                desc: "Неоновый логотип YouTube. Яркая подсветка для студии, идеально смотрится в кадре.", 
+                images: ["https://images.unsplash.com/photo-1513519245088-0e12902e35a6?q=80&w=800", "url2", "url3"]
+            }
         ];
 
         const desktopGrid = document.getElementById('desktop-grid');
         const mobileFeed = document.getElementById('mobile-feed');
 
         products.forEach(p => {
-            const waMsg = encodeURIComponent(`Заказ: ${p.name} (${p.price})`);
+            const waMsg = encodeURIComponent(`Привет! Хочу заказать: ${p.name} (${p.price})`);
             const waLink = `https://wa.me/${phoneNumber}?text=${waMsg}`;
+            const mainImg = p.images[0];
 
-            // Генерация для ПК
+            // Рендер для ПК
             desktopGrid.innerHTML += `
-                <div class="desktop-card">
-                    <img src="${p.img}" class="desktop-img" alt="${p.name}">
-                    <div class="desktop-content">
-                        <div class="desktop-header">
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold leading-tight">${p.name}</h3>
-                                <p class="text-red-600 font-black text-2xl mt-1">${p.price}</p>
-                            </div>
-                            <a href="${waLink}" target="_blank" class="wa-button">ЗАКАЗАТЬ</a>
-                        </div>
-                        <p class="text-gray-400 text-sm leading-relaxed">${p.desc}</p>
+                <article class="desktop-card">
+                    <div class="overflow-hidden">
+                        <img src="${mainImg}" class="desktop-img" alt="${p.name}">
                     </div>
-                </div>
+                    <div class="desktop-content">
+                        <div class="flex justify-between items-start mb-6 gap-3">
+                            <div class="flex-1">
+                                <h3 class="desktop-title text-2xl leading-tight">${p.name}</h3>
+                                <p class="price-tag text-3xl mt-2 font-black">${p.price}</p>
+                            </div>
+                            <a href="${waLink}" target="_blank" class="wa-button">КУПИТЬ</a>
+                        </div>
+                        <p class="text-slate-500 text-sm leading-relaxed font-normal">${p.desc}</p>
+                    </div>
+                </article>
             `;
 
-            // Генерация для Телефона
+            // Рендер для Мобильных
             mobileFeed.innerHTML += `
-                <div class="product-post">
+                <section class="product-post">
                     <div class="photo-box">
-                        <img src="${p.img}" alt="${p.name}">
+                        <img src="${mainImg}" alt="${p.name}">
                     </div>
                     <div class="info-overlay">
-                        <div class="flex justify-between items-end mb-4 gap-2">
+                        <div class="flex justify-between items-end mb-5 gap-3">
                             <div class="flex-1">
-                                <h2 class="text-3xl font-black uppercase italic leading-none mb-1 tracking-tighter">${p.name}</h2>
-                                <p class="text-red-600 text-2xl font-black">${p.price}</p>
+                                <h2 class="mobile-title text-5xl font-black uppercase italic leading-none mb-2 tracking-tighter">${p.name}</h2>
+                                <p class="text-red-600 text-3xl font-black">${p.price}</p>
                             </div>
-                            <a href="${waLink}" target="_blank" class="wa-button flex-shrink-0">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.48 5.228 3.48 8.404c0 6.556-5.332 11.888-11.888 11.888-2.011 0-3.986-.511-5.733-1.48l-6.25 1.643zm5.836-5.193l.369.219c1.21.72 2.589 1.1 4.023 1.1 4.401 0 7.981-3.58 7.981-7.981 0-2.132-.831-4.137-2.339-5.645s-3.513-2.338-5.644-2.338c-4.401 0-7.982 3.581-7.982 7.982 0 1.564.453 3.09 1.312 4.417l.24.37-1.012 3.705 3.8-.999zm11.234-4.814c-.217-.109-1.291-.637-1.49-.708-.198-.072-.344-.109-.488.109-.145.218-.561.708-.687.852-.125.145-.251.163-.468.054-.217-.109-.918-.338-1.75-1.082-.645-.575-1.082-1.285-1.208-1.503-.127-.218-.013-.335.096-.443.098-.098.217-.254.326-.382.109-.127.145-.218.217-.363.072-.145.036-.272-.018-.382s-.488-1.177-.669-1.615c-.176-.425-.353-.367-.488-.373-.127-.006-.272-.007-.417-.007s-.38.054-.579.272c-.2.218-.761.744-.761 1.815 0 1.071.78 2.105.889 2.25.109.145 1.535 2.344 3.717 3.284.519.223.924.357 1.24.458.521.166.993.143 1.368.087.418-.063 1.291-.527 1.474-1.036.183-.509.183-.944.127-1.035-.054-.09-.2-.145-.417-.254z"/></svg>
-                                КУПИТЬ
-                            </a>
+                            <a href="${waLink}" target="_blank" class="wa-button flex-shrink-0">ЗАКАЗАТЬ</a>
                         </div>
                         <div class="desc-pill">
-                            <p class="text-gray-300 text-xs leading-relaxed">${p.desc}</p>
+                            <p class="text-sm leading-relaxed font-normal">${p.desc}</p>
                         </div>
                     </div>
-                </div>
+                </section>
             `;
         });
     </script>
