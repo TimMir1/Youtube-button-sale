@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Договор подряда</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #000;
+            max-width: 21cm;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+        
+        .document {
+            background: white;
+            padding: 2cm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .header p {
+            margin: 3px 0;
+        }
+        
+        .party-info {
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+        
+        .section {
+            margin: 25px 0;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0 15px 0;
+        }
+        
+        .section p {
+            text-indent: 1.25cm;
+            text-align: justify;
+            margin: 10px 0;
+        }
+        
+        .stage {
+            margin: 20px 0;
+        }
+        
+        .stage-title {
+            font-weight: bold;
+            margin: 15px 0 10px 0;
+        }
+        
+        .stage ul {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+        
+        .stage li {
+            margin: 5px 0;
+        }
+        
+        .stage-cost {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .signatures {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .signature-block {
+            width: 45%;
+        }
+        
+        .signature-line {
+            margin: 30px 0 5px 0;
+            border-bottom: 1px solid #000;
+            min-height: 20px;
+        }
+        
+        .underline {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            min-width: 200px;
+            margin: 0 5px;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #000;
+            margin: 20px 0;
+        }
+        
+        .button-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .button-container {
+                display: none;
+            }
+            
+            .document {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button onclick="window.print()">Печать (Ctrl+P)</button>
+        <button onclick="downloadPDF()" id="pdfBtn">Скачать PDF</button>
+    </div>
+
+    <div class="document" id="contract">
+        <div class="header">
+            <h1>ДОГОВОР ПОДРЯДА № ___</h1>
+            <p>на выполнение ремонтно-отделочных работ</p>
+            <p style="margin-top: 15px;">г. ____________________</p>
+            <p>Дата: «___» ____________ 2025 г.</p>
+        </div>
+
+        <hr>
+
+        <div class="party-info">
+            <p><strong>Подрядчик:</strong></p>
+            <p>Хушвахтов Мустафо Шаймардонович,</p>
+            <p>дата рождения: 15.08.1995,</p>
+            <p>паспорт: 4053 № 888876, выдан Посольством Республики Таджикистан в Российской Федерации 13.05.2024,</p>
+            <p>именуемый в дальнейшем «Подрядчик», с одной стороны,</p>
+        </div>
+
+        <div class="party-info">
+            <p><strong>и</strong></p>
+        </div>
+
+        <div class="party-info">
+            <p><strong>Заказчик:</strong></p>
+            <p>ФИО: <span class="underline"></span></p>
+            <p>дата рождения: <span class="underline"></span></p>
+            <p>паспорт: серия <span class="underline" style="min-width: 60px;"></span> № <span class="underline" style="min-width: 100px;"></span>, выдан <span class="underline"></span></p>
+            <p>адрес регистрации: <span class="underline"></span></p>
+            <p>телефон: <span class="underline"></span></p>
+            <p>именуемый в дальнейшем «Заказчик», с другой стороны,</p>
+        </div>
+
+        <p style="margin: 20px 0;">совместно именуемые «Стороны», заключили настоящий договор о нижеследующем:</p>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-title">1. ПРЕДМЕТ ДОГОВОРА</div>
+            <p><strong>1.1.</strong> Подрядчик обязуется выполнить комплекс ремонтно-отделочных работ в квартире Заказчика площадью 52 (пятьдесят два) квадратных метра, а Заказчик обязуется принять и оплатить выполненные работы.</p>
+            <p><strong>1.2.</strong> Работы выполняются в соответствии с перечнем, указанным в п. 2 настоящего договора.</p>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-title">2. ПЕРЕЧЕНЬ РАБОТ</div>
+
+            <div class="stage">
+                <div class="stage-title">ЭТАП 1</div>
+                <ul>
+                    <li>Демонтажные работы</li>
+                    <li>Возведение перегородок</li>
+                    <li>Устройство дверных проёмов</li>
+                    <li>Армирование проёмов</li>
+                    <li>Грунтовка поверхностей</li>
+                    <li>Обработка бетоноконтактом</li>
+                    <li>Установка штукатурных маяков</li>
+                    <li>Штукатурка стен</li>
+                    <li>Разводка труб отопления</li>
+                    <li>Штукатурка откосов</li>
+                </ul>
+                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
+            </div>
+
+            <hr>
+
+            <div class="stage">
+                <div class="stage-title">ЭТАП 2</div>
+                <ul>
+                    <li>Стяжка пола</li>
+                    <li>Установка электрощита</li>
+                    <li>Штробление стен</li>
+                    <li>Прокладка кабеля</li>
+                    <li>Установка подрозетников</li>
+                    <li>Электропроводка кухни-гостиной</li>
+                    <li>Электропроводка санузлов</li>
+                    <li>Слаботочные кабели</li>
+                    <li>Заделка штроб</li>
+                    <li>Разводка водопровода</li>
+                    <li>Разводка канализации</li>
+                    <li>Подводка воды к кухне</li>
+                    <li>Установка коллекторов</li>
+                    <li>Установка инсталляций</li>
+                    <li>Установка батарей</li>
+                    <li>Гидроизоляция</li>
+                    <li>Опрессовка систем</li>
+                </ul>
+                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
+            </div>
+
+            <hr>
+
+            <div class="stage">
+                <div class="stage-title">ЭТАП 3</div>
+                <ul>
+                    <li>Грунтовка стен и потолка</li>
+                    <li>Монтаж тёплого пола (по желанию Заказчика)</li>
+                    <li>Укладка плитки</li>
+                    <li>Герметизация швов</li>
+                    <li>Установка ванны</li>
+                </ul>
+                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
+            </div>
+
+            <hr>
+
+            <div class="stage">
+                <div class="stage-title">ЭТАП 4</div>
+                <ul>
+                    <li>Шпаклёвка стен и откосов</li>
+                    <li>Поклейка стеклохолста</li>
+                    <li>Повторная шпаклёвка</li>
+                    <li>Шпаклёвка пастой (2 слоя)</li>
+                    <li>Шлифовка</li>
+                    <li>Грунтовка перед покраской</li>
+                    <li>Покраска (2 слоя)</li>
+                    <li>Установка розеток и выключателей</li>
+                    <li>Грунтовка пола</li>
+                    <li>Укладка напольного покрытия</li>
+                    <li>Установка плинтусов</li>
+                    <li>Установка сантехники</li>
+                    <li>Подключение стиральной машины</li>
+                </ul>
+                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-title">3. ДОПОЛНИТЕЛЬНЫЕ РАБОТЫ</div>
+            <ul>
+                <li>Монтаж натяжных потолков и установка светильников выполняется другой бригадой и оплачивается отдельно</li>
+                <li>Установка кухонной техники</li>
+                <li>Установка межкомнатных дверей</li>
+                <li>Установка кухонного гарнитура</li>
+                <li>Монтаж встроенных шкафов</li>
+                <li>Монтаж карнизов</li>
+                <li>Установка зёркал</li>
+                <li>Финальная уборка (не клининг)</li>
+            </ul>
+            <p><strong>Стоимость дополнительных работ согласовывается отдельно.</strong></p>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-title">4. СТОИМОСТЬ И ПОРЯДОК ОПЛАТЫ</div>
+            <p><strong>4.1.</strong> Общая стоимость работ по договору составляет 780 000 (семьсот восемьдесят тысяч) рублей.</p>
+            <p><strong>4.2.</strong> Оплата производится поэтапно, после завершения каждого этапа.</p>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-title">5. ПРОЧИЕ УСЛОВИЯ</div>
+            <p><strong>5.1.</strong> Вывоз мусора и подъём материалов не входят в стоимость договора.</p>
+            <p><strong>5.2.</strong> Все изменения и дополнительные работы оформляются по согласованию Сторон.</p>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <div class="section-title">6. ПОДПИСИ СТОРОН</div>
+            <div class="signatures">
+                <div class="signature-block">
+                    <p><strong>Заказчик:</strong></p>
+                    <div class="signature-line"></div>
+                    <p style="font-size: 10pt;">Подпись / Расшифровка</p>
+                </div>
+                <div class="signature-block">
+                    <p><strong>Подрядчик:</strong></p>
+                    <div class="signature-line"></div>
+                    <p style="font-size: 10pt;">Подпись / Расшифровка</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function downloadPDF() {
+            const button = document.getElementById('pdfBtn');
+            button.disabled = true;
+            button.textContent = 'Создаётся PDF...';
+            
+            try {
+                const element = document.getElementById('contract');
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const imgWidth = 210;
+                const pageHeight = 297;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                pdf.save('Договор_подряда.pdf');
+                
+                button.disabled = false;
+                button.textContent = 'Скачать PDF';
+            } catch (error) {
+                alert('Ошибка при создании PDF. Попробуйте использовать кнопку "Печать" и сохранить как PDF через диалог печати.');
+                button.disabled = false;
+                button.textContent = 'Скачать PDF';
+            }
+        }
+    </script>
+</body>
+</html>
