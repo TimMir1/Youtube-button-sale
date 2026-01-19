@@ -1,393 +1,386 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Договор подряда</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
+import React, { useState, useEffect } from 'react';
+import { 
+  ShoppingCart, X, Plus, Minus, Trash2, Award, 
+  Instagram, Tv, MessageCircle, ChevronRight,
+  ShieldCheck, MapPin, Phone, Mail
+} from 'lucide-react';
+
+// --- SEO & META CONFIGURATION ---
+const SEO_CONFIG = {
+  title: "MIRA&PAPA | Купить Золотую и Серебряную кнопку YouTube, Instagram, TikTok",
+  description: "MIRA&PAPA — эксклюзивное изготовление наград. У нас можно заказать и купить кнопку YouTube, Shorts, Instagram и TikTok премиального качества с доставкой по РФ.",
+  keywords: "MIRA&PAPA, купить золотую кнопку ютуб, серебряная кнопка youtube на заказ, награды для блогеров, кнопка инстаграм за подписчиков, тик ток награда купить",
+  phone: "79779662521",
+  siteUrl: "https://mirapapa.ru" 
+};
+
+// --- PRODUCT DATA ---
+const PRODUCTS = [
+  {
+    id: 1,
+    name: "Золотая кнопка YouTube",
+    price: 45000,
+    category: "YouTube",
+    image: "https://images.unsplash.com/photo-1610375461496-02e5f5164972?auto=format&fit=crop&w=800&q=100",
+    description: "Награда за 1,000,000 подписчиков. 24K позолота, массивный корпус.",
+    badge: "Premium"
+  },
+  {
+    id: 2,
+    name: "Серебряная кнопка YouTube",
+    price: 15990,
+    category: "YouTube",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=100",
+    description: "Награда за 100,000 подписчиков. Зеркальный полированный металл.",
+    badge: "Best Seller"
+  },
+  {
+    id: 3,
+    name: "Золотая кнопка SHORTS",
+    price: 35000,
+    category: "Shorts",
+    image: "https://images.unsplash.com/photo-1622737133809-d95047b9e673?auto=format&fit=crop&w=800&q=100",
+    description: "Специальная золотая серия для авторов коротких видео.",
+  },
+  {
+    id: 4,
+    name: "Серебряная кнопка SHORTS",
+    price: 12500,
+    category: "Shorts",
+    image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800&q=100",
+    description: "Компактная серебряная награда в стиле Shorts.",
+  },
+  {
+    id: 5,
+    name: "Золотая кнопка Instagram",
+    price: 38000,
+    category: "Instagram",
+    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=800&q=100",
+    description: "Элегантная награда с золотым логотипом Instagram.",
+  },
+  {
+    id: 6,
+    name: "Награда Telegram",
+    price: 19900,
+    category: "Telegram",
+    image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?auto=format&fit=crop&w=800&q=100",
+    description: "Матовый авиационный алюминий в фирменном стиле.",
+  }
+];
+
+export default function App() {
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    document.title = SEO_CONFIG.title;
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const addToCart = (product) => {
+    setCart(prev => {
+      const exists = prev.find(i => i.id === product.id);
+      if (exists) return prev.map(i => i.id === product.id ? {...i, quantity: i.quantity + 1} : i);
+      return [...prev, {...product, quantity: 1}];
+    });
+    setIsCartOpen(true);
+  };
+
+  const updateQuantity = (id, delta) => {
+    setCart(prev => prev.map(item => 
+      item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+    ));
+  };
+
+  const removeFromCart = (id) => setCart(prev => prev.filter(i => i.id !== id));
+
+  const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+
+  const handleCheckout = () => {
+    const message = `Заказ MIRA&PAPA:\n\n${cart.map(i => `• ${i.name} (x${i.quantity})`).join('\n')}\n\nИтого: ${totalAmount.toLocaleString()} ₽`;
+    window.open(`https://t.me/+${SEO_CONFIG.phone}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  return (
+    <div className="min-h-screen bg-[#FDFDFD] text-[#121212] selection:bg-[#E2B1A3] selection:text-white transition-colors duration-500">
+      
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-8'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="flex flex-col group cursor-pointer leading-none">
+            <span className="text-2xl font-serif tracking-[0.2em] uppercase italic">Mira<span className="font-bold text-[#C58E7E] not-italic">&</span>Papa</span>
+            <span className="text-[7px] uppercase tracking-[0.6em] text-neutral-400 mt-1">Creator Awards Studio</span>
+          </div>
+
+          <div className="flex items-center gap-10">
+            <div className="hidden md:flex gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">
+              <button onClick={() => scrollToSection('catalog')} className="hover:text-[#C58E7E] transition-colors uppercase cursor-pointer">Каталог</button>
+              <button onClick={() => scrollToSection('about')} className="hover:text-[#C58E7E] transition-colors uppercase cursor-pointer">О студии</button>
+              <button onClick={() => scrollToSection('contacts')} className="hover:text-[#C58E7E] transition-colors uppercase cursor-pointer">Контакты</button>
+            </div>
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 hover:text-[#C58E7E] transition-all"
+            >
+              <ShoppingCart size={22} strokeWidth={1.2} />
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#C58E7E] text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {cart.reduce((a, b) => a + b.quantity, 0)}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section - Optimized SEO Funnel */}
+      <section className="relative pt-56 pb-28 px-6 overflow-hidden bg-[#FDFDFD]">
+        <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
+          <div className="w-16 h-[1px] bg-[#C58E7E] mb-10 opacity-50" />
+          
+          <h1 className="text-5xl md:text-8xl font-serif font-light leading-[1.1] mb-10 tracking-tight">
+            Ваш успех заслуживает <br /> 
+            <span className="font-serif-alt text-[#C58E7E] relative tracking-[0.05em]">
+              достойного воплощения
+            </span>
+          </h1>
+          
+          <div className="max-w-2xl mx-auto">
+            <p className="text-[#1A1A1A] text-lg md:text-xl leading-relaxed mb-8 font-medium italic">
+              Хотите купить золотую кнопку YouTube или эксклюзивную награду для Instagram и TikTok?
+            </p>
+            <p className="text-[#555] text-sm md:text-base leading-relaxed mb-12 font-light">
+              Мастерская «MIRA&PAPA» специализируется на изготовлении премиальных кнопок YouTube на заказ. Мы используем ручную полировку, авиационный алюминий и 24K позолоту, чтобы ваши достижения в социальных сетях получили физическую форму высочайшего качества.
+            </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
+            <button 
+              onClick={() => scrollToSection('catalog')}
+              className="px-12 py-5 bg-[#121212] text-white text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-[#C58E7E] transition-all shadow-xl active:scale-95"
+            >
+              Перейти в каталог наград
+            </button>
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+              <ShieldCheck size={16} className="text-[#C58E7E]" /> Оригинальное качество MIRA&PAPA
+            </div>
+          </div>
+        </div>
+        
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[#C58E7E]/5 blur-[120px] rounded-full -z-10" />
+      </section>
+
+      {/* Catalog Grid */}
+      <section id="catalog" className="max-w-7xl mx-auto px-6 py-24 scroll-mt-20">
+        <div className="flex justify-between items-end mb-16 border-b border-neutral-100 pb-8">
+          <div>
+            <h2 className="text-3xl font-serif italic mb-2">Изготовление кнопок YouTube и наград</h2>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-400">Премиальные материалы • Индивидуальный дизайн</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
+          {PRODUCTS.map((product) => (
+            <div key={product.id} className="group flex flex-col">
+              <div className="relative aspect-[4/5] mb-8 overflow-hidden bg-[#F5F5F5] shadow-sm group-hover:shadow-2xl transition-all duration-700">
+                <img 
+                  src={product.image} 
+                  alt={`Заказать ${product.name} - купить в Москве с доставкой`}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale-[0.2] group-hover:grayscale-0"
+                />
+                {product.badge && (
+                  <span className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm text-[8px] font-bold px-4 py-2 uppercase tracking-[0.2em] shadow-sm">
+                    {product.badge}
+                  </span>
+                )}
+                
+                <button 
+                  onClick={() => addToCart(product)}
+                  className="absolute bottom-6 left-6 right-6 bg-[#121212] text-white py-4 text-[9px] font-bold uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0"
+                >
+                  Купить награду
+                </button>
+              </div>
+
+              <div className="flex flex-col">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-[8px] font-black text-[#C58E7E] uppercase tracking-[0.3em]">{product.category}</span>
+                  <span className="h-[1px] flex-1 mx-4 bg-neutral-100"></span>
+                  <span className="text-sm font-medium tracking-tighter text-[#121212]">{product.price.toLocaleString()} ₽</span>
+                </div>
+                <h3 className="text-xl font-serif font-light mb-3 leading-tight">{product.name}</h3>
+                <p className="text-xs text-neutral-400 leading-relaxed font-light italic">
+                  {product.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="bg-white py-32 px-6 scroll-mt-20 border-y border-neutral-50">
+        <div className="max-w-4xl mx-auto text-center">
+          <Award className="mx-auto mb-10 text-[#C58E7E] opacity-40" size={48} strokeWidth={0.5} />
+          <h2 className="text-4xl font-serif italic mb-10">Почему выбирают MIRA&PAPA?</h2>
+          <div className="grid md:grid-cols-2 gap-12 text-left">
+            <p className="text-sm text-neutral-500 leading-relaxed">
+              Мы понимаем, что кнопка ютуб — это не просто декор. Это символ вашего влияния и упорства. В нашей семейной студии мы довели процесс создания до совершенства: от литья до финальной гравировки вашего имени. Мы не делаем дешевых копий, мы создаем ювелирные изделия для вашего интерьера.
+            </p>
+            <p className="text-sm text-neutral-500 leading-relaxed">
+              Заказывая у нас, вы получаете гарантию использования настоящих металлов и долговечных покрытий. Мы доставляем наши награды блогерам по всей России и миру, обеспечивая сохранность и премиальную упаковку каждой посылки.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Contacts Section */}
+      <section id="contacts" className="max-w-7xl mx-auto px-6 py-32 scroll-mt-20 text-center md:text-left">
+        <div className="grid md:grid-cols-3 gap-16">
+          <div>
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Связь с нами</h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4 justify-center md:justify-start">
+                <Phone size={16} className="text-neutral-300" />
+                <span className="text-sm">+7 (977) 966-25-21</span>
+              </div>
+              <div className="flex items-center gap-4 justify-center md:justify-start">
+                <Mail size={16} className="text-neutral-300" />
+                <span className="text-sm">hello@mirapapa.ru</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Локация мастерской</h3>
+            <div className="flex items-center gap-4 justify-center md:justify-start">
+              <MapPin size={16} className="text-neutral-300" />
+              <span className="text-sm italic">г. Москва, студия наград MIRA&PAPA</span>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Заказать в соцсетях</h3>
+            <div className="flex gap-6 justify-center md:justify-start">
+              <Instagram size={20} strokeWidth={1} className="hover:text-[#C58E7E] cursor-pointer transition-all" />
+              <MessageCircle size={20} strokeWidth={1} className="hover:text-[#C58E7E] cursor-pointer transition-all" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cart Drawer */}
+      {isCartOpen && (
+        <div className="fixed inset-0 z-[200] flex justify-end">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setIsCartOpen(false)} />
+          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in">
+            <div className="p-10 flex items-center justify-between border-b border-neutral-50">
+              <h2 className="text-xl font-serif italic tracking-wider uppercase">Оформление заказа</h2>
+              <button onClick={() => setIsCartOpen(false)} className="hover:rotate-90 transition-transform p-2">
+                <X size={20} strokeWidth={1} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-10 space-y-10">
+              {cart.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-neutral-300">
+                  <Award size={48} strokeWidth={0.5} className="mb-6 opacity-20" />
+                  <p className="text-[10px] uppercase tracking-[0.4em]">Ваша корзина пуста</p>
+                </div>
+              ) : (
+                cart.map(item => (
+                  <div key={item.id} className="flex gap-8 pb-8 border-b border-neutral-50">
+                    <div className="w-24 h-28 bg-neutral-100 overflow-hidden">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-serif text-base mb-2 italic">{item.name}</h4>
+                      <p className="text-[#C58E7E] text-xs font-bold mb-6">{item.price.toLocaleString()} ₽</p>
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center border border-neutral-200 rounded-full px-3 py-1">
+                          <button onClick={() => updateQuantity(item.id, -1)} className="p-1 hover:text-[#C58E7E]"><Minus size={10} /></button>
+                          <span className="w-10 text-center text-xs font-bold">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, 1)} className="p-1 hover:text-[#C58E7E]"><Plus size={10} /></button>
+                        </div>
+                        <button onClick={() => removeFromCart(item.id)} className="text-neutral-300 hover:text-red-400 p-1 transition-colors">
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {cart.length > 0 && (
+              <div className="p-10 bg-neutral-50">
+                <div className="flex justify-between items-end mb-10">
+                  <span className="text-neutral-400 font-bold uppercase text-[8px] tracking-[0.3em]">Общая стоимость</span>
+                  <span className="text-3xl font-serif text-[#121212]">{totalAmount.toLocaleString()} ₽</span>
+                </div>
+                <button 
+                  onClick={handleCheckout}
+                  className="w-full py-6 bg-[#121212] hover:bg-[#C58E7E] text-white text-[10px] font-bold uppercase tracking-[0.3em] transition-all shadow-xl active:scale-95"
+                >
+                  Купить через Telegram
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-neutral-100 py-32 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col items-center mb-16">
+            <span className="text-2xl font-serif tracking-[0.3em] uppercase italic mb-2">Mira<span className="font-bold text-[#C58E7E] not-italic">&</span>Papa</span>
+            <span className="text-[8px] uppercase tracking-[0.5em] text-neutral-400">Премиальные награды для лучших авторов</span>
+          </div>
+          <p className="text-neutral-300 text-[9px] font-medium uppercase tracking-[0.2em]">© 2026 MIRA&PAPA Studio. Изготовление кнопок YouTube №1.</p>
+        </div>
+      </footer>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;400;700&family=Cinzel:wght@400;700&display=swap');
+        
         body {
-            font-family: 'Times New Roman', serif;
-            font-size: 12pt;
-            line-height: 1.5;
-            color: #000;
-            max-width: 21cm;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background: #f5f5f5;
+          font-family: 'Plus Jakarta Sans', sans-serif;
         }
         
-        .document {
-            background: white;
-            padding: 2cm;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        .font-serif {
+          font-family: 'Playfair Display', serif;
         }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+
+        .font-serif-alt {
+          font-family: 'Cinzel', serif;
+          font-weight: 700;
+          text-transform: uppercase;
         }
-        
-        .header h1 {
-            font-size: 14pt;
-            font-weight: bold;
-            margin: 5px 0;
+
+        @keyframes slide-in {
+          from { transform: translateX(100%); }
+          to { transform: translateX(0); }
         }
-        
-        .header p {
-            margin: 3px 0;
-        }
-        
-        .party-info {
-            margin: 20px 0;
-            line-height: 1.8;
-        }
-        
-        .section {
-            margin: 25px 0;
-        }
-        
-        .section-title {
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0 15px 0;
-        }
-        
-        .section p {
-            text-indent: 1.25cm;
-            text-align: justify;
-            margin: 10px 0;
-        }
-        
-        .stage {
-            margin: 20px 0;
-        }
-        
-        .stage-title {
-            font-weight: bold;
-            margin: 15px 0 10px 0;
-        }
-        
-        .stage ul {
-            margin: 10px 0;
-            padding-left: 30px;
-        }
-        
-        .stage li {
-            margin: 5px 0;
-        }
-        
-        .stage-cost {
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        
-        .signatures {
-            margin-top: 50px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .signature-block {
-            width: 45%;
-        }
-        
-        .signature-line {
-            margin: 30px 0 5px 0;
-            border-bottom: 1px solid #000;
-            min-height: 20px;
-        }
-        
-        .underline {
-            display: inline-block;
-            border-bottom: 1px solid #000;
-            min-width: 200px;
-            margin: 0 5px;
-        }
-        
-        hr {
-            border: none;
-            border-top: 1px solid #000;
-            margin: 20px 0;
-        }
-        
-        .button-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-        }
-        
-        button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        button:hover {
-            background: #45a049;
-        }
-        
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .button-container {
-                display: none;
-            }
-            
-            .document {
-                box-shadow: none;
-                padding: 0;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="button-container">
-        <button onclick="window.print()">Печать (Ctrl+P)</button>
-        <button onclick="downloadPDF()" id="pdfBtn">Скачать PDF</button>
+        .animate-slide-in { animation: slide-in 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+      `}</style>
     </div>
-
-    <div class="document" id="contract">
-        <div class="header">
-            <h1>ДОГОВОР ПОДРЯДА № ___</h1>
-            <p>на выполнение ремонтно-отделочных работ</p>
-            <p style="margin-top: 15px;">г. ____________________</p>
-            <p>Дата: «___» ____________ 2025 г.</p>
-        </div>
-
-        <hr>
-
-        <div class="party-info">
-            <p><strong>Подрядчик:</strong></p>
-            <p>Хушвахтов Мустафо Шаймардонович,</p>
-            <p>дата рождения: 15.08.1995,</p>
-            <p>паспорт: 4053 № 88876, выдан Посольством РТ в России 13.05.2024,</p>
-            <p>адрес регистрации: <span class="underline"></span></p>
-            <p>именуемый в дальнейшем «Подрядчик», с одной стороны,</p>
-        </div>
-
-        <div class="party-info">
-            <p><strong>и</strong></p>
-        </div>
-
-        <div class="party-info">
-            <p><strong>Заказчик:</strong></p>
-            <p>ФИО: <span class="underline"></span></p>
-            <p>дата рождения: <span class="underline"></span></p>
-            <p>паспорт: серия <span class="underline" style="min-width: 60px;"></span> № <span class="underline" style="min-width: 100px;"></span>, выдан <span class="underline"></span></p>
-            <p>адрес регистрации: <span class="underline"></span></p>
-            <p>телефон: <span class="underline"></span></p>
-            <p>именуемый в дальнейшем «Заказчик», с другой стороны,</p>
-        </div>
-
-        <p style="margin: 20px 0;">совместно именуемые «Стороны», заключили настоящий договор о нижеследующем:</p>
-
-        <hr>
-
-        <div class="section">
-            <div class="section-title">1. ПРЕДМЕТ ДОГОВОРА</div>
-            <p><strong>1.1.</strong> Подрядчик обязуется выполнить комплекс ремонтно-отделочных работ в квартире Заказчика площадью 52 (пятьдесят два) квадратных метра, а Заказчик обязуется принять и оплатить выполненные работы.</p>
-            <p><strong>1.2.</strong> Работы выполняются в соответствии с перечнем, указанным в п. 2 настоящего договора.</p>
-        </div>
-
-        <hr>
-
-        <div class="section">
-            <div class="section-title">2. ПЕРЕЧЕНЬ РАБОТ</div>
-
-            <div class="stage">
-                <div class="stage-title">ЭТАП 1</div>
-                <ul>
-                    <li>Демонтажные работы</li>
-                    <li>Возведение перегородок</li>
-                    <li>Устройство дверных проёмов</li>
-                    <li>Армирование проёмов</li>
-                    <li>Грунтовка поверхностей</li>
-                    <li>Обработка бетоноконтактом</li>
-                    <li>Установка штукатурных маяков</li>
-                    <li>Штукатурка стен</li>
-                    <li>Разводка труб отопления</li>
-                    <li>Штукатурка откосов</li>
-                </ul>
-                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
-            </div>
-
-            <hr>
-
-            <div class="stage">
-                <div class="stage-title">ЭТАП 2</div>
-                <ul>
-                    <li>Стяжка пола</li>
-                    <li>Установка электрощита</li>
-                    <li>Штробление стен</li>
-                    <li>Прокладка кабеля</li>
-                    <li>Установка подрозетников</li>
-                    <li>Электропроводка кухни-гостиной</li>
-                    <li>Электропроводка санузлов</li>
-                    <li>Слаботочные кабели</li>
-                    <li>Заделка штроб</li>
-                    <li>Разводка водопровода</li>
-                    <li>Разводка канализации</li>
-                    <li>Подводка воды к кухне</li>
-                    <li>Установка коллекторов</li>
-                    <li>Установка инсталляций</li>
-                    <li>Установка батарей</li>
-                    <li>Гидроизоляция</li>
-                    <li>Опрессовка систем</li>
-                </ul>
-                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
-            </div>
-
-            <hr>
-
-            <div class="stage">
-                <div class="stage-title">ЭТАП 3</div>
-                <ul>
-                    <li>Грунтовка стен и потолка</li>
-                    <li>Монтаж тёплого пола (по желанию Заказчика)</li>
-                    <li>Укладка плитки</li>
-                    <li>Герметизация швов</li>
-                    <li>Установка ванны</li>
-                </ul>
-                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
-            </div>
-
-            <hr>
-
-            <div class="stage">
-                <div class="stage-title">ЭТАП 4</div>
-                <ul>
-                    <li>Шпаклёвка стен и откосов</li>
-                    <li>Поклейка стеклохолста</li>
-                    <li>Повторная шпаклёвка</li>
-                    <li>Шпаклёвка пастой (2 слоя)</li>
-                    <li>Шлифовка</li>
-                    <li>Грунтовка перед покраской</li>
-                    <li>Покраска (2 слоя)</li>
-                    <li>Установка розеток и выключателей</li>
-                    <li>Грунтовка пола</li>
-                    <li>Укладка напольного покрытия</li>
-                    <li>Установка плинтусов</li>
-                    <li>Установка сантехники</li>
-                    <li>Подключение стиральной машины</li>
-                </ul>
-                <p class="stage-cost">Стоимость этапа: 195 000 ₽</p>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="section">
-            <div class="section-title">3. ДОПОЛНИТЕЛЬНЫЕ РАБОТЫ</div>
-            <ul>
-                <li>Монтаж натяжных потолков и установка светильников выполняется другой бригадой и оплачивается отдельно</li>
-                <li>Установка кухонной техники</li>
-                <li>Установка межкомнатных дверей</li>
-                <li>Установка кухонного гарнитура</li>
-                <li>Монтаж встроенных шкафов</li>
-                <li>Монтаж карнизов</li>
-                <li>Установка зёркал</li>
-                <li>Финальная уборка (не клининг)</li>
-            </ul>
-            <p><strong>Стоимость дополнительных работ согласовывается отдельно.</strong></p>
-        </div>
-
-        <hr>
-
-        <div class="section">
-            <div class="section-title">4. СТОИМОСТЬ И ПОРЯДОК ОПЛАТЫ</div>
-            <p><strong>4.1.</strong> Общая стоимость работ по договору составляет 780 000 (семьсот восемьдесят тысяч) рублей.</p>
-            <p><strong>4.2.</strong> Оплата производится поэтапно, после завершения каждого этапа.</p>
-        </div>
-
-        <hr>
-
-        <div class="section">
-            <div class="section-title">5. ПРОЧИЕ УСЛОВИЯ</div>
-            <p><strong>5.1.</strong> Вывоз мусора и подъём материалов не входят в стоимость договора.</p>
-            <p><strong>5.2.</strong> Все изменения и дополнительные работы оформляются по согласованию Сторон.</p>
-        </div>
-
-        <hr>
-
-        <div class="section">
-            <div class="section-title">6. ПОДПИСИ СТОРОН</div>
-            <div class="signatures">
-                <div class="signature-block">
-                    <p><strong>Заказчик:</strong></p>
-                    <div class="signature-line"></div>
-                    <p style="font-size: 10pt;">Подпись / Расшифровка</p>
-                </div>
-                <div class="signature-block">
-                    <p><strong>Подрядчик:</strong></p>
-                    <div class="signature-line"></div>
-                    <p style="font-size: 10pt;">Подпись / Расшифровка</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        async function downloadPDF() {
-            const button = document.getElementById('pdfBtn');
-            button.disabled = true;
-            button.textContent = 'Создаётся PDF...';
-            
-            try {
-                const element = document.getElementById('contract');
-                const canvas = await html2canvas(element, {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
-                });
-                
-                const imgData = canvas.toDataURL('image/png');
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                
-                const imgWidth = 210;
-                const pageHeight = 297;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
-                
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-                
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                
-                pdf.save('Договор_подряда.pdf');
-                
-                button.disabled = false;
-                button.textContent = 'Скачать PDF';
-            } catch (error) {
-                alert('Ошибка при создании PDF. Попробуйте использовать кнопку "Печать" и сохранить как PDF через диалог печати.');
-                button.disabled = false;
-                button.textContent = 'Скачать PDF';
-            }
-        }
-    </script>
-</body>
-</html>
+  );
+}
