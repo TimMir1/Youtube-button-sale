@@ -1,386 +1,275 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  ShoppingCart, X, Plus, Minus, Trash2, Award, 
-  Instagram, Tv, MessageCircle, ChevronRight,
-  ShieldCheck, MapPin, Phone, Mail
-} from 'lucide-react';
-
-// --- SEO & META CONFIGURATION ---
-const SEO_CONFIG = {
-  title: "MIRA&PAPA | Купить Золотую и Серебряную кнопку YouTube, Instagram, TikTok",
-  description: "MIRA&PAPA — эксклюзивное изготовление наград. У нас можно заказать и купить кнопку YouTube, Shorts, Instagram и TikTok премиального качества с доставкой по РФ.",
-  keywords: "MIRA&PAPA, купить золотую кнопку ютуб, серебряная кнопка youtube на заказ, награды для блогеров, кнопка инстаграм за подписчиков, тик ток награда купить",
-  phone: "79779662521",
-  siteUrl: "https://mirapapa.ru" 
-};
-
-// --- PRODUCT DATA ---
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Золотая кнопка YouTube",
-    price: 45000,
-    category: "YouTube",
-    image: "https://images.unsplash.com/photo-1610375461496-02e5f5164972?auto=format&fit=crop&w=800&q=100",
-    description: "Награда за 1,000,000 подписчиков. 24K позолота, массивный корпус.",
-    badge: "Premium"
-  },
-  {
-    id: 2,
-    name: "Серебряная кнопка YouTube",
-    price: 15990,
-    category: "YouTube",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=100",
-    description: "Награда за 100,000 подписчиков. Зеркальный полированный металл.",
-    badge: "Best Seller"
-  },
-  {
-    id: 3,
-    name: "Золотая кнопка SHORTS",
-    price: 35000,
-    category: "Shorts",
-    image: "https://images.unsplash.com/photo-1622737133809-d95047b9e673?auto=format&fit=crop&w=800&q=100",
-    description: "Специальная золотая серия для авторов коротких видео.",
-  },
-  {
-    id: 4,
-    name: "Серебряная кнопка SHORTS",
-    price: 12500,
-    category: "Shorts",
-    image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800&q=100",
-    description: "Компактная серебряная награда в стиле Shorts.",
-  },
-  {
-    id: 5,
-    name: "Золотая кнопка Instagram",
-    price: 38000,
-    category: "Instagram",
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=800&q=100",
-    description: "Элегантная награда с золотым логотипом Instagram.",
-  },
-  {
-    id: 6,
-    name: "Награда Telegram",
-    price: 19900,
-    category: "Telegram",
-    image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?auto=format&fit=crop&w=800&q=100",
-    description: "Матовый авиационный алюминий в фирменном стиле.",
-  }
-];
-
-export default function App() {
-  const [cart, setCart] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    document.title = SEO_CONFIG.title;
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const addToCart = (product) => {
-    setCart(prev => {
-      const exists = prev.find(i => i.id === product.id);
-      if (exists) return prev.map(i => i.id === product.id ? {...i, quantity: i.quantity + 1} : i);
-      return [...prev, {...product, quantity: 1}];
-    });
-    setIsCartOpen(true);
-  };
-
-  const updateQuantity = (id, delta) => {
-    setCart(prev => prev.map(item => 
-      item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-    ));
-  };
-
-  const removeFromCart = (id) => setCart(prev => prev.filter(i => i.id !== id));
-
-  const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
-
-  const handleCheckout = () => {
-    const message = `Заказ MIRA&PAPA:\n\n${cart.map(i => `• ${i.name} (x${i.quantity})`).join('\n')}\n\nИтого: ${totalAmount.toLocaleString()} ₽`;
-    window.open(`https://t.me/+${SEO_CONFIG.phone}?text=${encodeURIComponent(message)}`, '_blank');
-  };
-
-  return (
-    <div className="min-h-screen bg-[#FDFDFD] text-[#121212] selection:bg-[#E2B1A3] selection:text-white transition-colors duration-500">
-      
-      {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-8'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <div onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="flex flex-col group cursor-pointer leading-none">
-            <span className="text-2xl font-serif tracking-[0.2em] uppercase italic">Mira<span className="font-bold text-[#C58E7E] not-italic">&</span>Papa</span>
-            <span className="text-[7px] uppercase tracking-[0.6em] text-neutral-400 mt-1">Creator Awards Studio</span>
-          </div>
-
-          <div className="flex items-center gap-10">
-            <div className="hidden md:flex gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">
-              <button onClick={() => scrollToSection('catalog')} className="hover:text-[#C58E7E] transition-colors uppercase cursor-pointer">Каталог</button>
-              <button onClick={() => scrollToSection('about')} className="hover:text-[#C58E7E] transition-colors uppercase cursor-pointer">О студии</button>
-              <button onClick={() => scrollToSection('contacts')} className="hover:text-[#C58E7E] transition-colors uppercase cursor-pointer">Контакты</button>
-            </div>
-            <button 
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2 hover:text-[#C58E7E] transition-all"
-            >
-              <ShoppingCart size={22} strokeWidth={1.2} />
-              {cart.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#C58E7E] text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {cart.reduce((a, b) => a + b.quantity, 0)}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section - Optimized SEO Funnel */}
-      <section className="relative pt-56 pb-28 px-6 overflow-hidden bg-[#FDFDFD]">
-        <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
-          <div className="w-16 h-[1px] bg-[#C58E7E] mb-10 opacity-50" />
-          
-          <h1 className="text-5xl md:text-8xl font-serif font-light leading-[1.1] mb-10 tracking-tight">
-            Ваш успех заслуживает <br /> 
-            <span className="font-serif-alt text-[#C58E7E] relative tracking-[0.05em]">
-              достойного воплощения
-            </span>
-          </h1>
-          
-          <div className="max-w-2xl mx-auto">
-            <p className="text-[#1A1A1A] text-lg md:text-xl leading-relaxed mb-8 font-medium italic">
-              Хотите купить золотую кнопку YouTube или эксклюзивную награду для Instagram и TikTok?
-            </p>
-            <p className="text-[#555] text-sm md:text-base leading-relaxed mb-12 font-light">
-              Мастерская «MIRA&PAPA» специализируется на изготовлении премиальных кнопок YouTube на заказ. Мы используем ручную полировку, авиационный алюминий и 24K позолоту, чтобы ваши достижения в социальных сетях получили физическую форму высочайшего качества.
-            </p>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
-            <button 
-              onClick={() => scrollToSection('catalog')}
-              className="px-12 py-5 bg-[#121212] text-white text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-[#C58E7E] transition-all shadow-xl active:scale-95"
-            >
-              Перейти в каталог наград
-            </button>
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-              <ShieldCheck size={16} className="text-[#C58E7E]" /> Оригинальное качество MIRA&PAPA
-            </div>
-          </div>
-        </div>
-        
-        <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[#C58E7E]/5 blur-[120px] rounded-full -z-10" />
-      </section>
-
-      {/* Catalog Grid */}
-      <section id="catalog" className="max-w-7xl mx-auto px-6 py-24 scroll-mt-20">
-        <div className="flex justify-between items-end mb-16 border-b border-neutral-100 pb-8">
-          <div>
-            <h2 className="text-3xl font-serif italic mb-2">Изготовление кнопок YouTube и наград</h2>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-neutral-400">Премиальные материалы • Индивидуальный дизайн</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-          {PRODUCTS.map((product) => (
-            <div key={product.id} className="group flex flex-col">
-              <div className="relative aspect-[4/5] mb-8 overflow-hidden bg-[#F5F5F5] shadow-sm group-hover:shadow-2xl transition-all duration-700">
-                <img 
-                  src={product.image} 
-                  alt={`Заказать ${product.name} - купить в Москве с доставкой`}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale-[0.2] group-hover:grayscale-0"
-                />
-                {product.badge && (
-                  <span className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm text-[8px] font-bold px-4 py-2 uppercase tracking-[0.2em] shadow-sm">
-                    {product.badge}
-                  </span>
-                )}
-                
-                <button 
-                  onClick={() => addToCart(product)}
-                  className="absolute bottom-6 left-6 right-6 bg-[#121212] text-white py-4 text-[9px] font-bold uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0"
-                >
-                  Купить награду
-                </button>
-              </div>
-
-              <div className="flex flex-col">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-[8px] font-black text-[#C58E7E] uppercase tracking-[0.3em]">{product.category}</span>
-                  <span className="h-[1px] flex-1 mx-4 bg-neutral-100"></span>
-                  <span className="text-sm font-medium tracking-tighter text-[#121212]">{product.price.toLocaleString()} ₽</span>
-                </div>
-                <h3 className="text-xl font-serif font-light mb-3 leading-tight">{product.name}</h3>
-                <p className="text-xs text-neutral-400 leading-relaxed font-light italic">
-                  {product.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="bg-white py-32 px-6 scroll-mt-20 border-y border-neutral-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <Award className="mx-auto mb-10 text-[#C58E7E] opacity-40" size={48} strokeWidth={0.5} />
-          <h2 className="text-4xl font-serif italic mb-10">Почему выбирают MIRA&PAPA?</h2>
-          <div className="grid md:grid-cols-2 gap-12 text-left">
-            <p className="text-sm text-neutral-500 leading-relaxed">
-              Мы понимаем, что кнопка ютуб — это не просто декор. Это символ вашего влияния и упорства. В нашей семейной студии мы довели процесс создания до совершенства: от литья до финальной гравировки вашего имени. Мы не делаем дешевых копий, мы создаем ювелирные изделия для вашего интерьера.
-            </p>
-            <p className="text-sm text-neutral-500 leading-relaxed">
-              Заказывая у нас, вы получаете гарантию использования настоящих металлов и долговечных покрытий. Мы доставляем наши награды блогерам по всей России и миру, обеспечивая сохранность и премиальную упаковку каждой посылки.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Contacts Section */}
-      <section id="contacts" className="max-w-7xl mx-auto px-6 py-32 scroll-mt-20 text-center md:text-left">
-        <div className="grid md:grid-cols-3 gap-16">
-          <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Связь с нами</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 justify-center md:justify-start">
-                <Phone size={16} className="text-neutral-300" />
-                <span className="text-sm">+7 (977) 966-25-21</span>
-              </div>
-              <div className="flex items-center gap-4 justify-center md:justify-start">
-                <Mail size={16} className="text-neutral-300" />
-                <span className="text-sm">hello@mirapapa.ru</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Локация мастерской</h3>
-            <div className="flex items-center gap-4 justify-center md:justify-start">
-              <MapPin size={16} className="text-neutral-300" />
-              <span className="text-sm italic">г. Москва, студия наград MIRA&PAPA</span>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Заказать в соцсетях</h3>
-            <div className="flex gap-6 justify-center md:justify-start">
-              <Instagram size={20} strokeWidth={1} className="hover:text-[#C58E7E] cursor-pointer transition-all" />
-              <MessageCircle size={20} strokeWidth={1} className="hover:text-[#C58E7E] cursor-pointer transition-all" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Cart Drawer */}
-      {isCartOpen && (
-        <div className="fixed inset-0 z-[200] flex justify-end">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setIsCartOpen(false)} />
-          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in">
-            <div className="p-10 flex items-center justify-between border-b border-neutral-50">
-              <h2 className="text-xl font-serif italic tracking-wider uppercase">Оформление заказа</h2>
-              <button onClick={() => setIsCartOpen(false)} className="hover:rotate-90 transition-transform p-2">
-                <X size={20} strokeWidth={1} />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-10 space-y-10">
-              {cart.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-neutral-300">
-                  <Award size={48} strokeWidth={0.5} className="mb-6 opacity-20" />
-                  <p className="text-[10px] uppercase tracking-[0.4em]">Ваша корзина пуста</p>
-                </div>
-              ) : (
-                cart.map(item => (
-                  <div key={item.id} className="flex gap-8 pb-8 border-b border-neutral-50">
-                    <div className="w-24 h-28 bg-neutral-100 overflow-hidden">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-serif text-base mb-2 italic">{item.name}</h4>
-                      <p className="text-[#C58E7E] text-xs font-bold mb-6">{item.price.toLocaleString()} ₽</p>
-                      <div className="flex items-center gap-6">
-                        <div className="flex items-center border border-neutral-200 rounded-full px-3 py-1">
-                          <button onClick={() => updateQuantity(item.id, -1)} className="p-1 hover:text-[#C58E7E]"><Minus size={10} /></button>
-                          <span className="w-10 text-center text-xs font-bold">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, 1)} className="p-1 hover:text-[#C58E7E]"><Plus size={10} /></button>
-                        </div>
-                        <button onClick={() => removeFromCart(item.id)} className="text-neutral-300 hover:text-red-400 p-1 transition-colors">
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {cart.length > 0 && (
-              <div className="p-10 bg-neutral-50">
-                <div className="flex justify-between items-end mb-10">
-                  <span className="text-neutral-400 font-bold uppercase text-[8px] tracking-[0.3em]">Общая стоимость</span>
-                  <span className="text-3xl font-serif text-[#121212]">{totalAmount.toLocaleString()} ₽</span>
-                </div>
-                <button 
-                  onClick={handleCheckout}
-                  className="w-full py-6 bg-[#121212] hover:bg-[#C58E7E] text-white text-[10px] font-bold uppercase tracking-[0.3em] transition-all shadow-xl active:scale-95"
-                >
-                  Купить через Telegram
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-neutral-100 py-32 px-6 text-center">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col items-center mb-16">
-            <span className="text-2xl font-serif tracking-[0.3em] uppercase italic mb-2">Mira<span className="font-bold text-[#C58E7E] not-italic">&</span>Papa</span>
-            <span className="text-[8px] uppercase tracking-[0.5em] text-neutral-400">Премиальные награды для лучших авторов</span>
-          </div>
-          <p className="text-neutral-300 text-[9px] font-medium uppercase tracking-[0.2em]">© 2026 MIRA&PAPA Studio. Изготовление кнопок YouTube №1.</p>
-        </div>
-      </footer>
-
-      <style>{`
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIRA&PAPA | Купить Золотую и Серебряную кнопку YouTube на заказ</title>
+    <meta name="description" content="Заказать золотую или серебряную кнопку YouTube премиального качества. Мастерская MIRA&PAPA: изготовление наград для блогеров и брендов.">
+    
+    <!-- Подключение Tailwind CSS и иконок -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@200;400;700&family=Cinzel:wght@400;700&display=swap');
         
-        body {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-serif-alt { font-family: 'Cinzel', serif; font-weight: 700; text-transform: uppercase; }
         
-        .font-serif {
-          font-family: 'Playfair Display', serif;
+        .scrolled-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding-top: 1rem; padding-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        
+        #cart-drawer {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(100%);
         }
+    </style>
+</head>
+<body class="bg-[#FDFDFD] text-[#121212]">
 
-        .font-serif-alt {
-          font-family: 'Cinzel', serif;
-          font-weight: 700;
-          text-transform: uppercase;
-        }
+    <!-- Навигация -->
+    <nav id="navbar" class="fixed top-0 w-full z-[100] transition-all duration-500 py-8">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col group cursor-pointer leading-none">
+                <span class="text-2xl font-serif tracking-[0.2em] uppercase italic">Mira<span class="font-bold text-[#C58E7E] not-italic">&</span>Papa</span>
+                <span class="text-[7px] uppercase tracking-[0.6em] text-neutral-400 mt-1">Creator Awards Studio</span>
+            </div>
 
-        @keyframes slide-in {
-          from { transform: translateX(100%); }
-          to { transform: translateX(0); }
-        }
-        .animate-slide-in { animation: slide-in 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-      `}</style>
+            <div class="flex items-center gap-10">
+                <div class="hidden md:flex gap-10 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">
+                    <a href="#catalog" class="hover:text-[#C58E7E] transition-colors">Каталог</a>
+                    <a href="#about" class="hover:text-[#C58E7E] transition-colors">О студии</a>
+                    <a href="#contacts" class="hover:text-[#C58E7E] transition-colors">Контакты</a>
+                </div>
+                <button onclick="toggleCart(true)" class="relative p-2 hover:text-[#C58E7E] transition-all">
+                    <i data-lucide="shopping-cart" style="width: 22px; height: 22px;"></i>
+                    <span id="cart-count" class="hidden absolute -top-1 -right-1 bg-[#C58E7E] text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Секция -->
+    <section class="relative pt-56 pb-28 px-6 overflow-hidden">
+        <div class="max-w-5xl mx-auto flex flex-col items-center text-center">
+            <div class="w-16 h-[1px] bg-[#C58E7E] mb-10 opacity-50"></div>
+            
+            <h1 class="text-5xl md:text-8xl font-serif font-light leading-[1.1] mb-10 tracking-tight">
+                Ваш успех заслуживает <br> 
+                <span class="font-serif-alt text-[#C58E7E] relative tracking-[0.05em]">достойного воплощения</span>
+            </h1>
+            
+            <div class="max-w-2xl mx-auto">
+                <p class="text-[#1A1A1A] text-lg md:text-xl leading-relaxed mb-8 font-medium italic">
+                    Хотите купить золотую кнопку YouTube или эксклюзивную награду для Instagram и TikTok?
+                </p>
+                <p class="text-[#555] text-sm md:text-base leading-relaxed mb-12 font-light">
+                    Мастерская «MIRA&PAPA» специализируется на изготовлении премиальных кнопок YouTube на заказ. Мы используем ручную полировку, авиационный алюминий и 24K позолоту, чтобы ваши достижения получили физическую форму высочайшего качества.
+                </p>
+            </div>
+
+            <a href="#catalog" class="px-12 py-5 bg-[#121212] text-white text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-[#C58E7E] transition-all shadow-xl">
+                Перейти в каталог наград
+            </a>
+        </div>
+        <div class="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[#C58E7E]/5 blur-[120px] rounded-full -z-10"></div>
+    </section>
+
+    <!-- Каталог -->
+    <section id="catalog" class="max-w-7xl mx-auto px-6 py-24 scroll-mt-20">
+        <div class="flex justify-between items-end mb-16 border-b border-neutral-100 pb-8">
+            <div>
+                <h2 class="text-3xl font-serif italic mb-2">Каталог наград для блогеров</h2>
+                <p class="text-[10px] uppercase tracking-[0.3em] text-neutral-400">Премиальные материалы • Ручная работа • 9 эксклюзивных позиций</p>
+            </div>
+        </div>
+
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
+            <!-- Продукты вставляются через JS -->
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section id="about" class="bg-white py-32 px-6 border-y border-neutral-50 text-center">
+        <div class="max-w-4xl mx-auto">
+            <i data-lucide="award" class="mx-auto mb-10 text-[#C58E7E] opacity-40" style="width: 48px; height: 48px;"></i>
+            <h2 class="text-4xl font-serif italic mb-10">Почему выбирают MIRA&PAPA?</h2>
+            <div class="grid md:grid-cols-2 gap-12 text-left">
+                <p class="text-sm text-neutral-500 leading-relaxed">
+                    Мы понимаем, что кнопка ютуб — это не просто декор. Это символ вашего влияния и упорства. В нашей семейной студии мы довели процесс создания до совершенства: от литья до финальной гравировки вашего имени. Мы не делаем дешевых копий, мы создаем ювелирные изделия.
+                </p>
+                <p class="text-sm text-neutral-500 leading-relaxed">
+                    Заказывая у нас, вы получаете гарантию использования настоящих металлов и долговечных покрытий. Мы доставляем наши награды по всей России и миру, обеспечивая сохранность и премиальную упаковку каждой посылки.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contacts" class="max-w-7xl mx-auto px-6 py-32 text-center md:text-left">
+        <div class="grid md:grid-cols-3 gap-16">
+            <div>
+                <h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Связь с нами</h3>
+                <p class="text-sm mb-2 font-bold">+7 (977) 966-25-21</p>
+                <p class="text-sm">hello@mirapapa.ru</p>
+            </div>
+            <div>
+                <h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Локация</h3>
+                <p class="text-sm italic">г. Москва, студия наград MIRA&PAPA</p>
+            </div>
+            <div>
+                <h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-6">Заказать в соцсетях</h3>
+                <div class="flex gap-6 justify-center md:justify-start">
+                    <i data-lucide="instagram" class="hover:text-[#C58E7E] cursor-pointer transition-all"></i>
+                    <i data-lucide="message-circle" class="hover:text-[#C58E7E] cursor-pointer transition-all"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Корзина -->
+    <div id="cart-overlay" class="fixed inset-0 z-[200] hidden bg-black/40 backdrop-blur-[2px]" onclick="toggleCart(false)"></div>
+    <div id="cart-drawer" class="fixed right-0 top-0 z-[201] w-full max-w-md bg-white h-full shadow-2xl flex flex-col">
+        <div class="p-10 flex items-center justify-between border-b border-neutral-50">
+            <h2 class="text-xl font-serif italic uppercase tracking-wider">Ваш выбор</h2>
+            <button onclick="toggleCart(false)" class="p-2 hover:rotate-90 transition-transform">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-10 space-y-8">
+            <!-- Элементы корзины -->
+        </div>
+        <div id="cart-footer" class="p-10 bg-neutral-50 hidden">
+            <div class="flex justify-between items-end mb-10">
+                <span class="text-[8px] font-bold uppercase tracking-[0.3em] text-neutral-400">Общая сумма</span>
+                <span id="cart-total" class="text-3xl font-serif">0 ₽</span>
+            </div>
+            <button onclick="checkout()" class="w-full py-6 bg-[#121212] text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-[#C58E7E] transition-all">
+                Оформить заказ в Telegram
+            </button>
+        </div>
     </div>
-  );
-}
+
+    <!-- Футер -->
+    <footer class="bg-white border-t border-neutral-100 py-20 text-center">
+        <span class="text-xl font-serif tracking-[0.3em] uppercase italic mb-4 block">Mira<span class="font-bold text-[#C58E7E] not-italic">&</span>Papa</span>
+        <p class="text-neutral-300 text-[9px] font-medium uppercase tracking-[0.2em]">© 2026 MIRA&PAPA Studio. Изготовление кнопок YouTube №1.</p>
+    </footer>
+
+    <script>
+        // Полный список из 9 кнопок
+        const products = [
+            { id: 1, name: "Золотая кнопка YouTube", price: 45000, category: "YouTube", image: "https://images.unsplash.com/photo-1610375461496-02e5f5164972?auto=format&fit=crop&w=800&q=100", desc: "За 1,000,000 подписчиков. 24K позолота, массивный корпус." },
+            { id: 2, name: "Серебряная кнопка YouTube", price: 15990, category: "YouTube", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=100", desc: "За 100,000 подписчиков. Зеркальный полированный металл." },
+            { id: 3, name: "Золотая кнопка SHORTS", price: 35000, category: "YouTube", image: "https://images.unsplash.com/photo-1622737133809-d95047b9e673?auto=format&fit=crop&w=800&q=100", desc: "Эксклюзивная золотая серия для авторов вертикальных видео." },
+            { id: 4, name: "Серебряная кнопка SHORTS", price: 12500, category: "YouTube", image: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800&q=100", desc: "Компактная серебряная награда в стиле Shorts." },
+            { id: 5, name: "Бриллиантовая кнопка (Custom)", price: 85000, category: "YouTube", image: "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=800&q=100", desc: "Премиальная имитация за 10,000,000 подписчиков." },
+            { id: 6, name: "Золотая кнопка Instagram", price: 38000, category: "Instagram", image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=800&q=100", desc: "Элегантная награда с золотым логотипом Instagram." },
+            { id: 7, name: "Награда TikTok Star", price: 29000, category: "TikTok", image: "https://images.unsplash.com/photo-1596753426296-da8f1a7446a1?auto=format&fit=crop&w=800&q=100", desc: "Стильная металлическая награда для тиктокеров." },
+            { id: 8, name: "Кнопка Telegram Channel", price: 19900, category: "Telegram", image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?auto=format&fit=crop&w=800&q=100", desc: "Матовый авиационный алюминий в стиле мессенджера." },
+            { id: 9, name: "Индивидуальная награда", price: 50000, category: "Custom", image: "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&w=800&q=100", desc: "Разработка дизайна под ваш бренд или личное достижение." }
+        ];
+
+        let cart = [];
+
+        function init() {
+            lucide.createIcons();
+            renderProducts();
+            
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 20) nav.classList.add('scrolled-nav');
+                else nav.classList.remove('scrolled-nav');
+            });
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="group flex flex-col">
+                    <div class="relative aspect-[4/5] mb-8 overflow-hidden bg-[#F5F5F5] shadow-sm hover:shadow-2xl transition-all duration-700">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000 grayscale-[0.2] group-hover:grayscale-0">
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-6 left-6 right-6 bg-[#121212] text-white py-4 text-[9px] font-bold uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-all">В корзину</button>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[8px] font-black text-[#C58E7E] uppercase tracking-[0.3em]">${p.category}</span>
+                        <span class="text-sm font-medium">${p.price.toLocaleString()} ₽</span>
+                    </div>
+                    <h3 class="text-xl font-serif font-light mb-3 leading-tight">${p.name}</h3>
+                    <p class="text-xs text-neutral-400 font-light italic leading-relaxed">${p.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const exists = cart.find(item => item.id === id);
+            if (exists) exists.quantity++;
+            else cart.push({ ...product, quantity: 1 });
+            
+            renderCart();
+            toggleCart(true);
+        }
+
+        function renderCart() {
+            const items = document.getElementById('cart-items');
+            const count = document.getElementById('cart-count');
+            const footer = document.getElementById('cart-footer');
+            const total = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                items.innerHTML = '<div class="py-20 text-center text-neutral-300 text-[10px] uppercase tracking-widest">Корзина пуста</div>';
+                footer.classList.add('hidden');
+                count.classList.add('hidden');
+                return;
+            }
+
+            footer.classList.remove('hidden');
+            count.classList.remove('hidden');
+            count.innerText = cart.reduce((a, b) => a + b.quantity, 0);
+
+            let sum = 0;
+            items.innerHTML = cart.map(item => {
+                sum += item.price * item.quantity;
+                return `
+                    <div class="flex gap-6 border-b border-neutral-50 pb-6 items-center">
+                        <img src="${item.image}" class="w-20 h-24 object-cover bg-neutral-100">
+                        <div class="flex-1">
+                            <h4 class="font-serif italic mb-1 text-sm">${item.name}</h4>
+                            <p class="text-[#C58E7E] text-xs font-bold mb-4">${item.price.toLocaleString()} ₽</p>
+                            <div class="flex items-center gap-4">
+                                <button onclick="updateQty(${item.id}, -1)" class="hover:text-[#C58E7E] transition-colors"><i data-lucide="minus" style="width:12px"></i></button>
+                                <span class="text-xs font-bold">${item.quantity}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="hover:text-[#C58E7E] transition-colors"><i data-lucide="plus" style="width:12px"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+            total.innerText = sum.toLocaleString() + ' ₽';
+        }
+
+        function updateQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
+            }
+            renderCart();
+        }
+
+        function toggleCart(show) {
+            document.getElementById('cart-drawer').style.transform = show ? 'translateX(0)' : 'translateX(100%)';
+            document.getElementById('cart-overlay').style.display = show ? 'block' : 'none';
+        }
+
+        function checkout() {
+            const text = `Заказ MIRA&PAPA:\n\n` + cart.map(i => `• ${i.name} (x${i.quantity})`).join('\n');
+            window.open(`https://t.me/+79779662521?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        init();
+    </script>
+</body>
+</html>
