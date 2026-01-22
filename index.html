@@ -11,7 +11,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        /* Подключаем новый премиальный шрифт Cormorant Garamond */
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@200;300;400;600&family=Cinzel:wght@400;700&display=swap');
         
         body { 
@@ -21,7 +20,6 @@
             color: #121212;
         }
 
-        /* Текстура шума для премиальности */
         .bg-noise {
             position: fixed;
             top: 0;
@@ -34,7 +32,6 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Новый шрифт для заголовков */
         .font-premium { font-family: 'Cormorant Garamond', serif; }
         .font-accent { font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
         
@@ -46,7 +43,6 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.03); 
         }
         
-        /* Анимации появления */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -57,13 +53,23 @@
             transform: translateY(0);
         }
 
-        /* Дроверы (Корзина и Меню) */
         .drawer {
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             transform: translateX(100%);
         }
         .drawer.open {
             transform: translateX(0);
+        }
+
+        /* Стильный фон кнопки */
+        .btn-premium {
+            background: linear-gradient(135deg, #C58E7E 0%, #A67264 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-premium:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(197, 142, 126, 0.3);
         }
     </style>
 </head>
@@ -88,38 +94,25 @@
     <!-- Навигация -->
     <nav id="navbar" class="fixed top-0 w-full z-[100] transition-all duration-500 py-6 md:py-8 border-b border-transparent">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <!-- Логотип -->
             <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col group cursor-pointer leading-none relative z-10">
                 <span class="text-2xl md:text-3xl font-premium tracking-widest uppercase italic text-[#121212]">Mira<span class="font-bold text-[#C58E7E] not-italic px-0.5">&</span>Papa</span>
                 <span class="text-[7px] uppercase tracking-[0.5em] text-neutral-400 mt-1 pl-1">Студия наград</span>
             </div>
 
-            <!-- Десктоп Меню -->
             <div class="hidden md:flex items-center gap-12">
                 <div class="flex gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">
-                    <a href="#catalog" class="hover:text-[#C58E7E] transition-colors relative group">
-                        Каталог
-                        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#C58E7E] transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="#about" class="hover:text-[#C58E7E] transition-colors relative group">
-                        О студии
-                        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#C58E7E] transition-all group-hover:w-full"></span>
-                    </a>
-                    <a href="#contacts" class="hover:text-[#C58E7E] transition-colors relative group">
-                        Контакты
-                        <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#C58E7E] transition-all group-hover:w-full"></span>
-                    </a>
+                    <a href="#catalog" class="hover:text-[#C58E7E] transition-colors relative group">Каталог</a>
+                    <a href="#about" class="hover:text-[#C58E7E] transition-colors relative group">О студии</a>
+                    <a href="#contacts" class="hover:text-[#C58E7E] transition-colors relative group">Контакты</a>
                 </div>
             </div>
 
-            <!-- Иконки справа -->
             <div class="flex items-center gap-6 z-10">
                 <button onclick="toggleCart(true)" class="relative p-1 hover:text-[#C58E7E] transition-all group">
                     <span class="text-[9px] font-bold uppercase tracking-widest mr-2 hidden md:inline-block group-hover:text-[#C58E7E]">Корзина</span>
                     <i data-lucide="shopping-bag" class="inline-block w-5 h-5"></i>
                     <span id="cart-count" class="hidden absolute -top-1 -right-1 bg-[#C58E7E] text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-lg">0</span>
                 </button>
-                <!-- Бургер для мобильных -->
                 <button onclick="toggleMobileMenu(true)" class="md:hidden p-1 hover:text-[#C58E7E] transition-colors">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
@@ -127,36 +120,24 @@
         </div>
     </nav>
 
-    <!-- Hero Секция (Обновленная) -->
+    <!-- Hero Секция -->
     <section class="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-6 overflow-hidden">
         <div class="max-w-4xl mx-auto flex flex-col items-center text-center relative z-10">
-            
-            <!-- Декоративная линия -->
             <div class="reveal w-[1px] h-16 bg-gradient-to-b from-transparent via-[#C58E7E] to-transparent mb-10"></div>
-            
-            <!-- Заголовок: Меньше, новый шрифт -->
             <h1 class="reveal delay-100 text-4xl md:text-6xl lg:text-7xl font-premium font-light leading-[1.1] mb-8 tracking-tight text-[#121212]">
                 Искусство признания <br> 
-                <span class="italic text-[#C58E7E] relative">
-                    в благородном металле
-                </span>
+                <span class="italic text-[#C58E7E] relative">в благородном металле</span>
             </h1>
-            
-            <!-- Описание -->
             <div class="reveal delay-200 max-w-xl mx-auto">
                 <p class="text-neutral-600 text-sm md:text-base leading-relaxed mb-10 font-light tracking-wide">
                     Мастерская «MIRA&PAPA» создает эталонные кнопки YouTube. Авиационный алюминий, ручная полировка и 24K позолота — награда, достойная вашего успеха.
                 </p>
             </div>
-
-            <!-- Кнопка -->
             <a href="#catalog" class="reveal delay-300 group relative px-10 py-4 bg-[#121212] text-white overflow-hidden shadow-2xl hover:shadow-xl transition-all duration-300">
                 <span class="absolute inset-0 w-full h-full bg-[#C58E7E] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></span>
                 <span class="relative text-[10px] font-bold uppercase tracking-[0.25em] z-10">Выбрать награду</span>
             </a>
         </div>
-
-        <!-- Фоновый эффект -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] md:w-[40vw] md:h-[40vw] bg-[#C58E7E]/10 blur-[100px] rounded-full -z-10 animate-pulse-slow"></div>
     </section>
 
@@ -167,9 +148,6 @@
                 <span class="text-[#C58E7E] text-[9px] font-bold uppercase tracking-[0.3em] block mb-3">Коллекция 2026</span>
                 <h2 class="text-3xl md:text-4xl font-premium italic text-[#121212]">Каталог наград</h2>
             </div>
-            <p class="text-[9px] uppercase tracking-[0.2em] text-neutral-400 max-w-xs text-right hidden md:block">
-                Ручная работа • 9 эксклюзивных моделей
-            </p>
         </div>
 
         <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-24">
@@ -177,31 +155,18 @@
         </div>
     </section>
 
-    <!-- О нас (Визуально облегченная) -->
+    <!-- О нас -->
     <section id="about" class="bg-[#F8F8F8] py-32 px-6 relative overflow-hidden">
         <div class="max-w-5xl mx-auto relative z-10">
             <div class="text-center mb-16 reveal">
                 <i data-lucide="gem" class="mx-auto mb-8 text-[#C58E7E] stroke-[1px]" style="width: 40px; height: 40px;"></i>
                 <h2 class="text-3xl md:text-4xl font-premium italic mb-6">Философия MIRA&PAPA</h2>
-                <div class="w-12 h-[1px] bg-[#C58E7E] mx-auto opacity-50"></div>
             </div>
-            
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="reveal delay-100">
                     <p class="text-sm md:text-base text-neutral-600 leading-relaxed font-light mb-6">
-                        Кнопка YouTube — это не просто предмет интерьера. Это физическое воплощение тысяч часов вашего труда. Мы — семейная студия, которая превратила создание наград в ювелирное искусство.
+                        Кнопка YouTube — это не просто предмет интерьера. Это физическое воплощение тысяч часов вашего труда.
                     </p>
-                    <p class="text-sm md:text-base text-neutral-600 leading-relaxed font-light">
-                        Никакого пластика. Только холодный металл, зеркальная полировка и покрытия, которые не тускнеют годами. Мы создаем артефакты, которые вы с гордостью передадите следующему поколению.
-                    </p>
-                </div>
-                <div class="relative h-64 md:h-80 bg-white p-8 shadow-xl rotate-1 reveal delay-200 border border-neutral-100 flex items-center justify-center">
-                    <div class="text-center">
-                        <span class="block text-5xl font-premium italic text-[#C58E7E] mb-2">100%</span>
-                        <span class="text-[9px] uppercase tracking-[0.3em] text-neutral-400">Гарантия качества</span>
-                    </div>
-                    <!-- Декоративная рамка -->
-                    <div class="absolute inset-2 border border-neutral-100"></div>
                 </div>
             </div>
         </div>
@@ -213,45 +178,17 @@
             <div class="grid md:grid-cols-2 gap-16 relative z-10">
                 <div>
                     <h2 class="text-3xl md:text-4xl font-premium italic mb-8">Начнем создание<br>вашей награды?</h2>
-                    <p class="text-neutral-400 text-sm font-light mb-10 max-w-sm">
-                        Напишите нам, чтобы обсудить индивидуальный дизайн или задать вопросы по доставке.
-                    </p>
-                    <div class="flex gap-4">
-                         <a href="https://t.me/+79779662521" class="px-8 py-4 border border-white/20 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">
-                            Написать в Telegram
-                        </a>
-                    </div>
+                    <a href="https://t.me/+79779662521" class="px-8 py-4 border border-white/20 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">Написать в Telegram</a>
                 </div>
                 <div class="flex flex-col justify-center gap-8 border-l border-white/10 md:pl-16">
                     <div>
                         <span class="text-[9px] text-[#C58E7E] font-bold uppercase tracking-[0.2em] block mb-2">Телефон / WhatsApp</span>
-                        <!-- Добавил иконку телефона -->
                         <a href="tel:+79779662521" class="text-xl font-premium italic hover:text-[#C58E7E] transition-colors flex items-center gap-3">
-                            <i data-lucide="phone" class="w-5 h-5"></i>
-                            +7 (977) 966-25-21
+                            <i data-lucide="phone" class="w-5 h-5"></i> +7 (977) 966-25-21
                         </a>
-                    </div>
-                    <div>
-                        <span class="text-[9px] text-[#C58E7E] font-bold uppercase tracking-[0.2em] block mb-2">Email</span>
-                        <!-- Обновил Email -->
-                        <a href="mailto:timyur0530@gmail.com" class="text-xl font-premium italic hover:text-[#C58E7E] transition-colors">timyur0530@gmail.com</a>
-                    </div>
-                    <div>
-                        <span class="text-[9px] text-[#C58E7E] font-bold uppercase tracking-[0.2em] block mb-2">Соцсети</span>
-                        <!-- Обновил ссылки -->
-                        <div class="flex gap-6">
-                            <a href="https://www.instagram.com/knopki_youtube?igsh=YW1tdTVnanpmemsy" target="_blank" class="hover:text-[#C58E7E] transition-all">
-                                <i data-lucide="instagram"></i>
-                            </a>
-                            <a href="https://youtu.be/GXJi3h53CPs" target="_blank" class="hover:text-[#C58E7E] transition-all">
-                                <i data-lucide="youtube"></i>
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Декор фона -->
-            <div class="absolute right-0 top-0 w-1/2 h-full bg-[#C58E7E]/5 blur-[80px]"></div>
         </div>
     </section>
 
@@ -264,28 +201,36 @@
                 <i data-lucide="x"></i>
             </button>
         </div>
+        
         <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-8 bg-[#FDFDFD]">
             <!-- Элементы корзины -->
         </div>
-        <div id="cart-footer" class="p-8 bg-white border-t border-neutral-50 hidden relative z-10 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
+
+        <div id="cart-footer" class="p-8 bg-white border-t border-neutral-50 hidden relative z-10">
+            <!-- Дополнительные поля -->
+            <div class="space-y-4 mb-8">
+                <div>
+                    <label class="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400 block mb-2">Текст на кнопке (имя канала/ник)</label>
+                    <input type="text" id="order-custom-text" placeholder="Напр: MrBeast" class="w-full bg-neutral-50 border border-neutral-100 p-3 text-sm focus:outline-none focus:border-[#C58E7E] transition-colors">
+                </div>
+                <div>
+                    <label class="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400 block mb-2">Ваш телефон для связи</label>
+                    <input type="tel" id="order-phone" placeholder="+7 (___) ___-__-__" class="w-full bg-neutral-50 border border-neutral-100 p-3 text-sm focus:outline-none focus:border-[#C58E7E] transition-colors">
+                </div>
+            </div>
+
             <div class="flex justify-between items-end mb-8">
                 <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400">Итого</span>
                 <span id="cart-total" class="text-3xl font-premium italic text-[#121212]">0 ₽</span>
             </div>
-            <button onclick="checkout()" class="w-full py-5 bg-[#121212] text-white text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-[#C58E7E] transition-all shadow-lg">
+            <button onclick="checkout()" class="w-full py-5 btn-premium text-white text-[10px] font-bold uppercase tracking-[0.25em] shadow-lg">
                 Оформить в Telegram
             </button>
         </div>
     </div>
 
-    <!-- Футер -->
     <footer class="bg-white border-t border-neutral-100 py-16 text-center">
         <span class="text-2xl font-premium tracking-[0.1em] uppercase italic mb-6 block text-neutral-800">Mira<span class="font-bold text-[#C58E7E] not-italic">&</span>Papa</span>
-        <div class="flex justify-center gap-6 mb-8 text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400">
-            <a href="#" class="hover:text-[#121212]">Оферта</a>
-            <a href="#" class="hover:text-[#121212]">Доставка</a>
-            <a href="#" class="hover:text-[#121212]">Конфиденциальность</a>
-        </div>
         <p class="text-neutral-300 text-[9px] font-medium uppercase tracking-[0.1em]">© 2026 MIRA&PAPA Studio. Moscow.</p>
     </footer>
 
@@ -296,10 +241,7 @@
             { id: 3, name: "Золотая кнопка SHORTS", price: 6500, category: "YouTube", image: "button3.png", desc: "Эксклюзивная золотая серия для авторов вертикальных видео." },
             { id: 4, name: "Серебряная кнопка SHORTS", price: 8500, category: "YouTube", image: "button3.png", desc: "Компактная серебряная награда в стиле Shorts." },
             { id: 5, name: "Бриллиантовая кнопка (Custom)", price: 8500, category: "YouTube", image: "button3.png", desc: "Премиальная имитация за 10,000,000 подписчиков." },
-            { id: 6, name: "Золотая кнопка Instagram", price: 9000, category: "Instagram", image: "button3.png", desc: "Элегантная награда с золотым логотипом Instagram." },
-            { id: 7, name: "Награда TikTok Star", price: 16000, category: "TikTok", image: "button3.png", desc: "Стильная металлическая награда для тиктокеров." },
-            { id: 8, name: "Кнопка Telegram Channel", price: 19900, category: "Telegram", image: "button3.png", desc: "Матовый авиационный алюминий в стиле мессенджера." },
-            { id: 9, name: "Индивидуальная награда", price: 5000, category: "Custom", image: "button3.png", desc: "Разработка дизайна под ваш бренд или личное достижение." }
+            { id: 6, name: "Индивидуальная награда", price: 5000, category: "Custom", image: "button3.png", desc: "Разработка дизайна под ваш бренд или личное достижение." }
         ];
 
         let cart = [];
@@ -308,19 +250,15 @@
             lucide.createIcons();
             renderProducts();
             
-            // Наблюдатель прокрутки для навигации
             window.addEventListener('scroll', () => {
                 const nav = document.getElementById('navbar');
                 if (window.scrollY > 20) nav.classList.add('scrolled-nav');
                 else nav.classList.remove('scrolled-nav');
             });
 
-            // Наблюдатель для анимаций появления
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('active');
                 });
             }, { threshold: 0.1 });
 
@@ -331,13 +269,11 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = products.map((p, index) => `
                 <div class="group flex flex-col reveal" style="transition-delay: ${index * 50}ms">
-                    <div class="relative aspect-[4/5] mb-6 overflow-hidden bg-[#F5F5F5] cursor-pointer">
+                    <div class="relative aspect-[4/5] mb-6 overflow-hidden bg-[#F5F5F5]">
                         <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
                         
-                        <!-- Оверлей при наведении -->
-                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        
-                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 left-0 w-full bg-[#121212] text-white py-4 text-[9px] font-bold uppercase tracking-[0.2em] translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-[#C58E7E]">
+                        <!-- Кнопка всегда видна снизу -->
+                        <button onclick="addToCart(${p.id})" class="absolute bottom-0 left-0 w-full btn-premium text-white py-5 text-[9px] font-bold uppercase tracking-[0.2em] shadow-lg">
                             В корзину
                         </button>
                     </div>
@@ -352,7 +288,6 @@
                 </div>
             `).join('');
             
-            // Перезапуск наблюдателя для новых элементов
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('active');
@@ -394,17 +329,17 @@
                 items.innerHTML = cart.map(item => {
                     sum += item.price * item.quantity;
                     return `
-                        <div class="flex gap-5 border-b border-neutral-100 pb-6 items-start animate-fade-in">
+                        <div class="flex gap-5 border-b border-neutral-100 pb-6 items-start">
                             <div class="w-20 h-24 bg-neutral-50 shrink-0 overflow-hidden relative">
-                                <img src="${item.image}" class="w-full h-full object-cover mix-blend-multiply">
+                                <img src="${item.image}" class="w-full h-full object-cover">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h4 class="font-premium text-lg leading-tight mb-2 truncate">${item.name}</h4>
                                 <p class="text-[#C58E7E] text-xs font-bold mb-3">${item.price.toLocaleString()} ₽</p>
                                 <div class="flex items-center gap-3 border border-neutral-200 w-max px-2 py-1">
-                                    <button onclick="updateQty(${item.id}, -1)" class="hover:text-[#C58E7E] transition-colors p-1"><i data-lucide="minus" style="width:10px"></i></button>
+                                    <button onclick="updateQty(${item.id}, -1)" class="p-1 hover:text-[#C58E7E]"><i data-lucide="minus" style="width:10px"></i></button>
                                     <span class="text-xs font-bold w-4 text-center">${item.quantity}</span>
-                                    <button onclick="updateQty(${item.id}, 1)" class="hover:text-[#C58E7E] transition-colors p-1"><i data-lucide="plus" style="width:10px"></i></button>
+                                    <button onclick="updateQty(${item.id}, 1)" class="p-1 hover:text-[#C58E7E]"><i data-lucide="plus" style="width:10px"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -427,40 +362,40 @@
         function toggleCart(show) {
             const drawer = document.getElementById('cart-drawer');
             const overlay = document.getElementById('cart-overlay');
-            
             if (show) {
                 overlay.style.display = 'block';
-                // Небольшая задержка для анимации opacity
-                setTimeout(() => {
-                    drawer.classList.add('open');
-                }, 10);
+                setTimeout(() => drawer.classList.add('open'), 10);
             } else {
                 drawer.classList.remove('open');
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 600);
+                setTimeout(() => overlay.style.display = 'none', 600);
             }
         }
 
         function toggleMobileMenu(show) {
             const drawer = document.getElementById('mobile-menu-drawer');
             const overlay = document.getElementById('mobile-menu-overlay');
-            
             if (show) {
                 overlay.style.display = 'block';
-                setTimeout(() => {
-                    drawer.classList.add('open');
-                }, 10);
+                setTimeout(() => drawer.classList.add('open'), 10);
             } else {
                 drawer.classList.remove('open');
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 600);
+                setTimeout(() => overlay.style.display = 'none', 600);
             }
         }
 
         function checkout() {
-            const text = `Заказ MIRA&PAPA:\n\n` + cart.map(i => `• ${i.name} (x${i.quantity}) - ${i.price * i.quantity}₽`).join('\n') + `\n\nИтого: ${document.getElementById('cart-total').innerText}`;
+            const customText = document.getElementById('order-custom-text').value;
+            const phone = document.getElementById('order-phone').value;
+            
+            if(!phone) {
+                // Вместо alert используем более мягкую индикацию или просто проверку
+                document.getElementById('order-phone').style.borderColor = '#C58E7E';
+                return;
+            }
+
+            const orderList = cart.map(i => `• ${i.name} (x${i.quantity}) - ${i.price * i.quantity}₽`).join('\n');
+            const text = `Заказ MIRA&PAPA:\n\n${orderList}\n\nТекст на кнопке: ${customText || 'Не указан'}\nТелефон: ${phone}\n\nИтого: ${document.getElementById('cart-total').innerText}`;
+            
             window.open(`https://t.me/+79779662521?text=${encodeURIComponent(text)}`, '_blank');
         }
 
