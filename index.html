@@ -26,7 +26,6 @@
         .font-premium { font-family: 'Cormorant Garamond', serif; }
         .font-roboto { font-family: 'Roboto', sans-serif; }
 
-        /* Эффект шума для текстурности */
         .bg-noise {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -36,10 +35,7 @@
 
         .hero-bg-image {
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 60%;
-            height: 100%;
+            top: 0; right: 0; width: 60%; height: 100%;
             background-image: url('https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
@@ -57,7 +53,6 @@
             box-shadow: 0 12px 24px rgba(197, 142, 126, 0.3);
         }
 
-        /* Навигация (Светлая тема) */
         #navbar {
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(12px);
@@ -81,7 +76,6 @@
         }
         .drawer.open { transform: translateX(0); }
 
-        /* Стилизация предпросмотра */
         .preview-wrapper {
             position: relative;
             width: 100%;
@@ -133,8 +127,7 @@
             border: 2px solid rgba(197, 142, 126, 0.1);
             border-top: 2px solid #C58E7E;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 24px; height: 24px;
             animation: spin 0.8s linear infinite;
         }
 
@@ -142,19 +135,11 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        footer a {
-            transition: color 0.3s ease;
-        }
-        footer a:hover {
-            color: var(--accent);
-        }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
     <div class="bg-noise"></div>
 
-    <!-- Навигация -->
     <nav id="navbar" class="fixed top-0 w-full z-[100] py-4 px-6">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="cursor-pointer group">
@@ -170,7 +155,6 @@
         </div>
     </nav>
 
-    <!-- Главный экран -->
     <section class="relative min-h-[95vh] flex items-center pt-20 px-6 overflow-hidden">
         <div class="hero-bg-image"></div>
         <div class="max-w-7xl mx-auto w-full relative z-10">
@@ -186,7 +170,6 @@
         </div>
     </section>
 
-    <!-- Каталог -->
     <section id="catalog" class="max-w-7xl mx-auto px-6 py-32">
         <div class="mb-20">
             <span class="text-[#C58E7E] text-[9px] font-bold uppercase tracking-[0.3em] block mb-3">Коллекция 2026</span>
@@ -195,105 +178,54 @@
         <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></div>
     </section>
 
-    <!-- Подвал (Footer) -->
     <footer class="bg-[#121212] text-white pt-24 pb-12 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-                <!-- Бренд -->
                 <div class="space-y-6">
                     <span class="text-2xl font-premium tracking-widest uppercase italic">Mira<span class="font-bold text-[#C58E7E] not-italic"> & </span>Papa</span>
-                    <p class="text-neutral-500 text-sm leading-relaxed font-light">
-                        Ювелирная мастерская по созданию эксклюзивных наград. Мы превращаем ваши цифровые достижения в осязаемые шедевры из металла.
-                    </p>
+                    <p class="text-neutral-500 text-sm leading-relaxed font-light">Ювелирная мастерская по созданию эксклюзивных наград.</p>
                     <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center hover:bg-[#C58E7E] hover:border-[#C58E7E] transition-all">
-                            <i data-lucide="instagram" class="w-4 h-4"></i>
-                        </a>
-                        <a href="https://t.me/79779662521" target="_blank" class="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center hover:bg-[#C58E7E] hover:border-[#C58E7E] transition-all">
-                            <i data-lucide="send" class="w-4 h-4"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center hover:bg-[#C58E7E] hover:border-[#C58E7E] transition-all">
-                            <i data-lucide="youtube" class="w-4 h-4"></i>
-                        </a>
+                        <a href="https://t.me/89779662521" target="_blank" class="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center hover:bg-[#C58E7E] transition-all"><i data-lucide="send" class="w-4 h-4"></i></a>
                     </div>
                 </div>
-
-                <!-- Навигация -->
                 <div>
                     <h4 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-8">Навигация</h4>
                     <ul class="space-y-4 text-sm font-light text-neutral-400">
                         <li><a href="#" class="hover:text-white">Главная</a></li>
-                        <li><a href="#catalog" class="hover:text-white">Каталог наград</a></li>
-                        <li><a href="javascript:void(0)" onclick="toggleDesignModal(true)" class="hover:text-white">Индивидуальный заказ</a></li>
-                        <li><a href="#" class="hover:text-white">О мастерской</a></li>
+                        <li><a href="#catalog" class="hover:text-white">Каталог</a></li>
                     </ul>
                 </div>
-
-                <!-- Контакты -->
                 <div>
                     <h4 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-8">Контакты</h4>
                     <ul class="space-y-4 text-sm font-light text-neutral-400">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="map-pin" class="w-4 h-4 text-[#C58E7E] mt-0.5"></i>
-                            <span>Москва, Кутузовский проспект, 12</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="phone" class="w-4 h-4 text-[#C58E7E]"></i>
-                            <a href="tel:+79779662521" class="hover:text-white">+7 (977) 966-25-21</a>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="mail" class="w-4 h-4 text-[#C58E7E]"></i>
-                            <a href="mailto:info@mira-papa.ru" class="hover:text-white">info@mira-papa.ru</a>
-                        </li>
+                        <li><a href="tel:+79779662521" class="hover:text-white">+7 (977) 966-25-21</a></li>
                     </ul>
                 </div>
-
-                <!-- Режим работы -->
                 <div>
                     <h4 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C58E7E] mb-8">Мастерская</h4>
-                    <div class="bg-neutral-900/50 p-6 rounded-sm border border-neutral-800">
-                        <p class="text-[10px] font-bold uppercase text-neutral-500 mb-2">Прием заказов:</p>
-                        <p class="text-sm font-light text-neutral-300 mb-4">Ежедневно, 10:00 — 21:00</p>
-                        <p class="text-[10px] font-bold uppercase text-neutral-500 mb-2">Срок изготовления:</p>
-                        <p class="text-sm font-light text-neutral-300">от 14 рабочих дней</p>
+                    <div class="bg-neutral-900/50 p-6 rounded-sm border border-neutral-800 text-sm text-neutral-300">
+                        Ежедневно, 10:00 — 21:00
                     </div>
                 </div>
             </div>
-
-            <!-- Копирайт -->
-            <div class="pt-12 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-6">
-                <p class="text-neutral-600 text-[10px] uppercase tracking-widest">
-                    &copy; 2026 Mira & Papa. Все права защищены.
-                </p>
-                <div class="flex gap-8 text-neutral-600 text-[10px] uppercase tracking-widest">
-                    <a href="#" class="hover:text-[#C58E7E]">Политика конфиденциальности</a>
-                    <a href="#" class="hover:text-[#C58E7E]">Договор оферты</a>
-                </div>
+            <div class="pt-12 border-t border-neutral-800 text-neutral-600 text-[10px] uppercase tracking-widest flex justify-between">
+                <span>&copy; 2026 Mira & Papa</span>
             </div>
         </div>
     </footer>
 
-    <!-- Корзина -->
     <div id="cart-overlay" class="fixed inset-0 z-[200] hidden bg-black/30 backdrop-blur-sm transition-opacity duration-500" onclick="toggleCart(false)"></div>
     <div id="cart-drawer" class="drawer fixed right-0 top-0 z-[201] w-full max-w-md bg-white h-full shadow-[-20px_0_60px_rgba(0,0,0,0.1)] flex flex-col">
         <div class="p-8 flex items-center justify-between border-b border-neutral-100">
             <h2 class="text-2xl font-premium italic text-black">Ваш выбор</h2>
             <button onclick="toggleCart(false)" class="text-neutral-400 hover:text-black transition-colors"><i data-lucide="x"></i></button>
         </div>
-        
-        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-8 text-black">
-            <!-- Список товаров -->
-        </div>
-
+        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-8 text-black"></div>
         <div id="cart-footer" class="p-8 bg-neutral-50 border-t border-neutral-100 hidden">
             <div class="space-y-5 mb-8">
                 <div>
                     <label class="text-[8px] font-bold uppercase tracking-widest text-neutral-400 mb-2 block">Текст гравировки</label>
-                    <input type="text" id="order-custom-text" placeholder="Название вашего канала" class="w-full bg-white border border-neutral-200 p-4 text-sm focus:border-[#C58E7E] outline-none transition-colors text-black placeholder:text-neutral-300">
-                </div>
-                <div>
-                    <label class="text-[8px] font-bold uppercase tracking-widest text-neutral-400 mb-2 block">Контактный номер</label>
-                    <input type="tel" id="order-phone" placeholder="+7 (___) ___-__-__" class="w-full bg-white border border-neutral-200 p-4 text-sm focus:border-[#C58E7E] outline-none transition-colors text-black">
+                    <input type="text" id="order-custom-text" placeholder="Название вашего канала" class="w-full bg-white border border-neutral-200 p-4 text-sm focus:border-[#C58E7E] outline-none text-black">
                 </div>
             </div>
             <div class="flex justify-between items-end mb-8">
@@ -304,58 +236,49 @@
         </div>
     </div>
 
-    <!-- Предпросмотр -->
     <div id="preview-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl">
         <div class="bg-white max-w-xl w-full p-8 md:p-12 text-center rounded-sm relative shadow-2xl">
             <h2 class="text-2xl font-premium italic mb-10 text-black">Визуализация награды</h2>
-            
             <div id="preview-container" class="preview-wrapper mb-12 flex items-center justify-center">
-                <div id="preview-loader" class="absolute inset-0 flex items-center justify-center bg-black/5 z-20 hidden">
-                    <div class="loader-spin"></div>
-                </div>
+                <div id="preview-loader" class="absolute inset-0 flex items-center justify-center bg-black/5 z-20 hidden"><div class="loader-spin"></div></div>
                 <img id="preview-img" src="" class="preview-img opacity-0">
                 <div class="preview-overlay font-roboto">
                     <p class="text-[8px] uppercase tracking-widest opacity-70 mb-1">Presented to</p>
                     <p id="viz-text" class="viz-text">—</p>
-                    <p id="viz-sub" class="viz-sub">For passing 1,000,000 subscribers</p>
+                    <p id="viz-sub" class="viz-sub">For passing the milestone</p>
                 </div>
             </div>
-
             <div class="flex flex-col sm:flex-row gap-4">
-                <button onclick="backToCart()" class="flex-1 py-5 bg-neutral-100 text-neutral-800 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-200 transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Изменить данные
-                </button>
-                <button id="final-tg-btn" class="flex-[1.5] py-5 btn-premium text-white text-[10px] font-bold uppercase tracking-widest shadow-lg">Отправить в Telegram</button>
+                <button onclick="backToCart()" class="flex-1 py-5 bg-neutral-100 text-neutral-800 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2"><i data-lucide="arrow-left" class="w-4 h-4"></i> Изменить</button>
+                <button id="final-tg-btn" class="flex-[1.5] py-5 btn-premium text-white text-[10px] font-bold uppercase tracking-widest shadow-lg">Заказать в Telegram</button>
             </div>
         </div>
     </div>
 
-    <!-- Модалка чата -->
     <div id="design-modal" class="fixed inset-0 z-[300] hidden bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-sm p-10 text-center shadow-2xl">
-            <div class="w-20 h-20 bg-[#C58E7E]/10 rounded-full flex items-center justify-center mx-auto mb-8">
-                <i data-lucide="feather" class="text-[#C58E7E] w-10 h-10"></i>
-            </div>
+            <div class="w-20 h-20 bg-[#C58E7E]/10 rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="feather" class="text-[#C58E7E] w-10 h-10"></i></div>
             <h3 class="font-premium text-3xl text-black mb-4">Индивидуальный заказ</h3>
-            <p class="text-neutral-500 mb-10 text-sm leading-relaxed">Мы можем создать уникальный дизайн по вашему эскизу. Напишите мастеру для обсуждения деталей.</p>
-            <a href="https://t.me/79779662521" target="_blank" class="block w-full py-5 btn-premium text-white text-[10px] font-bold uppercase tracking-widest rounded-sm mb-4">Перейти в Telegram</a>
-            <button onclick="toggleDesignModal(false)" class="text-neutral-400 text-[9px] font-bold uppercase tracking-[0.2em] hover:text-black transition-colors">Вернуться на сайт</button>
+            <p class="text-neutral-500 mb-10 text-sm leading-relaxed">Напишите мастеру для обсуждения деталей вашего проекта.</p>
+            <a href="https://t.me/89779662521" target="_blank" class="block w-full py-5 btn-premium text-white text-[10px] font-bold uppercase tracking-widest mb-4">Написать в Telegram</a>
+            <button onclick="toggleDesignModal(false)" class="text-neutral-400 text-[9px] font-bold uppercase hover:text-black">Закрыть</button>
         </div>
     </div>
 
     <script>
         let cart = [];
+        const MY_PHONE = "89779662521";
 
         const products = [
-            { id: 1, name: "Золотая кнопка (1 млн)", price: 9900, category: "Premium", color: "gold", image: "button5.png" },
-            { id: 2, name: "Серебряная кнопка (100к)", price: 8900, category: "Premium", color: "silver", image: "button6.png" },
-            { id: 3, name: "Золотая кнопка Shorts", price: 6900, category: "Special", color: "gold", image: "button7.png" },
-            { id: 4, name: "Diamond Button Replica", price: 16500, category: "Elite", color: "diamond", image: "button5.png" },
-            { id: 5, name: "Black Shadow Edition", price: 11000, category: "Exclusive", color: "black", image: "button5.png" },
-            { id: 6, name: "Instagram Award", price: 12500, category: "Social Art", color: "silver", image: "button5.png" },
-            { id: 7, name: "Mini Desktop Award", price: 2900, category: "Gift", color: "gold", image: "button5.png" },
-            { id: 8, name: "Bronze Custom Star", price: 5400, category: "Special", color: "bronze", image: "button5.png" },
-            { id: 9, name: "Glass Crystal Cube", price: 7200, category: "Trophy", color: "glass", image: "button5.png" }
+            { id: 1, name: "Золотая кнопка (1 млн)", price: 9900, category: "Premium", color: "gold", image: "button3.png" },
+            { id: 2, name: "Серебряная кнопка (100к)", price: 8900, category: "Premium", color: "silver", image: "button4.png" },
+            { id: 3, name: "Золотая кнопка Shorts", price: 6900, category: "Special", color: "gold", image: "button5.png" },
+            { id: 4, name: "Diamond Button Replica", price: 16500, category: "Elite", color: "diamond", image: "button6.png" },
+            { id: 5, name: "Black Shadow Edition", price: 11000, category: "Exclusive", color: "black", image: "button7.png" },
+            { id: 6, name: "Instagram Award", price: 12500, category: "Social Art", color: "silver", image: "button8.png" },
+            { id: 7, name: "Mini Desktop Award", price: 2900, category: "Gift", color: "gold", image: "button9.png" },
+            { id: 8, name: "Bronze Custom Star", price: 5400, category: "Special", color: "bronze", image: "button10.png" },
+            { id: 9, name: "Glass Crystal Cube", price: 7200, category: "Trophy", color: "glass", image: "button11.png" }
         ];
 
         function init() {
@@ -363,23 +286,22 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = products.map(p => `
                 <div class="product-card p-8 flex flex-col h-full rounded-sm">
-                    <div class="overflow-hidden mb-8 rounded-sm">
-                        <img src="${p.image}" class="aspect-square w-full object-cover transform hover:scale-105 transition-transform duration-700">
+                    <div class="overflow-hidden mb-8 rounded-sm bg-neutral-50 flex items-center justify-center min-h-[250px]">
+                        <img src="${p.image}" alt="${p.name}" class="aspect-square w-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;text-neutral-300 text-[10px] font-bold uppercase tracking-widest&quot;>[Изображение ${p.name}]</div>'">
                     </div>
                     <div class="flex justify-between items-center mb-3">
                         <span class="text-[8px] font-bold text-[#C58E7E] uppercase tracking-widest">${p.category}</span>
                         <span class="text-sm font-semibold text-black">${p.price.toLocaleString()} ₽</span>
                     </div>
                     <h3 class="font-premium text-xl mb-8 text-black">${p.name}</h3>
-                    <button onclick="addToCart(${p.id})" class="w-full py-4 border border-neutral-200 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white hover:border-black transition-all text-black">В корзину</button>
+                    <button onclick="addToCart(${p.id})" class="w-full py-4 border border-neutral-200 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all text-black">В корзину</button>
                 </div>
             `).join('');
         }
 
         function addToCart(id) {
             const p = products.find(x => x.id === id);
-            const exists = cart.find(x => x.id === id);
-            if (exists) exists.quantity++; else cart.push({...p, quantity: 1});
+            cart.push({...p, cartId: Date.now()});
             renderCart();
             toggleCart(true);
         }
@@ -391,41 +313,32 @@
             const count = document.getElementById('cart-count');
             
             if (cart.length === 0) {
-                items.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-20 text-center">
-                        <i data-lucide="package-open" class="w-12 h-12 text-neutral-100 mb-4"></i>
-                        <p class="text-neutral-300 italic font-light">В корзине пока пусто</p>
-                    </div>
-                `;
+                items.innerHTML = `<p class="text-neutral-300 italic text-center py-10">Корзина пуста</p>`;
                 footer.classList.add('hidden');
                 count.classList.add('hidden');
             } else {
                 footer.classList.remove('hidden');
                 count.classList.remove('hidden');
-                count.innerText = cart.reduce((a,b) => a + b.quantity, 0);
+                count.innerText = cart.length;
                 items.innerHTML = cart.map(i => `
                     <div class="flex gap-5 items-center pb-6 border-b border-neutral-50">
-                        <img src="${i.image}" class="w-16 h-16 object-cover rounded-sm">
+                        <div class="w-16 h-16 bg-neutral-50 rounded-sm flex items-center justify-center overflow-hidden">
+                             <img src="${i.image}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                        </div>
                         <div class="flex-1">
-                            <h4 class="text-[10px] font-bold uppercase text-black tracking-tight">${i.name}</h4>
-                            <p class="text-[11px] text-[#C58E7E] font-semibold">${i.price.toLocaleString()} ₽</p>
+                            <h4 class="text-[10px] font-bold uppercase text-black">${i.name}</h4>
+                            <p class="text-[11px] text-[#C58E7E]">${i.price.toLocaleString()} ₽</p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <button onclick="updateQty(${i.id}, -1)" class="w-8 h-8 flex items-center justify-center rounded-full border border-neutral-100 text-black hover:bg-neutral-50 transition-colors">-</button>
-                            <span class="text-xs font-semibold w-4 text-center text-black">${i.quantity}</span>
-                            <button onclick="updateQty(${i.id}, 1)" class="w-8 h-8 flex items-center justify-center rounded-full border border-neutral-100 text-black hover:bg-neutral-50 transition-colors">+</button>
-                        </div>
+                        <button onclick="removeItem(${i.cartId})" class="text-neutral-300 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 `).join('');
-                total.innerText = cart.reduce((a,b) => a + (b.price * b.quantity), 0).toLocaleString() + ' ₽';
+                total.innerText = cart.reduce((a,b) => a + b.price, 0).toLocaleString() + ' ₽';
             }
             lucide.createIcons();
         }
 
-        function updateQty(id, delta) {
-            const i = cart.find(x => x.id === id);
-            i.quantity += delta;
-            if (i.quantity <= 0) cart = cart.filter(x => x.id !== id);
+        function removeItem(cartId) {
+            cart = cart.filter(x => x.cartId !== cartId);
             renderCart();
         }
 
@@ -439,16 +352,11 @@
         function toggleDesignModal(show) { document.getElementById('design-modal').classList.toggle('hidden', !show); }
 
         function openPreview() {
+            if (cart.length === 0) return;
             const txt = document.getElementById('order-custom-text').value || "MIRA & PAPA";
-            const phone = document.getElementById('order-phone').value;
             
-            if(!phone) { 
-                document.getElementById('order-phone').classList.add('border-red-400');
-                document.getElementById('order-phone').focus();
-                return; 
-            }
-            document.getElementById('order-phone').classList.remove('border-red-400');
-
+            const lastItem = cart[cart.length - 1];
+            
             document.getElementById('preview-modal').classList.remove('hidden');
             const img = document.getElementById('preview-img');
             const loader = document.getElementById('preview-loader');
@@ -456,30 +364,25 @@
             img.style.opacity = '0';
             loader.classList.remove('hidden');
             document.getElementById('viz-text').innerText = txt;
-            
-            // Логика выбора картинки и обход кэша
-            const hasSilver = cart.some(i => i.color === 'silver' || i.category === 'Social Art');
-            document.getElementById('viz-sub').innerText = hasSilver ? "For passing 100,000 subscribers" : "For passing 1,000,000 subscribers";
+            document.getElementById('viz-sub').innerText = lastItem.name.includes('100') ? "For passing 100,000 subscribers" : "For passing 1,000,000 subscribers";
 
-            const ts = new Date().getTime(); // Уникальный параметр для каждой загрузки
-            const baseImg = hasSilver 
-                ? `https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=1000` 
-                : `https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?q=80&w=1000`;
-            
-            img.src = `${baseImg}&cache=${ts}`;
-            
+            img.src = lastItem.image;
             img.onload = () => {
                 loader.classList.add('hidden');
                 img.style.opacity = '1';
+            };
+            img.onerror = () => {
+                loader.classList.add('hidden');
+                img.style.opacity = '0';
             };
 
             toggleCart(false);
             
             document.getElementById('final-tg-btn').onclick = () => {
-                const orderText = cart.map(i => `${i.name} (x${i.quantity})`).join(', ');
-                const total = cart.reduce((a,b) => a + (b.price * b.quantity), 0).toLocaleString();
-                const tgMsg = `ЗАКАЗ:\n${orderText}\nИТОГО: ${total} ₽\nГравировка: ${txt}\nТелефон: ${phone}`;
-                window.open(`https://t.me/79779662521?text=${encodeURIComponent(tgMsg)}`, '_blank');
+                const orderText = cart.map(i => i.name).join(', ');
+                const total = cart.reduce((a,b) => a + b.price, 0).toLocaleString();
+                const tgMsg = `НОВЫЙ ЗАКАЗ:\nИзделия: ${orderText}\nИтого: ${total} ₽\nГравировка: ${txt}\nКонтакт: +${MY_PHONE}`;
+                window.open(`https://t.me/${MY_PHONE}?text=${encodeURIComponent(tgMsg)}`, '_blank');
             };
         }
 
