@@ -31,6 +31,7 @@
             color: white;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         .font-modern { font-family: 'Unbounded', sans-serif; }
@@ -123,11 +124,12 @@
             height: 240px;
             object-fit: contain;
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-            transition: transform 0.5s ease;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform;
         }
 
         .glass-card:hover .product-image {
-            transform: scale(1.1) rotate(2deg);
+            transform: scale(1.15) rotate(3deg);
         }
     </style>
 </head>
@@ -177,7 +179,8 @@
             </div>
             <div class="relative hidden lg:block fade-in" style="animation-delay: 0.2s;">
                 <div class="aspect-square bg-gradient-to-tr from-white/10 to-transparent rounded-[40px] border border-white/10 flex items-center justify-center overflow-hidden shadow-2xl">
-                    <img src="button1.png" alt="MIRA&PAPA Award" class="w-4/5 h-4/5 object-contain opacity-80" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <!-- High priority loading for first image -->
+                    <img src="button1.png" fetchpriority="high" alt="MIRA&PAPA Award" class="w-4/5 h-4/5 object-contain opacity-80" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                     <div class="hidden text-center space-y-4 opacity-40">
                         <i data-lucide="zap" class="w-20 h-20 mx-auto"></i>
                         <p class="font-modern uppercase text-sm tracking-widest">The Next Gen Awards</p>
@@ -276,9 +279,13 @@
         function init() {
             const grid = document.getElementById('grid');
             grid.innerHTML = products.map((p, index) => `
-                <div class="glass-card p-10 rounded-[40px] flex flex-col fade-in" style="animation-delay: ${0.1 * index}s">
+                <div class="glass-card p-10 rounded-[40px] flex flex-col fade-in" style="animation-delay: ${0.05 * index}s">
                     <div class="relative h-[240px] flex items-center justify-center mb-8 overflow-hidden rounded-2xl bg-white/[0.02]">
-                         <img src="${p.img}" class="product-image" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x300/111/fff?text=${encodeURIComponent(p.name)}'">
+                         <img src="${p.img}" 
+                              class="product-image" 
+                              alt="${p.name}" 
+                              loading="lazy"
+                              onerror="this.src='https://via.placeholder.com/400x400/111/fff?text=${encodeURIComponent(p.name)}'">
                     </div>
                     <div class="flex-1">
                         <p class="text-[10px] uppercase tracking-[0.3em] font-bold text-white/30 mb-2">${p.sub}</p>
@@ -286,7 +293,7 @@
                     </div>
                     <div class="flex justify-between items-center mt-10">
                         <span class="text-lg font-bold">${PRICE.toLocaleString()} ₽</span>
-                        <button onclick="addToCart(${p.id})" class="p-4 metal-bg text-black rounded-2xl hover:scale-110 transition-transform flex items-center justify-center">
+                        <button onclick="addToCart(${p.id})" class="p-4 metal-bg text-black rounded-2xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center">
                             <i data-lucide="plus" class="w-5 h-5"></i>
                         </button>
                     </div>
@@ -349,10 +356,12 @@
                 overlay.classList.remove('pointer-events-none');
                 overlay.classList.add('opacity-100');
                 drawer.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
             } else {
                 overlay.classList.add('pointer-events-none');
                 overlay.classList.remove('opacity-100');
                 drawer.classList.add('translate-x-full');
+                document.body.style.overflow = '';
             }
         }
 
