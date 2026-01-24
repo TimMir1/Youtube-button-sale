@@ -22,6 +22,8 @@
             --bg: #050505;
             --card-bg: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
+            /* Градиент серебро-золото */
+            --metal-gradient: linear-gradient(135deg, #e2e2e2 0%, #c5a059 50%, #f1f1f1 100%);
         }
 
         body {
@@ -33,20 +35,30 @@
 
         .font-modern { font-family: 'Unbounded', sans-serif; }
 
-        /* Эффект жидкого металла для заголовков */
+        /* Эффект жидкого металла (серебро-золото) */
         .metal-text {
-            background: linear-gradient(135deg, #fff 0%, #888 50%, #fff 100%);
+            background: linear-gradient(135deg, #fff 0%, #c5a059 30%, #e2e2e2 50%, #c5a059 70%, #fff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: shine 5s linear infinite;
         }
 
+        .metal-bg {
+            background: var(--metal-gradient);
+            background-size: 200% auto;
+            transition: 0.5s;
+        }
+
+        .metal-bg:hover {
+            background-position: right center;
+        }
+
         @keyframes shine {
             to { background-position: 200% center; }
         }
 
-        /* Футуристичная сетка на фоне */
+        /* Сетка на фоне */
         .grid-bg {
             background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
             background-size: 40px 40px;
@@ -60,13 +72,12 @@
         }
 
         .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(197, 160, 89, 0.3);
             background: rgba(255, 255, 255, 0.06);
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* Кнопка 2030 */
         .btn-2030 {
             position: relative;
             overflow: hidden;
@@ -76,7 +87,7 @@
         }
 
         .btn-2030:hover {
-            box-shadow: 0 0 30px rgba(255,255,255,0.4);
+            box-shadow: 0 0 30px rgba(197, 160, 89, 0.4);
             transform: scale(1.05);
         }
 
@@ -84,7 +95,6 @@
             transition: transform 0.5s cubic-bezier(0.85, 0, 0.15, 1);
         }
 
-        /* Кастомный скролл */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -93,13 +103,12 @@
             position: absolute;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(197, 160, 89, 0.05) 0%, transparent 70%);
             filter: blur(80px);
             z-index: -1;
             pointer-events: none;
         }
 
-        /* Плавное появление элементов */
         .fade-in {
             animation: fadeIn 1s ease-out forwards;
         }
@@ -107,6 +116,18 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-image {
+            width: 100%;
+            height: 240px;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card:hover .product-image {
+            transform: scale(1.1) rotate(2deg);
         }
     </style>
 </head>
@@ -122,7 +143,7 @@
                 <div class="w-8 h-8 bg-white flex items-center justify-center rounded-full group-hover:rotate-[360deg] transition-transform duration-700">
                     <i data-lucide="crown" class="text-black w-4 h-4"></i>
                 </div>
-                <span class="font-modern text-lg tracking-tighter uppercase font-bold">MIRA&PAPA</span>
+                <span class="font-modern text-lg tracking-tighter uppercase font-bold metal-text">MIRA&PAPA</span>
             </div>
             
             <div class="flex items-center gap-8">
@@ -140,8 +161,8 @@
         <section class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center min-h-[70vh]">
             <div class="space-y-10 fade-in">
                 <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full">
-                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold">Handcrafted in 2026 for 2030</span>
+                    <span class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-yellow-500">Premium Artefacts 2030</span>
                 </div>
                 <h1 class="text-6xl md:text-8xl font-modern font-bold leading-none tracking-tighter">
                     СИМВОЛ <br> <span class="metal-text italic">ТВОЕЙ</span> <br> ВЛАСТИ
@@ -156,7 +177,8 @@
             </div>
             <div class="relative hidden lg:block fade-in" style="animation-delay: 0.2s;">
                 <div class="aspect-square bg-gradient-to-tr from-white/10 to-transparent rounded-[40px] border border-white/10 flex items-center justify-center overflow-hidden shadow-2xl">
-                    <div class="text-center space-y-4 opacity-40">
+                    <img src="button1.png" alt="MIRA&PAPA Award" class="w-4/5 h-4/5 object-contain opacity-80" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="hidden text-center space-y-4 opacity-40">
                         <i data-lucide="zap" class="w-20 h-20 mx-auto"></i>
                         <p class="font-modern uppercase text-sm tracking-widest">The Next Gen Awards</p>
                     </div>
@@ -186,7 +208,7 @@
     <footer class="border-t border-white/5 py-20 px-6 mt-20">
         <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
             <div class="space-y-6">
-                <span class="font-modern text-xl font-bold tracking-tighter">MIRA&PAPA</span>
+                <span class="font-modern text-xl font-bold tracking-tighter metal-text">MIRA&PAPA</span>
                 <p class="text-white/30 text-sm max-w-xs leading-relaxed">Вершина эволюции наградной продукции. Будущее уже здесь.</p>
             </div>
             <div class="space-y-6">
@@ -230,21 +252,21 @@
                 <span id="cart-total" class="text-4xl font-modern font-bold">0 ₽</span>
             </div>
 
-            <button onclick="checkout()" class="w-full btn-2030 py-6 rounded-2xl text-[12px] font-bold uppercase tracking-[0.2em] text-black">Оформить в Telegram</button>
+            <button onclick="checkout()" class="w-full metal-bg py-6 rounded-2xl text-[12px] font-bold uppercase tracking-[0.2em] text-black">Оформить в Telegram</button>
         </div>
     </div>
 
     <script>
         const products = [
-            { id: 1, name: "Золотая кнопка YouTube", sub: "YouTube Premium", icon: "youtube" },
-            { id: 2, name: "Серебряная кнопка YouTube", sub: "YouTube Classic", icon: "youtube" },
-            { id: 3, name: "Золотая Shorts", sub: "YouTube Vertical", icon: "play" },
-            { id: 4, name: "Серебро Shorts", sub: "YouTube Vertical", icon: "play" },
-            { id: 5, name: "Кнопка Telegram", sub: "Messenger Excellence", icon: "send" },
-            { id: 6, name: "Кнопка Instagram", sub: "Social Influence", icon: "instagram" },
-            { id: 7, name: "Кнопка LIKE", sub: "Popularity Icon", icon: "heart" },
-            { id: 8, name: "Кнопка Rutube", sub: "Russian Streaming", icon: "tv" },
-            { id: 9, name: "Индивидуальный проект", sub: "Custom Artefact", icon: "feather" }
+            { id: 1, name: "Золотая кнопка YouTube", sub: "YouTube Premium", icon: "youtube", img: "button1.png" },
+            { id: 2, name: "Серебряная кнопка YouTube", sub: "YouTube Classic", icon: "youtube", img: "button2.png" },
+            { id: 3, name: "Золотая Shorts", sub: "YouTube Vertical", icon: "play", img: "button3.png" },
+            { id: 4, name: "Серебро Shorts", sub: "YouTube Vertical", icon: "play", img: "button4.png" },
+            { id: 5, name: "Кнопка Telegram", sub: "Messenger Excellence", icon: "send", img: "button5.png" },
+            { id: 6, name: "Кнопка Instagram", sub: "Social Influence", icon: "instagram", img: "button6.png" },
+            { id: 7, name: "Кнопка LIKE", sub: "Popularity Icon", icon: "heart", img: "button7.png" },
+            { id: 8, name: "Кнопка Rutube", sub: "Russian Streaming", icon: "tv", img: "button8.png" },
+            { id: 9, name: "Индивидуальный проект", sub: "Custom Artefact", icon: "feather", img: "button9.png" }
         ];
 
         let cart = [];
@@ -255,8 +277,8 @@
             const grid = document.getElementById('grid');
             grid.innerHTML = products.map((p, index) => `
                 <div class="glass-card p-10 rounded-[40px] flex flex-col fade-in" style="animation-delay: ${0.1 * index}s">
-                    <div class="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mb-10 group-hover:bg-white/10 transition-all">
-                        <i data-lucide="${p.icon}" class="w-10 h-10 text-white/80"></i>
+                    <div class="relative h-[240px] flex items-center justify-center mb-8 overflow-hidden rounded-2xl bg-white/[0.02]">
+                         <img src="${p.img}" class="product-image" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x300/111/fff?text=${encodeURIComponent(p.name)}'">
                     </div>
                     <div class="flex-1">
                         <p class="text-[10px] uppercase tracking-[0.3em] font-bold text-white/30 mb-2">${p.sub}</p>
@@ -264,7 +286,7 @@
                     </div>
                     <div class="flex justify-between items-center mt-10">
                         <span class="text-lg font-bold">${PRICE.toLocaleString()} ₽</span>
-                        <button onclick="addToCart(${p.id})" class="p-4 bg-white text-black rounded-2xl hover:scale-110 transition-transform">
+                        <button onclick="addToCart(${p.id})" class="p-4 metal-bg text-black rounded-2xl hover:scale-110 transition-transform flex items-center justify-center">
                             <i data-lucide="plus" class="w-5 h-5"></i>
                         </button>
                     </div>
@@ -297,8 +319,9 @@
                 items.innerHTML = cart.map(i => `
                     <div class="flex justify-between items-center bg-white/5 p-6 rounded-3xl border border-white/5">
                         <div class="flex items-center gap-6">
-                            <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-                                <i data-lucide="${i.icon}" class="w-6 h-6 text-white/60"></i>
+                            <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden">
+                                <img src="${i.img}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                                <i data-lucide="${i.icon}" class="w-6 h-6 text-white/60 absolute"></i>
                             </div>
                             <div>
                                 <h4 class="text-xs font-bold uppercase tracking-wider">${i.name}</h4>
@@ -334,6 +357,7 @@
         }
 
         function checkout() {
+            if(cart.length === 0) return;
             const engraving = document.getElementById('engraving-text').value || "MIRA&PAPA";
             const orderList = cart.map(i => i.name).join(', ');
             const totalPrice = cart.length * PRICE;
