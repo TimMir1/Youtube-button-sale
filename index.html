@@ -140,6 +140,7 @@
 <body class="antialiased overflow-x-hidden">
     <div class="bg-noise"></div>
 
+    <!-- Навигация -->
     <nav id="navbar" class="fixed top-0 w-full z-[100] py-4 px-6">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="cursor-pointer group">
@@ -155,6 +156,7 @@
         </div>
     </nav>
 
+    <!-- Главный экран -->
     <section class="relative min-h-[95vh] flex items-center pt-20 px-6 overflow-hidden">
         <div class="hero-bg-image"></div>
         <div class="max-w-7xl mx-auto w-full relative z-10">
@@ -170,6 +172,7 @@
         </div>
     </section>
 
+    <!-- Каталог -->
     <section id="catalog" class="max-w-7xl mx-auto px-6 py-32">
         <div class="mb-20">
             <span class="text-[#C58E7E] text-[9px] font-bold uppercase tracking-[0.3em] block mb-3">Коллекция 2026</span>
@@ -178,6 +181,7 @@
         <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></div>
     </section>
 
+    <!-- Подвал -->
     <footer class="bg-[#121212] text-white pt-24 pb-12 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
@@ -185,7 +189,8 @@
                     <span class="text-2xl font-premium tracking-widest uppercase italic">Mira<span class="font-bold text-[#C58E7E] not-italic"> & </span>Papa</span>
                     <p class="text-neutral-500 text-sm leading-relaxed font-light">Ювелирная мастерская по созданию эксклюзивных наград.</p>
                     <div class="flex gap-4">
-                        <a href="https://t.me/89779662521" target="_blank" class="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center hover:bg-[#C58E7E] transition-all"><i data-lucide="send" class="w-4 h-4"></i></a>
+                        <!-- Исправленная ссылка на чат -->
+                        <a href="https://t.me/+79779662521" target="_blank" class="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center hover:bg-[#C58E7E] transition-all"><i data-lucide="send" class="w-4 h-4"></i></a>
                     </div>
                 </div>
                 <div>
@@ -214,6 +219,7 @@
         </div>
     </footer>
 
+    <!-- Корзина -->
     <div id="cart-overlay" class="fixed inset-0 z-[200] hidden bg-black/30 backdrop-blur-sm transition-opacity duration-500" onclick="toggleCart(false)"></div>
     <div id="cart-drawer" class="drawer fixed right-0 top-0 z-[201] w-full max-w-md bg-white h-full shadow-[-20px_0_60px_rgba(0,0,0,0.1)] flex flex-col">
         <div class="p-8 flex items-center justify-between border-b border-neutral-100">
@@ -236,6 +242,7 @@
         </div>
     </div>
 
+    <!-- Модальное окно предпросмотра -->
     <div id="preview-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl">
         <div class="bg-white max-w-xl w-full p-8 md:p-12 text-center rounded-sm relative shadow-2xl">
             <h2 class="text-2xl font-premium italic mb-10 text-black">Визуализация награды</h2>
@@ -255,19 +262,22 @@
         </div>
     </div>
 
+    <!-- Модальное окно дизайна -->
     <div id="design-modal" class="fixed inset-0 z-[300] hidden bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-sm p-10 text-center shadow-2xl">
             <div class="w-20 h-20 bg-[#C58E7E]/10 rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="feather" class="text-[#C58E7E] w-10 h-10"></i></div>
             <h3 class="font-premium text-3xl text-black mb-4">Индивидуальный заказ</h3>
             <p class="text-neutral-500 mb-10 text-sm leading-relaxed">Напишите мастеру для обсуждения деталей вашего проекта.</p>
-            <a href="https://t.me/89779662521" target="_blank" class="block w-full py-5 btn-premium text-white text-[10px] font-bold uppercase tracking-widest mb-4">Написать в Telegram</a>
+            <!-- Исправленная ссылка на чат -->
+            <a href="https://t.me/+79779662521" target="_blank" class="block w-full py-5 btn-premium text-white text-[10px] font-bold uppercase tracking-widest mb-4">Написать в Telegram</a>
             <button onclick="toggleDesignModal(false)" class="text-neutral-400 text-[9px] font-bold uppercase hover:text-black">Закрыть</button>
         </div>
     </div>
 
     <script>
         let cart = [];
-        const MY_PHONE = "89779662521";
+        // Номер для API в формате с плюсом для корректной ссылки t.me
+        const MY_PHONE_LINK = "+79779662521";
 
         const products = [
             { id: 1, name: "Золотая кнопка (1 млн)", price: 9900, category: "Premium", color: "gold", image: "button3.png" },
@@ -381,8 +391,9 @@
             document.getElementById('final-tg-btn').onclick = () => {
                 const orderText = cart.map(i => i.name).join(', ');
                 const total = cart.reduce((a,b) => a + b.price, 0).toLocaleString();
-                const tgMsg = `НОВЫЙ ЗАКАЗ:\nИзделия: ${orderText}\nИтого: ${total} ₽\nГравировка: ${txt}\nКонтакт: +${MY_PHONE}`;
-                window.open(`https://t.me/${MY_PHONE}?text=${encodeURIComponent(tgMsg)}`, '_blank');
+                const tgMsg = `НОВЫЙ ЗАКАЗ:\nИзделия: ${orderText}\nИтого: ${total} ₽\nГравировка: ${txt}`;
+                // Формируем прямую ссылку на диалог
+                window.open(`https://t.me/${MY_PHONE_LINK}?text=${encodeURIComponent(tgMsg)}`, '_blank');
             };
         }
 
