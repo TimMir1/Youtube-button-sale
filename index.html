@@ -16,6 +16,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         .font-logo { font-family: 'Unbounded', sans-serif; }
@@ -47,7 +48,6 @@
             position: relative;
         }
 
-        /* Цветной градиентный контур */
         .notch::after {
             content: '';
             position: absolute;
@@ -63,8 +63,8 @@
         .notch.active {
             opacity: 1;
             transform: scale(1);
-            min-width: 200px;
-            height: 38px;
+            min-width: 220px;
+            height: 40px;
             padding: 0 20px;
         }
 
@@ -91,7 +91,6 @@
             opacity: 1;
         }
 
-        /* Карточки */
         .card {
             background: #fff;
             border-bottom: 1px solid #f2f2f2;
@@ -104,11 +103,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .img-container img {
-            width: 80%;
-            height: 80%;
+            width: 85%;
+            height: 85%;
             object-fit: contain;
         }
 
@@ -118,7 +118,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Премиум Футер */
         .footer-premium {
             background: #000;
             color: #fff;
@@ -135,18 +134,23 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Анимация при нажатии кнопок */
         .btn-tap {
             transition: transform 0.1s ease;
         }
         .btn-tap:active {
             transform: scale(0.85);
         }
+
+        .heart-active {
+            fill: #ff3040;
+            color: #ff3040 !important;
+            stroke: #ff3040;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Dynamic Notch (Половинку видно только при действии) -->
+    <!-- Dynamic Notch -->
     <div class="notch-container">
         <div id="notch" class="notch">
             <span id="notch-text" class="notch-text"></span>
@@ -176,6 +180,12 @@
                 <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center"><i data-lucide="instagram" class="w-5 h-5"></i></a>
                 <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center"><i data-lucide="send" class="w-5 h-5"></i></a>
             </div>
+            <div class="grid grid-cols-2 gap-4 text-[10px] text-gray-500 uppercase tracking-widest mb-10">
+                <a href="#" onclick="scrollToTop()">Главная</a>
+                <a href="#">О нас</a>
+                <a href="#">Доставка</a>
+                <a href="#">FAQ</a>
+            </div>
             <div class="text-[9px] text-gray-700 uppercase tracking-[0.3em] border-t border-white/5 pt-10">
                 MADE IN RUSSIA • 2024
             </div>
@@ -184,7 +194,7 @@
 
     <!-- Tab Bar -->
     <nav class="fixed bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-100 h-14 flex justify-around items-center z-50">
-        <button class="btn-tap"><i data-lucide="home" class="w-6 h-6"></i></button>
+        <button onclick="scrollToTop()" class="btn-tap"><i data-lucide="home" class="w-6 h-6"></i></button>
         <button class="btn-tap text-gray-300"><i data-lucide="search" class="w-6 h-6"></i></button>
         <button onclick="toggleCart(true)" class="bg-black text-white p-2.5 rounded-2xl shadow-lg btn-tap">
             <i data-lucide="plus" class="w-5 h-5"></i>
@@ -218,7 +228,11 @@
             { id: 2, name: "Silver YouTube Award", price: 12900, img: "gray button2.png" },
             { id: 3, name: "Gold Shorts Award", price: 12900, img: "shorts2.png" },
             { id: 4, name: "Silver Shorts Award", price: 12900, img: "button4.png" },
-            { id: 5, name: "Telegram Crystal", price: 12900, img: "button5.png" }
+            { id: 5, name: "Telegram Crystal", price: 12900, img: "button5.png" },
+            { id: 6, name: "Diamond Play Button", price: 15900, img: "diamond.png" },
+            { id: 7, name: "Custom Metal Case", price: 8900, img: "case.png" },
+            { id: 8, name: "Mini Gold Award", price: 9900, img: "mini-gold.png" },
+            { id: 9, name: "Creator Desktop Kit", price: 19900, img: "kit.png" }
         ];
 
         let cart = [];
@@ -235,23 +249,32 @@
                         <i data-lucide="more-horizontal" class="w-5 h-5 text-gray-400"></i>
                     </div>
                     <div class="img-container">
-                        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400?text=Award'">
+                        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400?text=${encodeURIComponent(p.name)}'">
                     </div>
                     <div class="p-4">
                         <div class="flex justify-between mb-4">
                             <div class="flex gap-4">
-                                <button onclick="add(${p.id})" class="btn-tap"><i data-lucide="heart" class="w-7 h-7"></i></button>
+                                <button onclick="toggleLike(this)" class="btn-tap"><i data-lucide="heart" class="w-7 h-7"></i></button>
                                 <button class="btn-tap"><i data-lucide="message-circle" class="w-7 h-7"></i></button>
                                 <button onclick="share()" class="btn-tap"><i data-lucide="send" class="w-7 h-7"></i></button>
                             </div>
                             <button onclick="add(${p.id})" class="btn-tap"><i data-lucide="plus-circle" class="w-7 h-7 text-blue-500"></i></button>
                         </div>
                         <div class="font-bold text-sm mb-1">${p.price.toLocaleString()} ₽</div>
-                        <div class="text-sm leading-snug"><span class="font-bold mr-2">mira_papa</span>Премиальная награда ${p.name}. Ручная работа.</div>
+                        <div class="text-sm leading-snug"><span class="font-bold mr-2">mira_papa</span>${p.name}. Эксклюзивная работа, латунь и ручная полировка.</div>
                     </div>
                 </div>
             `).join('');
             lucide.createIcons();
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleLike(btn) {
+            const icon = btn.querySelector('svg');
+            icon.classList.toggle('heart-active');
         }
 
         function add(id) {
@@ -282,13 +305,13 @@
             badge.style.opacity = cart.length > 0 ? '1' : '0';
 
             if(cart.length === 0) {
-                items.innerHTML = `<div class="py-16 text-center text-gray-300 text-sm">Корзина пуста</div>`;
+                items.innerHTML = `<div class="py-16 text-center text-gray-300 text-sm italic">В корзине пусто</div>`;
             } else {
                 items.innerHTML = cart.map(i => `
                     <div class="flex items-center gap-4 bg-gray-50 p-3 rounded-2xl border border-gray-100">
-                        <img src="${i.img}" class="w-12 h-12 object-contain bg-white rounded-lg p-1 shadow-sm">
+                        <img src="${i.img}" class="w-12 h-12 object-contain bg-white rounded-lg p-1 shadow-sm" onerror="this.src='https://via.placeholder.com/100?text=Award'">
                         <div class="flex-1">
-                            <div class="text-[11px] font-bold uppercase">${i.name}</div>
+                            <div class="text-[11px] font-bold uppercase truncate">${i.name}</div>
                             <div class="text-[11px] text-blue-500 font-bold">${i.price.toLocaleString()} ₽</div>
                         </div>
                         <button onclick="remove(${i.uid})" class="text-gray-300 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
@@ -307,9 +330,8 @@
 
         async function share() {
             try {
-                await navigator.share({ title: 'MIRA & PAPA', url: window.location.href });
+                await navigator.share({ title: 'MIRA & PAPA Premium', url: window.location.href });
             } catch {
-                navigator.clipboard.writeText(window.location.href);
                 notify("ССЫЛКА СКОПИРОВАНА");
             }
         }
