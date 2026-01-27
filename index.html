@@ -2,327 +2,340 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIRA & PAPA | Элитные Награды</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MIRA & PAPA | Premium Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Unbounded:wght@400;700&display=swap');
-
-        :root {
-            --bg: #030303;
-            --gold: #c5a059;
-            --card-bg: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.07);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Unbounded:wght@700&display=swap');
 
         body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #262626;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
         }
 
-        .font-modern { font-family: 'Unbounded', sans-serif; }
+        .font-logo { font-family: 'Unbounded', sans-serif; }
 
-        .metal-text {
-            background: linear-gradient(135deg, #fff 0%, var(--gold) 30%, #e2e2e2 50%, var(--gold) 70%, #fff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shine 5s linear infinite;
+        /* Dynamic Island - Скрыта по умолчанию */
+        .notch-container {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding-top: 10px;
+            pointer-events: none;
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-
-        .grid-bg {
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
-            background-size: 100% 100%, 40px 40px;
-        }
-
-        .product-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
+        .notch {
+            background: #000;
+            min-width: 0px;
+            height: 0px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
             opacity: 0;
-            transform: translateY(30px);
+            transform: scale(0.5);
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        .product-card.reveal {
+        /* Цветной градиентный контур */
+        .notch::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: linear-gradient(90deg, #ff0080, #7928ca, #4facfe, #ff0080);
+            background-size: 300% auto;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .notch.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: scale(1);
+            min-width: 200px;
+            height: 38px;
+            padding: 0 20px;
         }
 
-        .product-card:hover {
-            border-color: var(--gold);
-            background: rgba(197, 160, 89, 0.03);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(197, 160, 89, 0.1);
+        .notch.active::after {
+            opacity: 1;
+            animation: flow 2s linear infinite;
+        }
+
+        @keyframes flow {
+            to { background-position: 300% center; }
+        }
+
+        .notch-text {
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            letter-spacing: -0.01em;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .notch.active .notch-text {
+            opacity: 1;
+        }
+
+        /* Карточки */
+        .card {
+            background: #fff;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background-color: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .img-container img {
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
         }
 
-        .product-card:hover .img-container img {
-            transform: scale(1.1) rotate(2deg);
+        .metal-text {
+            background: linear-gradient(135deg, #000 0%, #c5a059 50%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* Анимация кнопки добавления */
-        .add-btn {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        .add-btn.added {
-            background: #22c55e !important;
-            color: white !important;
-            transform: scale(0.9);
+        /* Премиум Футер */
+        .footer-premium {
+            background: #000;
+            color: #fff;
+            padding: 60px 24px 110px;
+            text-align: center;
         }
 
-        /* Кастомный скроллбар */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
-
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--gold);
-            color: black;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: bold;
-            transform: translateX(200%);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000;
+        .footer-logo {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 18px;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #fff, #c5a059);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .notification.show { transform: translateX(0); }
+
+        /* Анимация при нажатии кнопок */
+        .btn-tap {
+            transition: transform 0.1s ease;
+        }
+        .btn-tap:active {
+            transform: scale(0.85);
+        }
     </style>
 </head>
-<body class="antialiased">
-    <div class="grid-bg fixed inset-0 z-[-2]"></div>
-    <div id="notif" class="notification font-modern text-[10px] uppercase">Добавлено в корзину</div>
+<body>
+
+    <!-- Dynamic Notch (Половинку видно только при действии) -->
+    <div class="notch-container">
+        <div id="notch" class="notch">
+            <span id="notch-text" class="notch-text"></span>
+        </div>
+    </div>
 
     <!-- Header -->
-    <nav class="fixed top-0 w-full z-[100] border-b border-white/5 bg-black/40 backdrop-blur-xl">
-        <div class="max-w-[1400px] mx-auto flex justify-between items-center py-6 px-8">
-            <div class="flex flex-col cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                <span class="font-modern text-xl tracking-tighter uppercase font-bold metal-text leading-none">MIRA&PAPA</span>
-                <span class="text-[8px] uppercase tracking-[0.5em] text-white/40 mt-1">Premium Artefacts</span>
-            </div>
-            
-            <div class="flex items-center gap-8">
-                <button onclick="toggleCart(true)" class="relative group">
-                    <div class="bg-white/5 p-3 rounded-full border border-white/10 group-hover:border-gold transition-colors">
-                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                    </div>
-                    <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[9px] font-bold w-5 h-5 flex items-center justify-center rounded-full">0</span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <header class="sticky top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50 h-14 flex items-center px-4 justify-between">
+        <div class="font-logo text-[11px] metal-text uppercase tracking-[0.2em]">MIRA & PAPA</div>
+        <button onclick="toggleCart(true)" class="relative p-2 btn-tap">
+            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+            <span id="cart-badge" class="absolute top-1 right-1 bg-red-500 text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+        </button>
+    </header>
 
-    <!-- Catalog Section (Slightly lowered for header) -->
-    <section class="max-w-[1400px] mx-auto px-8 pt-32 pb-24">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div>
-                <h1 class="text-5xl md:text-7xl font-modern font-bold uppercase tracking-tighter leading-none">
-                    Коллекция <br> <span class="metal-text italic">Победителей</span>
-                </h1>
-            </div>
-            <p class="text-white/40 max-w-xs text-sm font-light leading-relaxed">
-                Выбирайте символ своего успеха. Каждое изделие создается индивидуально под ваш запрос.
-            </p>
-        </div>
-        
-        <!-- Grid -->
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Товар будет генерироваться JS -->
-        </div>
-    </section>
+    <!-- Feed -->
+    <main class="max-w-[600px] mx-auto" id="main-feed"></main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 py-24 px-8">
-        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="md:col-span-2">
-                <span class="font-modern text-2xl font-bold metal-text uppercase tracking-tighter">MIRA&PAPA</span>
-                <p class="text-white/30 text-sm mt-6 max-w-sm leading-relaxed">
-                    Мастерская премиальных наград и лимитированных артефактов для блогеров, предпринимателей и лидеров мнений.
-                </p>
+    <footer class="footer-premium">
+        <div class="max-w-[600px] mx-auto">
+            <div class="footer-logo tracking-widest uppercase">MIRA & PAPA</div>
+            <p class="text-gray-500 text-xs mb-8 leading-relaxed max-w-[300px] mx-auto uppercase tracking-tighter">
+                Искусство в металле. Мастерская эксклюзивных наград и артефактов.
+            </p>
+            <div class="flex justify-center gap-5 mb-12">
+                <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center"><i data-lucide="send" class="w-5 h-5"></i></a>
             </div>
-            <div>
-                <p class="text-[10px] uppercase font-bold text-white/40 tracking-[0.2em] mb-6">Контактные данные</p>
-                <a href="https://t.me/+79779662521" target="_blank" class="text-xl font-modern hover:text-gold transition-colors block mb-2">+7 977 966-25-21</a>
-                <p class="text-white/30 text-sm">Москва, Сити</p>
-            </div>
-            <div class="md:text-right">
-                <p class="text-[10px] uppercase font-bold text-white/40 tracking-[0.2em] mb-6">Спецпредложения</p>
-                <p class="text-sm text-white/60">Для оптовых заказов и брендинга — свяжитесь с нами в TG.</p>
+            <div class="text-[9px] text-gray-700 uppercase tracking-[0.3em] border-t border-white/5 pt-10">
+                MADE IN RUSSIA • 2024
             </div>
         </div>
     </footer>
 
-    <!-- Cart Drawer -->
-    <div id="cart-overlay" class="fixed inset-0 z-[200] bg-black/90 backdrop-blur-lg opacity-0 pointer-events-none transition-all duration-500" onclick="toggleCart(false)"></div>
-    <div id="cart-drawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#080808] z-[201] border-l border-white/5 translate-x-full flex flex-col transition-transform duration-500 shadow-2xl">
-        <div class="p-8 flex justify-between items-center border-b border-white/5">
-            <div>
-                <h3 class="font-modern text-lg font-bold uppercase tracking-tight">Ваш заказ</h3>
-                <p class="text-[10px] text-white/30 uppercase mt-1">Оформление через Telegram</p>
-            </div>
-            <button onclick="toggleCart(false)" class="p-2 hover:bg-white/5 rounded-full transition-colors"><i data-lucide="x"></i></button>
-        </div>
-        
-        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-6">
-            <!-- Items -->
-        </div>
+    <!-- Tab Bar -->
+    <nav class="fixed bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-gray-100 h-14 flex justify-around items-center z-50">
+        <button class="btn-tap"><i data-lucide="home" class="w-6 h-6"></i></button>
+        <button class="btn-tap text-gray-300"><i data-lucide="search" class="w-6 h-6"></i></button>
+        <button onclick="toggleCart(true)" class="bg-black text-white p-2.5 rounded-2xl shadow-lg btn-tap">
+            <i data-lucide="plus" class="w-5 h-5"></i>
+        </button>
+        <button class="btn-tap text-gray-300"><i data-lucide="heart" class="w-6 h-6"></i></button>
+        <div class="w-7 h-7 rounded-full bg-gray-100 border border-gray-200"></div>
+    </nav>
 
-        <div id="cart-footer" class="p-8 bg-black/50 border-t border-white/5 space-y-6">
-            <div class="space-y-4">
-                <label class="block">
-                    <span class="text-[10px] uppercase font-bold text-white/40 tracking-widest block mb-2">Гравировка</span>
-                    <input type="text" id="engraving-text" placeholder="Введите ваш текст..." class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-gold/50 transition-all text-sm">
-                </label>
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/40 z-[100] hidden opacity-0 transition-opacity duration-300" onclick="toggleCart(false)"></div>
+    <div id="cart-drawer" class="fixed bottom-0 left-0 right-0 bg-white z-[101] rounded-t-[35px] max-h-[85vh] flex flex-col translate-y-full shadow-2xl transition-transform duration-500">
+        <div class="w-12 h-1 bg-gray-200 rounded-full mx-auto mt-4 mb-2"></div>
+        <div class="px-8 py-4 flex justify-between items-center">
+            <h2 class="font-bold text-2xl tracking-tight">Корзина</h2>
+            <button onclick="toggleCart(false)" class="text-blue-500 font-bold text-sm">Готово</button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto px-6 space-y-3"></div>
+        <div class="p-8 bg-gray-50/50 border-t border-gray-100 space-y-4">
+            <input id="engraving" type="text" placeholder="Текст гравировки..." class="w-full p-4 bg-white border border-gray-200 rounded-2xl text-sm outline-none">
+            <div class="flex justify-between items-center px-2">
+                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest">Итого</span>
+                <span id="total-price" class="font-bold text-2xl">0 ₽</span>
             </div>
-            <div class="flex justify-between items-center">
-                <span class="text-xs uppercase font-bold text-white/40 tracking-widest">К оплате</span>
-                <span id="cart-total" class="text-3xl font-modern font-bold">0 ₽</span>
-            </div>
-            <button onclick="checkout()" class="w-full bg-white text-black py-5 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-gold hover:text-white transition-all transform hover:scale-[1.02]">Заказать в Telegram</button>
+            <button onclick="checkout()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold uppercase tracking-widest text-xs active:scale-95 transition-all">Заказать</button>
         </div>
     </div>
 
     <script>
         const products = [
-            { id: 1, name: "Золотая кнопка YouTube", sub: "YouTube Premium", price: 12900, img: "gold button.png" },
-            { id: 2, name: "Серебряная кнопка YouTube", sub: "YouTube Classic", price: 12900, img: "gray button2.png" },
-            { id: 3, name: "Золотая Shorts", sub: "YouTube Vertical", price: 12900, img: "shorts2.png" },
-            { id: 4, name: "Серебро Shorts", sub: "YouTube Vertical", price: 12900, img: "button4.png" },
-            { id: 5, name: "Кнопка Telegram", sub: "Messenger Excellence", price: 12900, img: "button5.png" },
-            { id: 6, name: "Кнопка Instagram", sub: "Social Influence", price: 12900, img: "button6.png" },
-            { id: 7, name: "Кнопка LIKE", sub: "Popularity Icon", price: 12900, img: "button7.png" },
-            { id: 8, name: "Кнопка Rutube", sub: "Russian Streaming", price: 12900, img: "button8.png" },
-            { id: 9, name: "Индивидуальный проект", sub: "Custom Artefact", price: 15900, img: "button9.png" }
+            { id: 1, name: "Golden YouTube Award", price: 12900, img: "gold button.png" },
+            { id: 2, name: "Silver YouTube Award", price: 12900, img: "gray button2.png" },
+            { id: 3, name: "Gold Shorts Award", price: 12900, img: "shorts2.png" },
+            { id: 4, name: "Silver Shorts Award", price: 12900, img: "button4.png" },
+            { id: 5, name: "Telegram Crystal", price: 12900, img: "button5.png" }
         ];
 
         let cart = [];
-        const TG_LINK = "https://t.me/+79779662521";
 
-        function initCatalog() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = products.map((p, idx) => `
-                <div class="product-card p-8 rounded-[32px] flex flex-col group" style="transition-delay: ${idx * 100}ms">
-                    <div class="img-container h-64 flex items-center justify-center mb-8 bg-black/40 rounded-2xl overflow-hidden border border-white/5">
-                        <img src="${p.img}" alt="${p.name}" class="w-2/3 h-2/3 object-contain" onerror="this.src='https://via.placeholder.com/400?text=${p.name}'">
+        function render() {
+            const feed = document.getElementById('main-feed');
+            feed.innerHTML = products.map(p => `
+                <div class="card">
+                    <div class="p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold text-[9px]">MP</div>
+                            <span class="text-[13px] font-bold">mira_papa_premium</span>
+                        </div>
+                        <i data-lucide="more-horizontal" class="w-5 h-5 text-gray-400"></i>
                     </div>
-                    <p class="text-[9px] uppercase tracking-[0.3em] font-bold text-white/30 mb-2">${p.sub}</p>
-                    <h3 class="text-xl font-modern font-bold mb-8 leading-tight">${p.name}</h3>
-                    <div class="flex justify-between items-center mt-auto pt-6 border-t border-white/5">
-                        <span class="text-lg font-bold">${p.price.toLocaleString()} ₽</span>
-                        <button id="btn-${p.id}" onclick="addToCart(${p.id}, '${p.name}', ${p.price})" class="add-btn w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:bg-gold hover:text-white transition-all">
-                            <i data-lucide="plus" class="w-5 h-5"></i>
-                        </button>
+                    <div class="img-container">
+                        <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400?text=Award'">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between mb-4">
+                            <div class="flex gap-4">
+                                <button onclick="add(${p.id})" class="btn-tap"><i data-lucide="heart" class="w-7 h-7"></i></button>
+                                <button class="btn-tap"><i data-lucide="message-circle" class="w-7 h-7"></i></button>
+                                <button onclick="share()" class="btn-tap"><i data-lucide="send" class="w-7 h-7"></i></button>
+                            </div>
+                            <button onclick="add(${p.id})" class="btn-tap"><i data-lucide="plus-circle" class="w-7 h-7 text-blue-500"></i></button>
+                        </div>
+                        <div class="font-bold text-sm mb-1">${p.price.toLocaleString()} ₽</div>
+                        <div class="text-sm leading-snug"><span class="font-bold mr-2">mira_papa</span>Премиальная награда ${p.name}. Ручная работа.</div>
                     </div>
                 </div>
             `).join('');
-            
             lucide.createIcons();
-
-            // Reveal animation
-            setTimeout(() => {
-                document.querySelectorAll('.product-card').forEach(card => card.classList.add('reveal'));
-            }, 100);
         }
 
-        function addToCart(id, name, price) {
-            cart.push({ id, name, price, cartId: Math.random() });
+        function add(id) {
+            const p = products.find(x => x.id === id);
+            cart.push({ ...p, uid: Date.now() });
+            updateUI();
+            notify(`ДОБАВЛЕНО: ${p.name.toUpperCase()}`);
+        }
+
+        function notify(msg) {
+            const notch = document.getElementById('notch');
+            const text = document.getElementById('notch-text');
             
-            // Кратковременная анимация кнопки
-            const btn = document.getElementById(`btn-${id}`);
-            btn.classList.add('added');
-            btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
-            lucide.createIcons();
+            text.innerText = msg;
+            notch.classList.add('active');
             
-            showNotification();
-            updateCartUI();
-
             setTimeout(() => {
-                btn.classList.remove('added');
-                btn.innerHTML = `<i data-lucide="plus" class="w-5 h-5"></i>`;
-                lucide.createIcons();
-            }, 1500);
+                notch.classList.remove('active');
+            }, 3000);
         }
 
-        function showNotification() {
-            const n = document.getElementById('notif');
-            n.classList.add('show');
-            setTimeout(() => n.classList.remove('show'), 2000);
-        }
-
-        function updateCartUI() {
-            const count = document.getElementById('cart-count');
+        function updateUI() {
+            const badge = document.getElementById('cart-badge');
             const items = document.getElementById('cart-items');
-            const total = document.getElementById('cart-total');
-            const currentTotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const total = document.getElementById('total-price');
+            
+            badge.innerText = cart.length;
+            badge.style.opacity = cart.length > 0 ? '1' : '0';
 
-            count.innerText = cart.length;
-            total.innerText = currentTotal.toLocaleString() + " ₽";
-
-            if (cart.length > 0) {
+            if(cart.length === 0) {
+                items.innerHTML = `<div class="py-16 text-center text-gray-300 text-sm">Корзина пуста</div>`;
+            } else {
                 items.innerHTML = cart.map(i => `
-                    <div class="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/5 group">
-                        <div class="flex flex-col">
-                            <span class="text-[10px] uppercase font-bold text-white/40 mb-1">Награда</span>
-                            <span class="text-xs font-bold uppercase">${i.name}</span>
+                    <div class="flex items-center gap-4 bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                        <img src="${i.img}" class="w-12 h-12 object-contain bg-white rounded-lg p-1 shadow-sm">
+                        <div class="flex-1">
+                            <div class="text-[11px] font-bold uppercase">${i.name}</div>
+                            <div class="text-[11px] text-blue-500 font-bold">${i.price.toLocaleString()} ₽</div>
                         </div>
-                        <button onclick="remove(${i.cartId})" class="p-2 text-white/20 hover:text-red-500 transition-colors">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
+                        <button onclick="remove(${i.uid})" class="text-gray-300 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 `).join('');
-            } else {
-                items.innerHTML = `<div class="h-60 flex flex-col items-center justify-center text-white/10 space-y-4">
-                    <i data-lucide="shopping-cart" class="w-12 h-12"></i>
-                    <span class="uppercase text-[10px] tracking-[0.2em]">Корзина пуста</span>
-                </div>`;
             }
+            const sum = cart.reduce((a, b) => a + b.price, 0);
+            total.innerText = `${sum.toLocaleString()} ₽`;
             lucide.createIcons();
         }
 
-        function remove(cartId) {
-            cart = cart.filter(x => x.cartId !== cartId);
-            updateCartUI();
+        function remove(uid) {
+            cart = cart.filter(i => i.uid !== uid);
+            updateUI();
+        }
+
+        async function share() {
+            try {
+                await navigator.share({ title: 'MIRA & PAPA', url: window.location.href });
+            } catch {
+                navigator.clipboard.writeText(window.location.href);
+                notify("ССЫЛКА СКОПИРОВАНА");
+            }
         }
 
         function toggleCart(show) {
-            const drawer = document.getElementById('cart-drawer');
-            const overlay = document.getElementById('cart-overlay');
-            drawer.style.transform = show ? 'translateX(0)' : 'translateX(100%)';
-            overlay.style.opacity = show ? '1' : '0';
-            overlay.style.pointerEvents = show ? 'auto' : 'none';
-            document.body.style.overflow = show ? 'hidden' : '';
+            const dr = document.getElementById('cart-drawer');
+            const ov = document.getElementById('cart-overlay');
+            if (show) {
+                ov.classList.remove('hidden');
+                setTimeout(() => { ov.style.opacity = '1'; dr.style.transform = 'translateY(0)'; }, 10);
+            } else {
+                ov.style.opacity = '0'; dr.style.transform = 'translateY(100%)';
+                setTimeout(() => ov.classList.add('hidden'), 500);
+            }
         }
 
         function checkout() {
-            if(cart.length === 0) return;
-            const engraving = document.getElementById('engraving-text').value || "БЕЗ ГРАВИРОВКИ";
-            const orderList = cart.map(i => i.name).join(', ');
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            const message = `ЗАКАЗ MIRA&PAPA:\n\n🔥 Артефакты: ${orderList}\n✍️ Текст гравировки: "${engraving}"\n💰 Сумма: ${total.toLocaleString()} ₽\n\nЖду подтверждения заказа!`;
-            window.open(`${TG_LINK}?text=${encodeURIComponent(message)}`, '_blank');
+            if(!cart.length) return notify("КОРЗИНА ПУСТА");
+            const eng = document.getElementById('engraving').value || "БЕЗ ГРАВИРОВКИ";
+            const items = cart.map(i => i.name).join(', ');
+            const total = cart.reduce((s, i) => s + i.price, 0);
+            const msg = `ЗАКАЗ MIRA&PAPA:\n\nТовары: ${items}\nГравировка: ${eng}\nИтого: ${total} ₽`;
+            window.open(`https://t.me/+79779662521?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        window.onload = () => {
-            initCatalog();
-            updateCartUI();
-        };
+        window.onload = render;
     </script>
 </body>
 </html>
