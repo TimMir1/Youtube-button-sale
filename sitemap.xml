@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="[http://www.sitemaps.org/schemas/sitemap/0.9](http://www.sitemaps.org/schemas/sitemap/0.9)">
-  <!-- Главная страница -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Главная страница сайта на GitHub Pages -->
   <url>
-    <loc>[https://mira-papa.ru/](https://mira-papa.ru/)</loc>
+    <loc>https://timmir1.github.io/Youtube-button-sale/</loc>
     <lastmod>2024-05-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- Ссылки на категории -->
+  <!-- Ссылки на секции наград -->
   <url>
-    <loc>[https://mira-papa.ru/#youtube](https://mira-papa.ru/#youtube)</loc>
+    <loc>https://timmir1.github.io/Youtube-button-sale/#youtube</loc>
     <lastmod>2024-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>[https://mira-papa.ru/#likee](https://mira-papa.ru/#likee)</loc>
+    <loc>https://timmir1.github.io/Youtube-button-sale/#likee</loc>
     <lastmod>2024-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>[https://mira-papa.ru/#chatgpt](https://mira-papa.ru/#chatgpt)</loc>
+    <loc>https://timmir1.github.io/Youtube-button-sale/#chatgpt</loc>
     <lastmod>2024-05-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>[https://mira-papa.ru/#delivery](https://mira-papa.ru/#delivery)</loc>
-    <lastmod>2024-05-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
 </urlset>
