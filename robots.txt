@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /cgi-bin/
 
-Sitemap: [https://mira-papa.ru/sitemap.xml](https://mira-papa.ru/sitemap.xml)
+Sitemap: https://timmir1.github.io/Youtube-button-sale/sitemap.xml
