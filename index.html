@@ -478,5 +478,41 @@
 
         window.onload = render;
     </script>
+    <!-- SEO CATALOG (видят поисковики, люди — нет) -->
+<section class="sr-only">
+
+  <article itemscope itemtype="https://schema.org/Product">
+    <h2 itemprop="name">Золотая кнопка YouTube</h2>
+    <img itemprop="image" src="gold button.png" alt="Золотая кнопка YouTube">
+    <p itemprop="description">
+      Металлическая золотая кнопка YouTube с зеркальной полировкой и гравировкой.
+      Изготовление за 4 часа.
+    </p>
+    <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+      <meta itemprop="price" content="12900">
+      <meta itemprop="priceCurrency" content="RUB">
+      <link itemprop="availability" href="https://schema.org/InStock">
+    </div>
+  </article>
+
+  <article itemscope itemtype="https://schema.org/Product">
+    <h2 itemprop="name">Серебряная кнопка YouTube</h2>
+    <img itemprop="image" src="gray button2.png" alt="Серебряная кнопка YouTube">
+    <meta itemprop="price" content="10900">
+  </article>
+
+  <article itemscope itemtype="https://schema.org/Product">
+    <h2 itemprop="name">Золотая кнопка Likee</h2>
+    <img itemprop="image" src="likee_gold.png" alt="Золотая кнопка Likee">
+    <meta itemprop="price" content="14000">
+  </article>
+
+  <article itemscope itemtype="https://schema.org/Product">
+    <h2 itemprop="name">Золотая кнопка ChatGPT</h2>
+    <img itemprop="image" src="chatgpt_gold.png" alt="Золотая кнопка ChatGPT">
+    <meta itemprop="price" content="14000">
+  </article>
+
+</section>
 </body>
 </html>
