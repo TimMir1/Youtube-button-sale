@@ -53,100 +53,173 @@
         :root {
             --primary-color: #000000;
             --accent-color: #ff0000;
-            --text-color: #333;
+            --text-color: #1a1a1a;
             --bg-color: #ffffff;
             --card-bg: #f9f9f9;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--text-color); background-color: var(--bg-color); }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6; 
+            color: var(--text-color); 
+            background-color: var(--bg-color); 
+            -webkit-font-smoothing: antialiased;
+        }
 
-        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .logo { font-weight: 900; font-size: 24px; text-decoration: none; color: #000; }
+        header { 
+            background: #fff; 
+            padding: 20px 8%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); 
+        }
+        .logo { font-weight: 900; font-size: 28px; text-decoration: none; color: #000; letter-spacing: -1px; }
         
-        .cart-icon { cursor: pointer; background: none; border: none; font-size: 18px; display: flex; align-items: center; gap: 8px; position: relative; }
-        .cart-count { background: var(--accent-color); color: white; border-radius: 50%; padding: 2px 7px; font-size: 12px; font-weight: bold; }
+        .cart-icon { 
+            cursor: pointer; 
+            background: #f0f0f0; 
+            border: none; 
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 16px; 
+            font-weight: 600;
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            transition: 0.2s;
+        }
+        .cart-icon:hover { background: #e5e5e5; }
+        .cart-count { background: var(--accent-color); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
 
-        .hero { padding: 60px 5%; text-align: center; background: linear-gradient(180deg, #f0f0f0 0%, #ffffff 100%); }
-        .hero h1 { font-size: 42px; margin-bottom: 15px; font-weight: 800; }
-        .hero p { font-size: 18px; color: #666; max-width: 600px; margin: 0 auto; }
+        .hero { padding: 100px 5%; text-align: center; background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%); }
+        .hero h1 { font-size: 54px; margin-bottom: 20px; font-weight: 900; letter-spacing: -2px; line-height: 1.1; }
+        .hero p { font-size: 22px; color: #555; max-width: 800px; margin: 0 auto; }
 
-        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px 5%; max-width: 1200px; margin: 0 auto; align-items: stretch; }
+        .products { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 40px; 
+            padding: 60px 8%; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            align-items: stretch; 
+        }
         
         .product-card { 
             background: var(--card-bg); 
-            border-radius: 20px; 
-            padding: 24px; 
+            border-radius: 24px; 
+            padding: 35px; 
             text-align: center; 
             border: 1px solid #eee; 
-            transition: 0.3s; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             display: flex; 
             flex-direction: column;
             height: 100%;
         }
         
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: #ddd; }
         
         .product-card .img-container {
             width: 100%;
-            height: 220px;
+            height: 280px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background: #fff;
+            border-radius: 16px;
         }
 
         .product-card img { 
-            max-width: 100%; 
-            max-height: 100%; 
+            max-width: 85%; 
+            max-height: 85%; 
             object-fit: contain; 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
         }
         
-        .badge { align-self: center; background: #000; color: #fff; padding: 4px 12px; border-radius: 100px; font-size: 11px; margin-bottom: 15px; }
+        /* Premium badge removed as requested */
         
         .product-info {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            margin-bottom: 15px;
+            justify-content: flex-start;
+            margin-bottom: 20px;
         }
 
-        .product-card h3 { font-size: 20px; margin-bottom: 8px; }
-        .product-card p { font-size: 14px; color: #777; margin-bottom: 10px; }
+        .product-card h3 { font-size: 26px; margin-bottom: 12px; font-weight: 800; }
+        .product-card p { font-size: 16px; color: #666; margin-bottom: 15px; }
         
-        .price { font-size: 24px; font-weight: 800; margin-bottom: 20px; margin-top: auto; }
+        .price { font-size: 32px; font-weight: 900; margin-bottom: 25px; margin-top: auto; color: #000; }
         
-        .buy-btn { background: #000; color: #fff; border: none; padding: 15px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; text-transform: uppercase; margin-bottom: 10px; transition: 0.2s; }
-        .buy-btn:active { transform: scale(0.95); background: #333; }
+        .buy-btn { 
+            background: #000; 
+            color: #fff; 
+            border: none; 
+            padding: 20px; 
+            border-radius: 16px; 
+            font-size: 18px;
+            font-weight: 800; 
+            cursor: pointer; 
+            width: 100%; 
+            text-transform: uppercase; 
+            margin-bottom: 15px; 
+            transition: 0.3s; 
+            letter-spacing: 1px;
+        }
+        .buy-btn:hover { background: #333; }
+        .buy-btn:active { transform: scale(0.96); }
         
-        .avito-link { color: #00AAFF; text-decoration: none; font-size: 12px; font-weight: bold; display: block; }
+        .avito-link { color: #00AAFF; text-decoration: none; font-size: 14px; font-weight: 700; display: block; transition: 0.2s; }
+        .avito-link:hover { text-decoration: underline; }
 
-        #cart-sidebar { position: fixed; right: -400px; top: 0; width: 100%; max-width: 400px; height: 100%; background: #fff; z-index: 2000; transition: 0.4s; padding: 30px; box-shadow: -5px 0 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        #cart-sidebar { position: fixed; right: -450px; top: 0; width: 100%; max-width: 450px; height: 100%; background: #fff; z-index: 2000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); padding: 40px; box-shadow: -10px 0 50px rgba(0,0,0,0.15); display: flex; flex-direction: column; }
         #cart-sidebar.active { right: 0; }
-        .cart-item { display: flex; align-items: center; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px; }
-        .cart-item img { width: 50px; }
+        .cart-item { display: flex; align-items: center; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; margin-bottom: 20px; }
+        .cart-item img { width: 70px; height: 70px; object-fit: contain; }
         
-        .checkout-btn { background: #25D366; color: #fff; padding: 18px; border-radius: 12px; text-align: center; text-decoration: none; font-weight: 800; margin-top: 20px; display: block; }
+        .checkout-btn { background: #25D366; color: #fff; padding: 22px; border-radius: 16px; text-align: center; text-decoration: none; font-size: 18px; font-weight: 900; margin-top: 25px; display: block; transition: 0.3s; }
+        .checkout-btn:hover { background: #1ebe57; transform: translateY(-2px); }
         
-        footer { padding: 40px; background: #000; color: #fff; text-align: center; }
-        .footer-phone { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #fff; text-decoration: none; display: inline-block; }
-        .footer-avito { margin-top: 15px; font-size: 12px; }
-        .footer-avito a { color: #00AAFF; text-decoration: none; margin: 0 5px; }
+        footer { padding: 60px 8%; background: #000; color: #fff; text-align: center; }
+        .footer-phone { font-size: 24px; font-weight: 900; margin-bottom: 15px; color: #fff; text-decoration: none; display: inline-block; transition: 0.2s; }
+        .footer-phone:hover { color: #00AAFF; }
+        .footer-avito { margin-top: 25px; font-size: 14px; opacity: 0.8; }
+        .footer-avito a { color: #00AAFF; text-decoration: none; margin: 0 10px; font-weight: 600; }
 
-        /* Уведомление о добавлении */
         #toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: #333;
+            background: rgba(0,0,0,0.9);
             color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 14px;
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 600;
             display: none;
             z-index: 3000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 50px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .products { grid-template-columns: 1fr; padding: 20px 5%; }
+            .product-card { padding: 25px; }
+            header { padding: 15px 5%; }
         }
     </style>
 </head>
@@ -161,113 +234,107 @@
 
 <section class="hero">
     <h1>Мастерская наград для блогеров</h1>
-    <p>Металлические кнопки YouTube, Likee и ChatGPT за 4 часа. Ручная полировка и гравировка. Качество выше маркетплейсов!</p>
+    <p>Металлические кнопки YouTube, Likee и ChatGPT за 4 часа. Ручная полировка и гравировка. Качество премиального уровня.</p>
 </section>
 
 <div class="products">
     <!-- Товар 1 -->
     <div class="product-card">
-        <span class="badge">Premium</span>
         <div class="img-container">
-            <img src="buttonz.png" alt="Золотая кнопка Ютуб">
+            <img src="gold button.png" alt="Золотая кнопка Ютуб">
         </div>
         <div class="product-info">
             <h3>Золотая кнопка Ютуб</h3>
-            <p>Металл. Зеркальная полировка.</p>
+            <p>Настоящий металл. Зеркальная полировка. Изготовление за 4 часа.</p>
         </div>
-        <div class="price">10900 ₽</div>
-        <button class="buy-btn" onclick="addToCart('Золотая кнопка Ютуб', 10900, 'gold button.png')">В корзину</button>
-        <a href="https://www.avito.ru/moskva/kollektsionirovanie/zolotaya_knopka_youtube_statusnyy_podarok_1954819361" target="_blank" class="avito-link">Наше объявление на Авито →</a>
+        <div class="price">12 900 ₽</div>
+        <button class="buy-btn" onclick="addToCart('Золотая кнопка Ютуб', 12900, 'gold button.png')">В корзину</button>
+        <a href="https://www.avito.ru/moskva/kollektsionirovanie/zolotaya_knopka_youtube_statusnyy_podarok_1954819361" target="_blank" class="avito-link">Смотреть на Авито →</a>
     </div>
 
     <!-- Товар 2 -->
     <div class="product-card">
-        <span class="badge">Premium</span>
         <div class="img-container">
             <img src="gold.png" alt="Серебряная кнопка Ютуб">
         </div>
         <div class="product-info">
             <h3>Серебряная кнопка Ютуб</h3>
-            <p>Высококачественный металл, ручная обработка.</p>
+            <p>Высококачественный металл, ручная обработка каждого элемента.</p>
         </div>
-        <div class="price">10900 ₽</div>
+        <div class="price">10 900 ₽</div>
         <button class="buy-btn" onclick="addToCart('Серебряная кнопка Ютуб', 10900, 'gold.png')">В корзину</button>
-        <a href="https://www.avito.ru/moskva/kollektsionirovanie/serebryanaya_knopka_youtube_premium_kachestvo_2434259570" target="_blank" class="avito-link">Наше объявление на Авито →</a>
+        <a href="https://www.avito.ru/moskva/kollektsionirovanie/serebryanaya_knopka_youtube_premium_kachestvo_2434259570" target="_blank" class="avito-link">Смотреть на Авито →</a>
     </div>
 
     <!-- Товар 3 -->
     <div class="product-card">
-        <span class="badge">Premium</span>
         <div class="img-container">
             <img src="shorts2.png" alt="Золотая кнопка Shorts">
         </div>
         <div class="product-info">
             <h3>Золотая кнопка Shorts</h3>
-            <p>Компактная награда для авторов коротких видео.</p>
+            <p>Идеальная награда для авторов коротких видеороликов.</p>
         </div>
-        <div class="price">12900 ₽</div>
+        <div class="price">12 900 ₽</div>
         <button class="buy-btn" onclick="addToCart('Золотая кнопка Shorts', 12900, 'shorts2.png')">В корзину</button>
-        <a href="https://www.avito.ru/moskva/mebel_i_interer/serebryanaya_knopka_youtube_kachestvennyy_analog_or_7809077709" target="_blank" class="avito-link">Наше объявление на Авито →</a>
+        <a href="https://www.avito.ru/moskva/mebel_i_interer/serebryanaya_knopka_youtube_kachestvennyy_analog_or_7809077709" target="_blank" class="avito-link">Смотреть на Авито →</a>
     </div>
 
     <!-- Товар 4 -->
     <div class="product-card">
-        <span class="badge">Premium</span>
         <div class="img-container">
             <img src="Instagram_button.png" alt="Золотая кнопка Инстаграм">
         </div>
         <div class="product-info">
             <h3>Мини-кнопка (Эксклюзив)</h3>
-            <p>Уникальный формат с вашим никнеймом.</p>
+            <p>Уникальный формат с гравировкой вашего персонального никнейма.</p>
         </div>
-        <div class="price">15900 ₽</div>
+        <div class="price">15 900 ₽</div>
         <button class="buy-btn" onclick="addToCart('Мини-кнопка', 15900, 'Instagram_button.png')">В корзину</button>
-        <a href="https://www.avito.ru/moskva/predlozheniya_uslug/eksklyuziv_mini-knopka_yutub_s_tvoim_nikom_podarok_7905691895" target="_blank" class="avito-link">Наше объявление на Авито →</a>
+        <a href="https://www.avito.ru/moskva/predlozheniya_uslug/eksklyuziv_mini-knopka_yutub_s_tvoim_nikom_podarok_7905691895" target="_blank" class="avito-link">Смотреть на Авито →</a>
     </div>
 
     <!-- Товар 5 -->
     <div class="product-card">
-        <span class="badge">Premium</span>
         <div class="img-container">
             <img src="button7.png" alt="Золотая кнопка Likee">
         </div>
         <div class="product-info">
-            <h3>Кнопка Likee</h3>
-            <p>Материал: Металл. Ручная работа.</p>
+            <h3>Золотая кнопка Likee</h3>
+            <p>Премиальный металл. Полная имитация оригинальной награды.</p>
         </div>
-        <div class="price">11000 ₽</div>
-        <button class="buy-btn" onclick="addToCart('Золотая кнопка Likee', 11000, 'button7.png')">В корзину</button>
-        <a href="https://www.avito.ru/moskva/kollektsionirovanie/zolotaya_knopka_youtube_statusnyy_podarok_1954819361" target="_blank" class="avito-link">Наше объявление на Авито →</a>
+        <div class="price">14 000 ₽</div>
+        <button class="buy-btn" onclick="addToCart('Золотая кнопка Likee', 14000, 'button7.png')">В корзину</button>
+        <a href="https://www.avito.ru/moskva/kollektsionirovanie/zolotaya_knopka_youtube_statusnyy_podarok_1954819361" target="_blank" class="avito-link">Смотреть на Авито →</a>
     </div>
 
     <!-- Товар 6 -->
     <div class="product-card">
-        <span class="badge">Premium</span>
         <div class="img-container">
-            <img src="button6.png" alt="Кнопка ChatGPT">
+            <img src="button6.png" alt="Золотая кнопка ChatGPT">
         </div>
         <div class="product-info">
             <h3>Кнопка ChatGPT</h3>
-            <p>Уникальный дизайн для фанатов ИИ.</p>
+            <p>Футуристичный дизайн для главных энтузиастов нейросетей.</p>
         </div>
-        <div class="price">14000 ₽</div>
+        <div class="price">14 000 ₽</div>
         <button class="buy-btn" onclick="addToCart('Кнопка ChatGPT', 14000, 'button6.png')">В корзину</button>
-        <a href="https://www.avito.ru/moskva/predlozheniya_uslug/eksklyuziv_mini-knopka_yutub_s_tvoim_nikom_podarok_7905691895" target="_blank" class="avito-link">Наше объявление на Авито →</a>
+        <a href="https://www.avito.ru/moskva/predlozheniya_uslug/eksklyuziv_mini-knopka_yutub_s_tvoim_nikom_podarok_7905691895" target="_blank" class="avito-link">Смотреть на Авито →</a>
     </div>
 </div>
 
 <div id="cart-sidebar">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2>Корзина</h2>
-        <button onclick="toggleCart()" style="background:none; border:none; font-size: 24px; cursor:pointer;">✕</button>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 style="font-size: 28px; font-weight: 900;">Корзина</h2>
+        <button onclick="toggleCart()" style="background:none; border:none; font-size: 32px; cursor:pointer;">✕</button>
     </div>
     <div id="cart-items" style="flex-grow:1; overflow-y:auto;"></div>
-    <div style="border-top: 2px solid #000; padding-top: 20px;">
-        <div style="display:flex; justify-content: space-between; font-size: 20px; font-weight:800;">
+    <div style="border-top: 3px solid #000; padding-top: 30px;">
+        <div style="display:flex; justify-content: space-between; font-size: 24px; font-weight:900;">
             <span>Итого:</span>
             <span id="total-price">0 ₽</span>
         </div>
-        <a href="#" class="checkout-btn" onclick="checkout()">Заказать через Telegram</a>
+        <a href="#" class="checkout-btn" onclick="checkout()">Оформить в Telegram</a>
     </div>
 </div>
 
@@ -275,7 +342,7 @@
     <a href="tel:+79779662521" class="footer-phone">+7 977 966 25 21</a>
     <p>© 2026 MIRA & PAPA | Все права защищены</p>
     <div class="footer-avito">
-        Наши официальные объявления на Авито: 
+        Объявления на Авито: 
         <a href="https://www.avito.ru/moskva/kollektsionrie/serebryanaya_knopka_youtube_premium_kachestvo_2434259570" target="_blank">Серебро Premium</a> |
         <a href="https://www.avito.ru/moskva/mebel_i_interer/serebryanaya_knopka_youtube_kachestvennyy_analog_or_7809077709" target="_blank">Серебро Аналог</a> |
         <a href="https://www.avito.ru/moskva/kollektsionirovanie/zolotaya_knopka_youtube_statusnyy_podarok_1954819361" target="_blank">Золото Статус</a> |
@@ -302,20 +369,21 @@
                 <div class="cart-item">
                     <img src="${item.img}">
                     <div style="flex-grow:1">
-                        <b>${item.name}</b><br>${item.price} ₽
+                        <b style="font-size: 18px;">${item.name}</b><br>
+                        <span style="font-weight: 800; color: #555;">${item.price.toLocaleString()} ₽</span>
                     </div>
-                    <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer;">✕</button>
+                    <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer; font-size: 20px;">✕</button>
                 </div>`;
         });
         document.getElementById('cart-count').innerText = cart.length;
-        document.getElementById('total-price').innerText = total + ' ₽';
+        document.getElementById('total-price').innerText = total.toLocaleString() + ' ₽';
         localStorage.setItem('cart', JSON.stringify(cart));
     }
 
     function addToCart(name, price, img) {
         cart.push({name, price, img});
         updateCart();
-        showToast(); // Просто показываем уведомление без открытия сайдбара
+        showToast();
     }
 
     function removeFromCart(index) {
@@ -331,10 +399,9 @@
         if (cart.length === 0) return;
         const phone = "79779662521";
         let msg = "Здравствуйте! Хочу заказать награды MIRA & PAPA:\n\n" + 
-                  cart.map(i => "— " + i.name + " (" + i.price + " ₽)").join("\n") +
+                  cart.map(i => "— " + i.name + " (" + i.price.toLocaleString() + " ₽)").join("\n") +
                   "\n\nИтого: " + document.getElementById('total-price').innerText;
         
-        // Ссылка на Telegram по номеру телефона
         window.location.href = "https://t.me/+79779662521?text=" + encodeURIComponent(msg);
     }
 
