@@ -206,7 +206,9 @@
         const itemsDiv = document.getElementById('cart-items');
         itemsDiv.innerHTML = '';
         let total = 0;
-        if (cart.length === 0) { itemsDiv.innerHTML = '<p style="text-align:center; color:#999; margin-top:50px; font-weight: 600;">Корзина пока пуста</p>'; }
+        if (cart.length === 0) { 
+            itemsDiv.innerHTML = '<p style="text-align:center; color:#999; margin-top:50px; font-weight: 600;">Корзина пока пуста</p>'; 
+        }
         cart.forEach((item, index) => {
             total += item.price;
             itemsDiv.innerHTML += `
@@ -239,17 +241,36 @@
         document.getElementById('cart-sidebar').classList.toggle('active');
     }
 
+    // НОВАЯ ФУНКЦИЯ ОФОРМЛЕНИЯ "ЧЕКОМ"
     function checkout() {
         if (cart.length === 0) return;
-        let msg = "Здравствуйте! Хочу заказать в MIRA & PAPA:\n\n" + 
-                  cart.map((i, idx) => (idx+1) + ". " + i.name + " — " + i.price + "₽").join("\n") + 
-                  "\n\nИтого: " + document.getElementById('total-price').innerText;
-        // Переход по номеру телефона
+
+        // Генерируем случайный номер заказа для солидности
+        const orderNum = Math.floor(Math.random() * 9000) + 1000;
+        const date = new Date().toLocaleDateString('ru-RU');
+
+        let msg = `🧾 ЧЕК ЗАКАЗА №${orderNum}\n`;
+        msg += `📅 Дата: ${date}\n`;
+        msg += `━━━━━━━━━━━━━━━━━━\n\n`;
+
+        cart.forEach((item, idx) => {
+            msg += `${idx + 1}. 🏆 ${item.name.toUpperCase()}\n`;
+            msg += `   Цена: ${item.price.toLocaleString()} ₽\n\n`;
+        });
+
+        msg += `━━━━━━━━━━━━━━━━━━\n`;
+        msg += `💰 ИТОГО К ОПЛАТЕ: ${document.getElementById('total-price').innerText}\n\n`;
+        msg += `📍 Мастерская: MIRA & PAPA\n`;
+        msg += `🔗 Наши работы: https://t.me/knopka_youtuba\n\n`;
+        msg += `--- 👋 Жду детали по гравировке! ---`;
+
+        // Отправка на твой номер
         window.location.href = "https://t.me/+79779662521?text=" + encodeURIComponent(msg);
     }
 
     updateCart();
 </script>
+
 
 </body>
 </html>
