@@ -257,7 +257,7 @@
         let msg = "Здравствуйте! Хочу заказать в MIRA & PAPA:\n\n" + 
                   cart.map((i, idx) => (idx+1) + ". " + i.name + " — " + i.price + "₽").join("\n") + 
                   "\n\nИтого: " + document.getElementById('total-price').innerText;
-        window.location.href = "https://t.me/Mirapapa_awards?text=" + encodeURIComponent(msg);
+        window.location.href = "t.me/KaramazovIvan" + encodeURIComponent(msg);
     }
 
     updateCart();
